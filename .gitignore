@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/SocialNetwork
+/Code/Services/UserManagement/obj
+/Code/Services/UserManagement/UserManagement.csproj.user
