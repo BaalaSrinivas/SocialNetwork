@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using UserManagement.Model;
 
 namespace UserManagement.Context
 {
     public class UserContext: DbContext
     {
-        public UserContext() : base()
+        public UserContext(DbContextOptions options) : base(options)
         {
                 
         }
+
+        public DbSet<User> Users { get; set; }
     }
 }

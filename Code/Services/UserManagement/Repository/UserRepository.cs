@@ -2,30 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UserManagement.Context;
 using UserManagement.Model;
 
 namespace UserManagement.Repository
 {
     public class UserRepository : IUserRepository
     {
-        public bool CreateUser(User user)
+        private UserContext _context;
+        public UserRepository(UserContext userContext)
         {
-            throw new NotImplementedException();
+            _context = userContext;
+        }
+        public void CreateUser(User user)
+        {
+            _context.Users.Add(user);
         }
 
-        public bool DeleteUser(Guid id)
+        public void DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Remove(user);
         }
 
-        public User GetUser(Guid id)
+        public User GetUser(string mailId)
         {
-            throw new NotImplementedException();
+            return _context.Users.Where(u => u.MailId == mailId).FirstOrDefault();
         }
 
-        public bool UpdateUser(User user)
+        public void UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

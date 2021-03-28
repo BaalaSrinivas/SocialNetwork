@@ -11,8 +11,6 @@ namespace UserManagement.Model
 
         public string MailId { get; set; }
 
-        public string ProfileName { get; set; }
-
-        public Guid UserId { get; set; }
+        public int Id { get; set; }
     }
 }

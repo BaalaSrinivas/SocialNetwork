@@ -8,12 +8,14 @@ namespace UserManagement.Repository
 {
     public interface IUserRepository
     {
-        User GetUser(Guid id);
+        User GetUser(string mailId);
 
-        bool CreateUser(User user);
+        void CreateUser(User user);
 
-        bool UpdateUser(User user);
+        void UpdateUser(User user);
 
-        bool DeleteUser(Guid id);
+        void DeleteUser(User user);
+
+        void Save();
     }
 }
