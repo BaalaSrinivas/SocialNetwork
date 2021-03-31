@@ -34,7 +34,7 @@ import { NgbdModalContent } from './modal/modal.component';
     NucleoSectionComponent,
     VersionsSectionComponent,
     NgbdModalComponent,
-    NgbdModalContent
+    NgbdModalContent,
   ],
   entryComponents: [NgbdModalContent],
   imports: [
