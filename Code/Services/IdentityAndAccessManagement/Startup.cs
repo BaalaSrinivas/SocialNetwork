@@ -1,4 +1,5 @@
 using IdentityAndAccessManagement.Data;
+using IdentityAndAccessManagement.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement
@@ -30,20 +32,52 @@ namespace IdentityAndAccessManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<IAMContext>(options => {
+
+            //.Net Core Identity Start
+            services.AddDbContext<IAMContext>(options =>
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IAMContext>();
+            //.Net Core Identity End
+
+            //Identity Server 4 Start
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddAspNetIdentity<IdentityUser>()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                    {
+                        builder.UseSqlServer(Configuration.GetConnectionString("Default"),
+                            sqlServerOptionsAction: sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(migrationsAssembly);
+                            });
+                    };
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                    {
+                        builder.UseSqlServer(Configuration.GetConnectionString("Default"),
+                            sqlServerOptionsAction: sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(migrationsAssembly);
+                            });
+                    };
+                });
+
+            //Identity Server 4 End
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityAndAccessManagement", Version = "v1" });
             });
-        }
 
-        private void IdentityRole()
-        {
-            throw new NotImplementedException();
+            services.AddTransient<IIdentityService, IdentityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +89,8 @@ namespace IdentityAndAccessManagement
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityAndAccessManagement v1"));
             }
+
+            app.UseIdentityServer();
 
             app.UseHttpsRedirection();
 

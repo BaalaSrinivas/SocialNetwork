@@ -1,10 +1,15 @@
 ﻿using IdentityAndAccessManagement.Data;
+using IdentityAndAccessManagement.Models;
+using IdentityAndAccessManagement.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement.Controllers
@@ -13,17 +18,44 @@ namespace IdentityAndAccessManagement.Controllers
     [Route("api/v1/[controller]")]
     public class AccountController : ControllerBase
     {
-        private UserManager<IdentityUser> _userManager;
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        private IIdentityService _identityService;
+        private IConfiguration _configuration;
+
+        public AccountController(IIdentityService identityService, IConfiguration configuration)
         {
-            _userManager = userManager;
+            _identityService = identityService;
+            _configuration = configuration;
+        }
+
+        [HttpPost]
+        [Route("/register")]
+        public async Task<IdentityResult> Register(SocialUser socialUser)
+        {
+            IdentityUser user = new IdentityUser() { UserName = socialUser.Name, Email = socialUser.MailId };
+            return await _identityService.Register(user, socialUser.Password);
+        }
+
+        [HttpPost]
+        [Route("/login")]
+        public async Task<IActionResult> Login(SocialUser socialUser)
+        {
+            IdentityUser user = await _identityService.FindByMailId(socialUser.MailId);
+            AuthenticationProperties authenticationProperties = new AuthenticationProperties();
+            if (await _identityService.CheckCredentials(user, socialUser.Password))
+            {
+                authenticationProperties.AllowRefresh = true;
+                authenticationProperties.ExpiresUtc = DateTime.Now.AddMinutes(_configuration.GetValue("TokenLifeTimeInMins", 150));
+                authenticationProperties.RedirectUri = "https://www.google.com";
+                await _identityService.SignIn(user, authenticationProperties);
+            }
+            return Redirect(authenticationProperties.RedirectUri);
         }
 
         [HttpGet]
-        public async Task AddUser()
+        [Route("/logout")]
+        public async void LogOut()
         {
-            await _userManager.CreateAsync(new IdentityUser() { UserName = "Baala", Email = "baala@gmail.com" }, "Baala@123");
+            await _identityService.SignOut();
         }
     }
 }
