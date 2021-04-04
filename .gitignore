@@ -8,3 +8,9 @@
 /Code/Services/UserManagement/bin/Debug/net5.0
 /Code/.vs/SocialNetwork
 /Code/UI/debug.log
+/Code/Services/AuthenticationService/obj
+/Code/Services/IdentityAndAccessManagement/bin/Debug/net5.0
+*.user
+*.dll
+*.exe
+/Code/Services/IdentityAndAccessManagement/obj

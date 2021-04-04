@@ -17,5 +17,7 @@ namespace UserManagement.Repository
         void DeleteUser(User user);
 
         void Save();
+
+        void ChangeImage(string mailId, Guid imageId);
     }
 }

@@ -26,6 +26,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "UI\", "{F523CE19-5307
 		SlnRelativePath = "UI\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityAndAccessManagement", "Services\IdentityAndAccessManagement\IdentityAndAccessManagement.csproj", "{B78D4B55-85F6-4D34-979F-10984C6146C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{F523CE19-5307-4EA7-B107-687C9169D740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
