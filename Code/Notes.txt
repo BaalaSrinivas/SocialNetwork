@@ -1,6 +1,11 @@
+<!--Identity Service-->
 dotnet ef migrations add Identity --context IAMContext --output-dir Data/Migrations/Identity
 dotnet ef migrations add Identity --context PersistedGrantDbContext --output-dir Data/Migrations/IdentityServer/PersistedGrantDb
 dotnet ef migrations add Identity --context ConfigurationDbContext  --output-dir Data/Migrations/IdentityServer/ConfigurationDb
 dotnet ef database update --context IAMContext
 dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
+
+<!--Content Service-->
+dotnet ef migrations add Identity --context SqlContext --output-dir Data/Migrations/Content
+dotnet ef database update --context SqlContext

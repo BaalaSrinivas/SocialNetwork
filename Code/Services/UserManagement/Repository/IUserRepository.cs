@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UserManagement.Model;
+using UserManagement.Models;
 
 namespace UserManagement.Repository
 {

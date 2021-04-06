@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UserManagement.Model;
+using UserManagement.Models;
 using UserManagement.Repository;
 
 namespace UserManagement.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("userapi/v1/[controller]")]
     public class UserController : ControllerBase
     {
         private IUserRepository _repository;
