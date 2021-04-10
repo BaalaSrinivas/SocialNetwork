@@ -9,14 +9,18 @@ import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
+import { SigninredirectComponent } from './signinredirect/signinredirect.component';
+import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
 
 const routes: Routes =[
     { path: 'home',             component: HomeComponent },
-    { path: 'user-profile',     component: ProfileComponent },
+    { path: 'profile',     component: ProfileComponent },
     { path: 'register',           component: SignupComponent },
     { path: 'landing',          component: LandingComponent },
     { path: 'login', component: LoginComponent },
     { path: 'newsfeed', component: NewsfeedComponent },
+    { path: 'signinredirect', component: SigninredirectComponent },
+    { path: 'signoutredirect', component: SignoutredirectComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
@@ -24,8 +28,8 @@ const routes: Routes =[
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes,{
-      useHash: true
+        RouterModule.forRoot(routes, {
+            useHash: false
     })
   ],
   exports: [

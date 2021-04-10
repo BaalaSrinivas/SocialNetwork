@@ -4,8 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
-import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
-import { GoogleLoginProvider } from 'angularx-social-login';
+
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
@@ -18,6 +17,10 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
 import { NewsFeedModule } from './newsfeed/newsfeed.module';
+import { AuthenticationService } from './shared/authentication.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SigninredirectComponent } from './signinredirect/signinredirect.component';
+import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
 
 
 
@@ -29,33 +32,21 @@ import { NewsFeedModule } from './newsfeed/newsfeed.module';
         ProfileComponent,
         NavbarComponent,
         FooterComponent,
-        LoginComponent,        
-        
+        LoginComponent,
+        SigninredirectComponent,
+        SignoutredirectComponent,      
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         NgbModule,
         FormsModule,
         RouterModule,
         AppRoutingModule,
         HomeModule,
-        SocialLoginModule,
         NewsFeedModule
     ],
-    providers: [{
-        provide: 'SocialAuthServiceConfig',
-        useValue: {
-            autoLogin: false,
-            providers: [
-                {
-                    id: GoogleLoginProvider.PROVIDER_ID,
-                    provider: new GoogleLoginProvider(
-                        '216892140019-lvs71bvj54t4s7stp195uuhl6foggrsd.apps.googleusercontent.com'
-                    )
-                }
-            ]
-        } as SocialAuthServiceConfig,
-    }],
+    providers: [AuthenticationService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

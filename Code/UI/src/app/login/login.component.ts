@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GoogleLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
+import { AuthenticationService } from '../shared/authentication.service';
 
 const googleLoginOptions = {
     scope: 'profile email'
@@ -14,29 +14,23 @@ const googleLoginOptions = {
 
 
 export class LoginComponent implements OnInit {
-
-
     focus;
     focus1;
 
-    user: SocialUser;
     loggedIn: boolean;
 
-    constructor(private authService: SocialAuthService) { }
+    constructor(private authService: AuthenticationService) { }
 
     ngOnInit() {
-        this.authService.authState.subscribe((user) => {
-            this.user = user;
-            this.loggedIn = (user != null);
-        });
+
     }
 
     signInWithGoogle(): void {
-        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions);
+        this.authService.login();
     }
 
     signOut(): void {
-        this.authService.signOut();
+        this.authService.logout();
     }
 
 }

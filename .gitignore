@@ -17,3 +17,4 @@
 *.pdb
 /Code/Services/ContentService/bin/Debug/net5.0
 /Code/Services/ContentService/obj
+/Learning
