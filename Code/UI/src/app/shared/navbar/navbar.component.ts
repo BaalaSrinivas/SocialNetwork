@@ -38,6 +38,7 @@ export class NavbarComponent implements OnInit {
         this.location.subscribe((ev: PopStateEvent) => {
             this.lastPoppedUrl = ev.url;
         });
+        this.userName = sessionStorage.getItem('loggedUser');
     }
 
     isHome() {
