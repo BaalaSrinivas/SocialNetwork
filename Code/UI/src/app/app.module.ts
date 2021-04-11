@@ -21,6 +21,8 @@ import { AuthenticationService } from './shared/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SigninredirectComponent } from './signinredirect/signinredirect.component';
 import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
+import { ContentService } from './profile/content.service';
+import { PostAdapter } from './profile/Models/Adapters/post.adapter';
 
 
 
@@ -46,7 +48,7 @@ import { SignoutredirectComponent } from './signoutredirect/signoutredirect.comp
         HomeModule,
         NewsFeedModule
     ],
-    providers: [AuthenticationService],
+    providers: [AuthenticationService, ContentService, PostAdapter],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

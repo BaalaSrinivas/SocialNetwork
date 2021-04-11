@@ -1,4 +1,5 @@
 using ContentService.Context;
+using ContentService.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,11 +29,20 @@ namespace ContentService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Cors", builder=> { builder.AllowAnyOrigin(); builder.AllowAnyHeader(); builder.AllowAnyMethod(); });
+            });
+
             services.AddDbContext<SqlContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddControllers();
+            
+
+            services.AddScoped<IContentRepository, ContentRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContentService", Version = "v1" });
@@ -52,6 +62,8 @@ namespace ContentService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("Cors");
 
             app.UseAuthorization();
 

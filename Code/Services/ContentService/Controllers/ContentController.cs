@@ -59,7 +59,7 @@ namespace ContentService.Controllers
             return await _contentRepository.GetLikedUsers(parentId);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/GetPosts")]
         public async Task<IEnumerable<Post>> GetPosts(IEnumerable<Guid> postIds)
         {
@@ -96,7 +96,8 @@ namespace ContentService.Controllers
 
         protected string GetUserId()
         {
-            return this.User.Claims.First(i => i.Type == "MailId").Value;
+            return "baala@gmail.com";
+            //return this.User.Claims.First(i => i.Type == "MailId").Value;
         }
     }
 }

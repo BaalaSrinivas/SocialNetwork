@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { SectionsModule } from "../sections/sections.module";
 import { FeedSectionComponent } from "./feed-section/feed-section.component";
 import { NewsfeedComponent } from "./newsfeed.component";
@@ -12,6 +13,7 @@ import { NewsfeedComponent } from "./newsfeed.component";
         CommonModule,
         BrowserModule,
         FormsModule,
+        NgbModule,
         RouterModule,
         SectionsModule
     ],
