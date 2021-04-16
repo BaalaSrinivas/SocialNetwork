@@ -16,13 +16,14 @@ import { FooterComponent } from './shared/footer/footer.component';
 
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
-import { NewsFeedModule } from './newsfeed/newsfeed.module';
 import { AuthenticationService } from './shared/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SigninredirectComponent } from './signinredirect/signinredirect.component';
 import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
 import { ContentService } from './profile/content.service';
 import { PostAdapter } from './profile/Models/Adapters/post.adapter';
+import { FeedSectionComponent } from './feed-section/feed-section.component';
+import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 
 
 
@@ -36,7 +37,9 @@ import { PostAdapter } from './profile/Models/Adapters/post.adapter';
         FooterComponent,
         LoginComponent,
         SigninredirectComponent,
-        SignoutredirectComponent,      
+        SignoutredirectComponent,  
+        FeedSectionComponent,
+        NewsfeedComponent
     ],
     imports: [
         BrowserModule,
@@ -46,7 +49,6 @@ import { PostAdapter } from './profile/Models/Adapters/post.adapter';
         RouterModule,
         AppRoutingModule,
         HomeModule,
-        NewsFeedModule
     ],
     providers: [AuthenticationService, ContentService, PostAdapter],
     bootstrap: [AppComponent]
