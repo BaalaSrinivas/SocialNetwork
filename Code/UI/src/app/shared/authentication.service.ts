@@ -66,6 +66,7 @@ export class AuthenticationService {
             console.log(user);
             this._user = user;
             sessionStorage.setItem('loggedUser', this._user.profile.name);
+            sessionStorage.setItem('accessToken', this._user.access_token);
             this._loginChangedSubject.next(!!user && !user.expired);           
             return user;
         });
@@ -82,7 +83,7 @@ export class AuthenticationService {
         return this._userManager.signoutRedirectCallback();
     }
 
-    getAccessToken() {
+    getAccessToken(): Promise<string> {
         return this._userManager.getUser().then(user => {
             if (!!user && !user.expired) {
                 return user.access_token;
