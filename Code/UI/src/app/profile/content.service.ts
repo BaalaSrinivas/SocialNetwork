@@ -14,6 +14,8 @@ const httpOptions = {
     })
 };
 
+const contentApi = environment.apiUrl + 'v1/content/';
+
 @Injectable()
 export class ContentService {
 
@@ -22,19 +24,17 @@ export class ContentService {
 
     }
 
-
     addComment(guid: any, commentText: string): Observable<boolean> {
         var data = {
             postId: guid,
             commentText: commentText
         };
-        return this.httpClient.post<boolean>(environment.apiUrl + 'addcomment', data, httpOptions);
+        return this.httpClient.post<boolean>(contentApi + 'addcomment', data, httpOptions);
     }
 
     getPosts(guids: any[]): Observable<any> {
 
-
-        return this.httpClient.post<Post[]>(environment.apiUrl + 'getposts', guids, httpOptions)
+        return this.httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
             .pipe(map((data: any[]) =>
                 data.map(item => this.postAdapter.Adapt(item))
             )

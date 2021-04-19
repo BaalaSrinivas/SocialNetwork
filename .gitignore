@@ -18,3 +18,5 @@
 /Code/Services/ContentService/bin/Debug/net5.0
 /Code/Services/ContentService/obj
 /Learning
+/Code/Services/ApiGateway/bin/Debug/net5.0
+/Code/Services/ApiGateway/obj

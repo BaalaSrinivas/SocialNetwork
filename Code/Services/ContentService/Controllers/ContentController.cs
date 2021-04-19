@@ -19,8 +19,15 @@ namespace ContentService.Controllers
             _contentRepository = contentRepository;
         }
 
+        [HttpGet]
+        [Route("Test")]
+        public string SampleGet()
+        {
+            return "hi";
+        }
+
         [HttpPost]
-        [Route("/AddComment")]
+        [Route("AddComment")]
         public async Task<bool> AddComment(Guid postId, string commentText)
         {
             Comment comment = new Comment()
@@ -35,7 +42,7 @@ namespace ContentService.Controllers
         }
 
         [HttpPost]
-        [Route("/CreatePost")]
+        [Route("CreatePost")]
         public async Task<bool> CreatePost(Post post)
         {
             post.Id = Guid.NewGuid();
@@ -46,35 +53,35 @@ namespace ContentService.Controllers
         }
 
         [HttpGet]
-        [Route("/GetComments")]
+        [Route("GetComments")]
         public async Task<IEnumerable<Comment>> GetComments(Guid postId)
         {
             return await _contentRepository.GetComments(postId);
         }
 
         [HttpGet]
-        [Route("/GetLikedUsers")]
+        [Route("GetLikedUsers")]
         public async Task<IEnumerable<string>> GetLikedUsers(Guid parentId)
         {
             return await _contentRepository.GetLikedUsers(parentId);
         }
 
         [HttpPost]
-        [Route("/GetPosts")]
+        [Route("GetPosts")]
         public async Task<IEnumerable<Post>> GetPosts(IEnumerable<Guid> postIds)
         {
             return await _contentRepository.GetPosts(postIds);
         }
 
         [HttpGet]
-        [Route("/GetUserPosts")]
+        [Route("GetUserPosts")]
         public async Task<IEnumerable<Guid>> GetUserPosts(string userId)
         {
             return await _contentRepository.GetUserPosts(userId);
         }
 
         [HttpPost]
-        [Route("/Like")]
+        [Route("Like")]
         public async Task<bool> Like(Guid postId)
         {
             Like like = new Like()
@@ -88,7 +95,7 @@ namespace ContentService.Controllers
         }
 
         [HttpPost]
-        [Route("/UpdatePost")]
+        [Route("UpdatePost")]
         public async Task<bool> UpdatePostContent(Guid postId, string content)
         {
             return await _contentRepository.UpdatePostContent(postId, content);
