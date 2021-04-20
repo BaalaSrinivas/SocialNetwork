@@ -20,3 +20,9 @@
 /Learning
 /Code/Services/ApiGateway/bin/Debug/net5.0
 /Code/Services/ApiGateway/obj
+/Code/MessageBus.RabbitMQ/bin/Debug/net5.0
+/Code/MessageBus.RabbitMQ/obj
+/Code/Services/MessageBus/MessageBusCore/bin/Debug/net5.0
+/Code/Services/MessageBus/MessageBusCore/obj
+/Code/Services/MessageBus/MessageBus.RabbitMQ/bin/Debug/net5.0
+/Code/Services/MessageBus/MessageBus.RabbitMQ/obj
