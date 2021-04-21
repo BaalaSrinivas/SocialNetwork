@@ -1,10 +1,9 @@
 ﻿using ContentService.Models;
 using ContentService.Repository;
+using MessageBus.MessageBusCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContentService.Controllers
@@ -14,8 +13,11 @@ namespace ContentService.Controllers
     public class ContentController : ControllerBase
     {
         private IContentRepository _contentRepository;
-        public ContentController(IContentRepository contentRepository)
+        IMessageBus _messageBus;
+
+        public ContentController(IContentRepository contentRepository, IMessageBus messageBus)
         {
+            _messageBus = messageBus;
             _contentRepository = contentRepository;
         }
 
@@ -23,6 +25,7 @@ namespace ContentService.Controllers
         [Route("Test")]
         public string SampleGet()
         {
+            _messageBus.Publish(new Message() { MessageText = $"Get called at {DateTime.Now}" });
             return "hi";
         }
 
@@ -105,6 +108,6 @@ namespace ContentService.Controllers
         {
             return "baala@gmail.com";
             //return this.User.Claims.First(i => i.Type == "MailId").Value;
-        }
+        }        
     }
 }

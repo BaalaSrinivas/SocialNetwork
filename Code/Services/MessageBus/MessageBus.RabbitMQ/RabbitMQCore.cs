@@ -11,7 +11,7 @@ namespace MessageBus.RabbitMQ
     {
         private ConnectionFactory _connectionFactory;
         private IConnection _connection;
-        public RabbitMQCore(ConnectionInfo connectionInfo)
+        public RabbitMQCore(RabbitMQConnectionInfo connectionInfo)
         {
             _connectionFactory = new ConnectionFactory() { HostName = connectionInfo.HostName, 
                 UserName = connectionInfo.UserName, 

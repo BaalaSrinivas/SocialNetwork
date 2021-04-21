@@ -2,10 +2,12 @@
 
 namespace MessageBus.MessageBusCore
 {
-    public interface IMessageBus<T>
+    public interface IMessageBus
     {
-        void Publish(string queueName, Message message);
+        void Publish(Message message);
 
-        public void Consume(string queueName, EventHandler<T> callbackMethod);
+        public void Subscribe(Action<Message> callbackMethod);
+
+        public void UnSubscribe(Action<Message> callbackMethod);
     }
 }

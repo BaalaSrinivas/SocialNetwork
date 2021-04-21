@@ -1,5 +1,7 @@
 using ContentService.Context;
 using ContentService.Repository;
+using MessageBus.MessageBusCore;
+using MessageBus.RabbitMQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,16 @@ namespace ContentService
             
 
             services.AddScoped<IContentRepository, ContentRepository>();
+
+            RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
+            {
+                HostName = Configuration.GetSection("RabbitMq")["HostName"],
+                UserName = Configuration.GetSection("RabbitMq")["UserName"],
+                Password = Configuration.GetSection("RabbitMq")["Password"],
+                Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
+            };
+
+            services.AddSingleton<IMessageBus, RabbitMQBus>(s=> { return new RabbitMQBus(new RabbitMQCore(rabbitMQConnectionInfo),"ContentQueue"); });
 
             services.AddSwaggerGen(c =>
             {

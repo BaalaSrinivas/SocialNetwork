@@ -10,7 +10,7 @@ namespace MessageBus.MessageBusCore
     {
         public Guid MessageId { get; set; } = Guid.NewGuid();
 
-        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
         public string MessageText { get; set; }
     }

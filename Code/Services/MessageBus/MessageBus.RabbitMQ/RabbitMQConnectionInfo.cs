@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MessageBus.RabbitMQ
 {
-    public class ConnectionInfo
+    public class RabbitMQConnectionInfo
     {
         public string HostName { get; set; }
 
