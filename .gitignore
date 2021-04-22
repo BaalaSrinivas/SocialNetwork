@@ -26,3 +26,5 @@
 /Code/Services/MessageBus/MessageBusCore/obj
 /Code/Services/MessageBus/MessageBus.RabbitMQ/bin/Debug/net5.0
 /Code/Services/MessageBus/MessageBus.RabbitMQ/obj
+/Code/Services/NotificationService/bin/Debug/net5.0
+/Code/Services/NotificationService/obj
