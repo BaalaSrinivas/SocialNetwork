@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
 import { AuthenticationService } from '../authentication.service';
+import { SignalrService } from '../../signalr.service';
 
 @Component({
     selector: 'app-navbar',
@@ -13,12 +14,17 @@ export class NavbarComponent implements OnInit {
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
 
-    private userName: string
+    private userName: string;
+    private notifications: string[];
 
-    constructor(public location: Location, private router: Router, private authService: AuthenticationService) {
+    constructor(public location: Location, private signalrService: SignalrService, private router: Router, private authService: AuthenticationService) {
         this.authService.loginChanged.subscribe(x => {
             this.userName = sessionStorage.getItem('loggedUser')
         });
+
+        signalrService.addCallbackListener((data) => {
+            this.notifications.unshift(data);
+        }, 'ReceiveMessage');
     }
 
     ngOnInit() {

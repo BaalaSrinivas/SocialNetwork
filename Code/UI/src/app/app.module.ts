@@ -24,6 +24,7 @@ import { ContentService } from './profile/content.service';
 import { PostAdapter } from './profile/Models/Adapters/post.adapter';
 import { FeedSectionComponent } from './feed-section/feed-section.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
+import { SignalrService } from './signalr.service';
 
 
 
@@ -50,7 +51,7 @@ import { NewsfeedComponent } from './newsfeed/newsfeed.component';
         AppRoutingModule,
         HomeModule,
     ],
-    providers: [AuthenticationService, ContentService, PostAdapter],
+    providers: [AuthenticationService, ContentService, SignalrService, PostAdapter],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

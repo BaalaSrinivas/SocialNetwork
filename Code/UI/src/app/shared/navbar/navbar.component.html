@@ -32,23 +32,23 @@
                     <span class="nav-link-inner--text d-lg-none">Notification</span>
                 </a>
                 <div class="dropdown-menu-right" aria-labelledby="navbar-default_notification_1" ngbDropdownMenu>
-                    <a class="dropdown-item">No new notification</a>
+                    <a *ngIf="!notifications?.length > 0" class="dropdown-item">No New Notifications</a>
+                    <a *ngFor="let msg of notifications" class="dropdown-item">{{msg}}</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <p class="nav-link">
-                    {{userName}}
-                    <span class="sr-only">(current)</span>
-                </p>
-            </li>
             <li class="nav-item" ngbDropdown placement="bottom-right">
-
-                <a class="nav-link nav-link-icon" href="javascript:void(0)" id="navbar-default_dropdown_1" ngbDropdownToggle>
-                    <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 30px;">
+                <a class="nav-link  nav-link-icon" href="javascript:void(0)" id="navbar-default_dropdown_1" ngbDropdownToggle>
+                    <div class="media align-items-center">
+                        <span class="avatar avatar-sm rounded-circle">
+                            <img alt="Image placeholder" src="assets/img/theme/team-4-800x800.jpg">
+                        </span>
+                        <div class="media-body  ml-2">
+                            <span class="font-weight-bold">{{userName}}</span>
+                        </div>
+                    </div>
                 </a>
                 <div class="dropdown-menu-right" aria-labelledby="navbar-default_dropdown_1" ngbDropdownMenu>
                     <a [routerLink]="['/user-profile']" class="dropdown-item">Profile</a>
-                    <a class="dropdown-item" href="javascript:void(0)">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" (click)="logOut()">Log out</a>
                 </div>

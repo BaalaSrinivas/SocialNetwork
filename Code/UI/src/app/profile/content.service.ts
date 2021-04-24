@@ -19,9 +19,8 @@ const contentApi = environment.apiUrl + 'v1/content/';
 @Injectable()
 export class ContentService {
 
-
     constructor(private authService: AuthenticationService, private httpClient: HttpClient, private postAdapter: PostAdapter) {
-
+        
     }
 
     addComment(guid: any, commentText: string): Observable<boolean> {
