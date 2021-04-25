@@ -38,7 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBusCore", "Services\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBus.RabbitMQ", "Services\MessageBus\MessageBus.RabbitMQ\MessageBus.RabbitMQ.csproj", "{8AA60F96-6CD9-4E20-AE42-ECA60CB89BEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "Services\NotificationService\NotificationService.csproj", "{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "Services\NotificationService\NotificationService.csproj", "{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B19930-D123-4460-9C3E-855299FF2A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B19930-D123-4460-9C3E-855299FF2A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B19930-D123-4460-9C3E-855299FF2A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B19930-D123-4460-9C3E-855299FF2A5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
