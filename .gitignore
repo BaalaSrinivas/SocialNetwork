@@ -29,3 +29,5 @@
 /Code/Services/NotificationService/bin/Debug/net5.0
 /Code/Services/NotificationService/obj
 /Code/Services/FollowService/obj
+/.vs
+/Code/Services/FollowService/bin/Debug/net5.0

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FollowService.Repository
 {
-    public interface IFollowInfoRepository: IGenericRepository<FollowInfo>
+    public interface IFollowMetaDataRepository: IGenericRepository<FollowMetaData>
     {
+        Task<FollowMetaData> GetFollowMetaData(string userId);
     }
 }

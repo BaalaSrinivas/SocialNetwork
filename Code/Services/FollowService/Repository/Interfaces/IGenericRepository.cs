@@ -7,7 +7,8 @@ namespace FollowService.Repository
 {
     public interface IGenericRepository<T>
     {
-        public bool AddItem(T item);
-        public bool RemoveItem(T item);
+        public Task<bool> AddItemAsync(T item);
+        public Task<bool> RemoveItemAsync(T item);
+        
     }
 }

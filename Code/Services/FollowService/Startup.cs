@@ -1,3 +1,4 @@
+using FollowService.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +30,12 @@ namespace FollowService
         {
 
             services.AddControllers();
+            services.AddScoped<IFollowEntityRepository, FollowEntityRepository>();
+            services.AddScoped<IFriendEntityRepository, FriendEntityRepository>();
+            services.AddScoped<IFollowMetaDataRepository, FollowMetaDataRepository>();
+            services.AddScoped<IUnitofWork, UnitofWork>();
+
+            services.AddScoped<SqlConnection>((s) =>  new SqlConnection(Configuration.GetConnectionString("Default")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FollowService", Version = "v1" });
