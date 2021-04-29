@@ -31,3 +31,5 @@
 /Code/Services/FollowService/obj
 /.vs
 /Code/Services/FollowService/bin/Debug/net5.0
+/Code/Services/NewsfeedService/obj
+/Code/Services/NewsfeedService/bin/Debug/net5.0

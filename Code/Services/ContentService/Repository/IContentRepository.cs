@@ -16,7 +16,7 @@ namespace ContentService.Repository
 
         public Task<bool> AddComment(Comment comment);
 
-        public Task<IEnumerable<Guid>> GetUserPosts(string userId);
+        public Task<IEnumerable<Guid>> GetUserPosts(string userId, int count);
 
         public Task<IEnumerable<Post>> GetPosts(IEnumerable<Guid> postIds);
 

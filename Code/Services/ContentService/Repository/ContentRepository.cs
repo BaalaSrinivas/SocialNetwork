@@ -43,9 +43,9 @@ namespace ContentService.Repository
             return await _sqlContext.Posts.Where(p => postIds.Contains(p.Id)).ToListAsync();
         }
 
-        public async Task<IEnumerable<Guid>> GetUserPosts(string userId)
+        public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)
         {
-            return await _sqlContext.Posts.Where(p => p.UserId == userId).Select(u=>u.Id).ToListAsync();
+            return await _sqlContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p=>p.Timestamp).Take(count).Select(u=>u.Id).ToListAsync();
         }
 
         public async Task<bool> Like(Like like)

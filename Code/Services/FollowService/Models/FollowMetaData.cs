@@ -7,6 +7,10 @@ namespace FollowService.Models
 {
     public class FollowMetaData
     {
+        public FollowMetaData()
+        {
+
+        }
         public FollowMetaData(string userId)
         {
             UserId = userId;    

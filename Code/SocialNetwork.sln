@@ -40,7 +40,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBus.RabbitMQ", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "Services\NotificationService\NotificationService.csproj", "{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsfeedService", "Services\NewsfeedService\NewsfeedService.csproj", "{4341A710-FF95-4961-B43B-B3649DCF6289}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +86,10 @@ Global
 		{92B19930-D123-4460-9C3E-855299FF2A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B19930-D123-4460-9C3E-855299FF2A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B19930-D123-4460-9C3E-855299FF2A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4341A710-FF95-4961-B43B-B3649DCF6289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4341A710-FF95-4961-B43B-B3649DCF6289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4341A710-FF95-4961-B43B-B3649DCF6289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4341A710-FF95-4961-B43B-B3649DCF6289}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

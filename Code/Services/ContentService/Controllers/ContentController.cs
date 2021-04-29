@@ -76,11 +76,11 @@ namespace ContentService.Controllers
             return await _contentRepository.GetPosts(postIds);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetUserPosts")]
-        public async Task<IEnumerable<Guid>> GetUserPosts(string userId)
+        public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)
         {
-            return await _contentRepository.GetUserPosts(userId);
+            return await _contentRepository.GetUserPosts(userId, count);
         }
 
         [HttpPost]
