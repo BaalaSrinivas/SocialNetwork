@@ -21,17 +21,34 @@ namespace NewsfeedService.Controllers
             _contentService = contentService;
             _followService = followService;
         }
-        public IEnumerable<Guid> GetNewsfeed(int index, int count)
+
+        [HttpPost]
+        [Route("GetNewsfeed")]
+        public async Task<IEnumerable<Guid>> GetNewsfeed(string userId, int index, int count)
         {
-            return _cacheRepository.RetrieveDataAsync("User Id").Result.Split('|').Select(s=>Guid.Parse(s));
+            var data = await _cacheRepository.RetrieveDataAsync(userId);
+            if(data == null)
+            {
+                data = GenerateNewsfeedInternal(userId).Result;
+            }
+            return data.Split('|').Select(s=>Guid.Parse(s));
         }
 
-        public async Task<bool> GenerateNewsFeed(string userId)
+        [HttpPost]
+        [Route("GenerateNewsfeed")]
+        public async Task<bool> GenerateNewsfeed(string userId)
+        {
+            string data = GenerateNewsfeedInternal(userId).Result;
+
+            return await _cacheRepository.StoreDataAsync(userId, data);
+        }
+
+        private async Task<string> GenerateNewsfeedInternal(string userId)
         {
             IEnumerable<string> followers = await _followService.GetUserFollowersAsync(userId);
             IEnumerable<Guid> posts = await _contentService.GetUsersPosts(followers, 200);
 
-            return await _cacheRepository.StoreDataAsync(userId, posts.Aggregate<Guid,string>("",(a,b)=> { return a.ToString() + "|" + b.ToString(); }));
+            return posts.Aggregate<Guid, string>("", (a, b) => { return a.ToString() + "|" + b.ToString(); });
         }
     }
 }

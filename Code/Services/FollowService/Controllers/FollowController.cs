@@ -25,9 +25,16 @@ namespace FollowService.Controllers
 
         [HttpGet]
         [Route("GetUserFollowInfo")]
-        public async Task<FollowMetaData> GetUserFollowInfo()
+        public async Task<FollowMetaData> GetUserFollowInfo(string userId)
+        { 
+            return await _unitofWork.FollowMetaDataRepository.GetFollowMetaData(userId);
+        }
+
+        [HttpGet]
+        [Route("GetFollowers")]
+        public async Task<IEnumerable<string>> GetFollowers(string userId)
         {
-            return await _unitofWork.FollowMetaDataRepository.GetFollowMetaData("User Id");
+            return await _unitofWork.FollowEntityRepository.GetFollowers(userId);
         }
 
         [HttpPost]

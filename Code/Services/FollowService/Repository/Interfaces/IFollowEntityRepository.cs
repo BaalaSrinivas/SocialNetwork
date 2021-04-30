@@ -8,5 +8,6 @@ namespace FollowService.Repository
 {
     public interface IFollowEntityRepository: IGenericRepository<FollowEntity>
     {
+        public Task<IEnumerable<string>> GetFollowers(string userId);
     }
 }

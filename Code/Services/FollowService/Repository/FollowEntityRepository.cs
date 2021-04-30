@@ -22,6 +22,12 @@ namespace FollowService.Repository
             return await _sqlConnection.ExecuteAsync(sql, item) > 0;
         }
 
+        public async Task<IEnumerable<string>> GetFollowers(string userId)
+        {
+            var sql = "SELECT TargetUserId FROM FollowEntities WHERE UserId = @userId";
+            return await _sqlConnection.QueryAsync<string>(sql, param: new { userId = userId });
+        }
+
         public async Task<bool> RemoveItemAsync(FollowEntity item)
         {
             var sql = "DELETE FROM FollowEntities where Id = @id AND UserId = @userId";

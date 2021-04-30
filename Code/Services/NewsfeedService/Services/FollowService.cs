@@ -16,7 +16,7 @@ namespace NewsfeedService.Services
         }
         public async Task<IEnumerable<string>> GetUserFollowersAsync(string userId)
         {
-            var httpResponse = await _httpClient.GetAsync("");
+            var httpResponse = await _httpClient.GetAsync($"GetFollowers?userId={userId}");
             //TODO: Make it asynchronous
             return JsonSerializer.Deserialize<IEnumerable<string>>(httpResponse.Content.ReadAsStringAsync().Result);
         }

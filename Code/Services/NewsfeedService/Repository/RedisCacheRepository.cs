@@ -15,7 +15,7 @@ namespace NewsfeedService.Repository
         }
         public async Task<string> RetrieveDataAsync(string key)
         {
-            return await _database.StringGetAsync(key);
+            return await _database.StringGetAsync(key);            
         }
 
         public async Task<bool> StoreDataAsync(string key, string value)

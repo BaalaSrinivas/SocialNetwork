@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NewsfeedService.Repository;
 using NewsfeedService.Services;
 using StackExchange.Redis;
 using System;
@@ -30,6 +31,8 @@ namespace NewsfeedService
         {
             services.AddHttpClient<IContentService, ContentService>(u=> u.BaseAddress = new Uri(Configuration.GetValue<string>("ContentServiceUrl")));
             services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("FollowServiceUrl")));
+            
+            services.AddScoped<ICacheRepository, RedisCacheRepository>();
 
             services.AddSingleton<ConnectionMultiplexer>(c => {
                 return ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisConnectionString"));
