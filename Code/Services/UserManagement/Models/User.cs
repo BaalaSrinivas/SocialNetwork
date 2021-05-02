@@ -15,7 +15,6 @@ namespace UserManagement.Models
         public Guid ProfileImageId { get; set; }
         public string About { get; set; }
         public string Location { get; set; }
-        public string Intro { get; set; }
     }
 
     public enum Gender

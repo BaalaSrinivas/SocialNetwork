@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SigninredirectComponent } from './signinredirect/signinredirect.component';
 import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
+import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 
 const routes: Routes =[
     { path: 'home',             component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes =[
     { path: 'newsfeed', component: NewsfeedComponent },
     { path: 'signinredirect', component: SigninredirectComponent },
     { path: 'signoutredirect', component: SignoutredirectComponent },
+    { path: 'complete-signup', component: CompleteSignupComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 

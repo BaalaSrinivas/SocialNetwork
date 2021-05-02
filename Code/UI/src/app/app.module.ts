@@ -25,6 +25,7 @@ import { PostAdapter } from './profile/Models/Adapters/post.adapter';
 import { FeedSectionComponent } from './feed-section/feed-section.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SignalrService } from './signalr.service';
+import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 
 
 
@@ -40,7 +41,8 @@ import { SignalrService } from './signalr.service';
         SigninredirectComponent,
         SignoutredirectComponent,  
         FeedSectionComponent,
-        NewsfeedComponent
+        NewsfeedComponent,
+        CompleteSignupComponent
     ],
     imports: [
         BrowserModule,
