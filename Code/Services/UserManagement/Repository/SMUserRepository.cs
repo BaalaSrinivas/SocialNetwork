@@ -7,32 +7,32 @@ using UserManagement.Models;
 
 namespace UserManagement.Repository
 {
-    public class UserRepository : IUserRepository
+    public class SMUserRepository : ISMUserRepository
     {
         private UserContext _context;
-        public UserRepository(UserContext userContext)
+        public SMUserRepository(UserContext userContext)
         {
             _context = userContext;
         }
-        public void CreateUser(User user)
+        public void CreateUser(SMUser user)
         {
-            _context.Users.Add(user);
+            _context.SMUsers.Add(user);
         }
 
-        public void DeleteUser(User user)
+        public void DeleteUser(SMUser user)
         {
-            _context.Users.Remove(user);
+            _context.SMUsers.Remove(user);
             //TODO: Async request to archive all the contents of the user
         }
 
-        public User GetUser(string mailId)
+        public SMUser GetUser(string mailId)
         {
-            return _context.Users.Where(u => u.MailId == mailId).FirstOrDefault();
+            return _context.SMUsers.Where(u => u.MailId == mailId).FirstOrDefault();
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(SMUser user)
         {
-            _context.Users.Update(user);
+            _context.SMUsers.Update(user);
         }
 
         public void Save()

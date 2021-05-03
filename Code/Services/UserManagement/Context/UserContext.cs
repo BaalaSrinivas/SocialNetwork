@@ -13,7 +13,10 @@ namespace UserManagement.Context
         {
                 
         }
-
-        public DbSet<User> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SMUser>().HasKey(s => s.MailId);
+        }
+        public DbSet<SMUser> SMUsers { get; set; }
     }
 }

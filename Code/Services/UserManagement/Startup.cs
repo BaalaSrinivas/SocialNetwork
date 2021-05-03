@@ -37,7 +37,7 @@ namespace UserManagement
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISMUserRepository, SMUserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

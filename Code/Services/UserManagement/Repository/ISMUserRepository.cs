@@ -6,15 +6,15 @@ using UserManagement.Models;
 
 namespace UserManagement.Repository
 {
-    public interface IUserRepository
+    public interface ISMUserRepository
     {
-        User GetUser(string mailId);
+        SMUser GetUser(string mailId);
 
-        void CreateUser(User user);
+        void CreateUser(SMUser user);
 
-        void UpdateUser(User user);
+        void UpdateUser(SMUser user);
 
-        void DeleteUser(User user);
+        void DeleteUser(SMUser user);
 
         void Save();
 

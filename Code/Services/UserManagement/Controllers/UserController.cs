@@ -12,37 +12,45 @@ namespace UserManagement.Controllers
     [Route("userapi/v1/[controller]")]
     public class UserController : ControllerBase
     {
-        private IUserRepository _repository;
-        public UserController(IUserRepository userRepository)
+        private ISMUserRepository _repository;
+        public UserController(ISMUserRepository userRepository)
         {
             _repository = userRepository;
         }
 
         [HttpGet("{mailId}")]
-        public User GetUser(string mailId)
+        public SMUser GetUser(string mailId)
         {
             return _repository.GetUser(mailId);
         }
 
         [HttpPost]
-        public bool Create(User user)
+        public JsonResult Create(SMUser user)
         {
-            bool result = true;
-
+            string result = "Success";
+            user.Timestamp = DateTime.UtcNow;
             try
             {
-                _repository.CreateUser(user);
-                _repository.Save();
+                if (_repository.GetUser(user.MailId) == null)
+                {
+                    _repository.CreateUser(user);
+                    _repository.Save();
+                }
+                else
+                {
+                    result = $"User already exist. Try to log in with {user.MailId}";
+                }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                result = false;
+                result = "Failed";
             }
-            return result;
+
+            return new JsonResult(result);
         }
 
         [HttpPut]
-        public bool Update(User user)
+        public bool Update(SMUser user)
         {
             bool result = true;
 
@@ -59,7 +67,7 @@ namespace UserManagement.Controllers
         }
 
         [HttpDelete]
-        public bool Delete(User user)
+        public bool Delete(SMUser user)
         {
             bool result = true;
 
