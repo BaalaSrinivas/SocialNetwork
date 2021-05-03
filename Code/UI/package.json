@@ -1,13 +1,10 @@
 {
-  "name": "argon-design-system-angular",
+  "name": "bs-konnect-ui",
   "version": "1.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "private": true,

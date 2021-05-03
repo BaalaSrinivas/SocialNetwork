@@ -26,6 +26,7 @@ import { FeedSectionComponent } from './feed-section/feed-section.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SignalrService } from './signalr.service';
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
+import { UserService } from './complete-signup/user.service';
 
 
 
@@ -53,7 +54,7 @@ import { CompleteSignupComponent } from './complete-signup/complete-signup.compo
         AppRoutingModule,
         HomeModule,
     ],
-    providers: [AuthenticationService, ContentService, SignalrService, PostAdapter],
+    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

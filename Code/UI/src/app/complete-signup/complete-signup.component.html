@@ -12,7 +12,7 @@
         </div>
         <div class="container pt-lg-md">
             <div class="row justify-content-center">
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="card bg-secondary shadow border-0">
                         <div class="card-header bg-white pb-2">
                             <div class="text-muted text-center mb-3">
@@ -22,11 +22,11 @@
                         <div class="card-body px-lg-5 py-lg-5">
                             <form role="form">
 
-                                <div class="form-group" [ngClass]="{'focused':focus1===true}">
+                                <div class="form-group">
                                     <label class="form-control-label">Profile picture</label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <img [src]="image || './assets/img/theme/team-1-800x800.jpg'" alt="Profile Image" class="img-fluid rounded-circle shadow-lg" style="width: 250px;">
+                                            <img [src]="image || './assets/img/theme/team-4-800x800.jpg'" alt="Profile Image" class="img-fluid rounded-circle shadow-lg" style="width: 250px;">
                                         </div>
                                         <input type="file" (change)="previewImage($event);" accept="image/*" hidden #file>
                                         <div class="col-6 custom-control custom-radio mb-3">
@@ -36,41 +36,59 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" [ngClass]="{'focused':focus===true}">
+                                <div class="form-group">
+                                    <label class="form-control-label">User Name</label>
+                                    <div class="input-group input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+                                        </div>
+                                        <input class="form-control" [(ngModel)]="user.ProfileName" name="UserName" placeholder="Eg: @i_am_baala" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-control-label">Gender</label>
                                     <div class="row pl-3">
                                         <div class="col-6 custom-control custom-radio mb-3">
-                                            <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio">
+                                            <input name="custom-radio-1" class="custom-control-input" [(ngModel)]="user.Gender" [value]=0 id="customRadio1" type="radio">
                                             <label class="custom-control-label" for="customRadio1">
                                                 <span>Male</span>
                                             </label>
                                         </div>
                                         <div class="col-6 custom-control custom-radio mb-3">
-                                            <input name="custom-radio-1" class="custom-control-input" id="customRadio2" checked type="radio">
+                                            <input name="custom-radio-1" class="custom-control-input" [(ngModel)]="user.Gender" [value]=1 id="customRadio2" type="radio">
                                             <label class="custom-control-label" for="customRadio2">
                                                 <span>Female</span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" [ngClass]="{'focused':focus1===true}">
+                                <div class="form-group">
                                     <label class="form-control-label">Location</label>
                                     <div class="input-group input-group-alternative mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Eg: Bangalore, India" type="text" (focus)="focus1=true" (blur)="focus1=false">
+                                        <input class="form-control" [(ngModel)]="user.Location" name="Location" placeholder="Eg: Bangalore, India" type="text">
                                     </div>
                                 </div>
-                                <div class="form-group" [ngClass]="{'focused':focus===true}">
+                                <div class="form-group">
+                                    <label class="form-control-label">Headline</label>
+                                    <div class="input-group input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                                        </div>
+                                        <input class="form-control" [(ngModel)]="user.Headline" name="Headline" placeholder="Eg: Content writer" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-control-label">About</label>
                                     <div class="input-group input-group-alternative mb-3">
-                                        <textarea class="form-control" placeholder="Few words about you" type="text" (focus)="focus1=true" (blur)="focus1=false"></textarea>
+                                        <textarea class="form-control" [(ngModel)]="user.About" name="About" placeholder="Few words about you" type="text"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary mt-4">Lets Get Started!</button>
+                                    <button type="button" (click)="completeSignUp()" class="btn btn-primary mt-4">Lets Get Started!</button>
                                 </div>
                             </form>
                         </div>

@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
-import { AuthenticationService } from "../shared/authentication.service";
 import { PostAdapter } from "./Models/Adapters/post.adapter";
 import { Post } from "./Models/post.model";
 
@@ -19,7 +18,7 @@ const contentApi = environment.apiUrl + 'v1/content/';
 @Injectable()
 export class ContentService {
 
-    constructor(private authService: AuthenticationService, private httpClient: HttpClient, private postAdapter: PostAdapter) {
+    constructor(private _httpClient: HttpClient, private _postAdapter: PostAdapter) {
         
     }
 
@@ -28,14 +27,14 @@ export class ContentService {
             postId: guid,
             commentText: commentText
         };
-        return this.httpClient.post<boolean>(contentApi + 'addcomment', data, httpOptions);
+        return this._httpClient.post<boolean>(contentApi + 'addcomment', data, httpOptions);
     }
 
     getPosts(guids: any[]): Observable<any> {
 
-        return this.httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
+        return this._httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
             .pipe(map((data: any[]) =>
-                data.map(item => this.postAdapter.Adapt(item))
+                data.map(item => this._postAdapter.Adapt(item))
             )
        );
     }
