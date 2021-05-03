@@ -27,6 +27,7 @@ import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SignalrService } from './signalr.service';
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 import { UserService } from './complete-signup/user.service';
+import { PostSectionComponent } from './post-section/post-section.component';
 
 
 
@@ -43,7 +44,8 @@ import { UserService } from './complete-signup/user.service';
         SignoutredirectComponent,  
         FeedSectionComponent,
         NewsfeedComponent,
-        CompleteSignupComponent
+        CompleteSignupComponent,
+        PostSectionComponent
     ],
     imports: [
         BrowserModule,

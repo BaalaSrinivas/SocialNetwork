@@ -12,6 +12,7 @@ import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SigninredirectComponent } from './signinredirect/signinredirect.component';
 import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
+import { PostSectionComponent } from './post-section/post-section.component';
 
 const routes: Routes =[
     { path: 'home',             component: HomeComponent },
@@ -23,6 +24,7 @@ const routes: Routes =[
     { path: 'signinredirect', component: SigninredirectComponent },
     { path: 'signoutredirect', component: SignoutredirectComponent },
     { path: 'complete-signup', component: CompleteSignupComponent },
+    { path: 'view-post', component: PostSectionComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
