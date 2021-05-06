@@ -6,9 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./feed-section.component.css']
 })
 export class FeedSectionComponent implements OnInit {
-  constructor() { }
+    constructor() { }
+    comment: boolean = false;
 
   ngOnInit(): void {
   }
 
+    change() {
+        this.comment = !this.comment;
+    }
 }
