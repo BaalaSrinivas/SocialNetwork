@@ -13,6 +13,7 @@ import { SigninredirectComponent } from './signinredirect/signinredirect.compone
 import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 import { PostSectionComponent } from './post-section/post-section.component';
+import { FriendsListComponent } from './friends-list/friends-list.component';
 
 const routes: Routes =[
     { path: 'home',             component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes =[
     { path: 'signoutredirect', component: SignoutredirectComponent },
     { path: 'complete-signup', component: CompleteSignupComponent },
     { path: 'view-post', component: PostSectionComponent },
+    { path: 'friends', component: FriendsListComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 

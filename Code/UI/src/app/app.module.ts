@@ -28,6 +28,7 @@ import { SignalrService } from './signalr.service';
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 import { UserService } from './complete-signup/user.service';
 import { PostSectionComponent } from './post-section/post-section.component';
+import { FriendsListComponent } from './friends-list/friends-list.component';
 
 
 
@@ -45,7 +46,8 @@ import { PostSectionComponent } from './post-section/post-section.component';
         FeedSectionComponent,
         NewsfeedComponent,
         CompleteSignupComponent,
-        PostSectionComponent
+        PostSectionComponent,
+        FriendsListComponent
     ],
     imports: [
         BrowserModule,
