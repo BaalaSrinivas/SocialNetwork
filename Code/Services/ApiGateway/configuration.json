@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "5002"
+          "Port": "5001"
         }
       ],
       "UpstreamPathTemplate": "/api/{version}/content/{everything}",
@@ -22,7 +22,19 @@
         }
       ],
       "UpstreamPathTemplate": "/api/{version}/user",
-      "UpstreamHttpMethod": [ "GET", "POST","PUT" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "wss",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5006"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notification/{everything}",
+      "UpstreamHttpMethod": []
     }
   ],
   "GlobalConfiguration": {

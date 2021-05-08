@@ -14,7 +14,16 @@ namespace ApiGateway
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("Cors", builder => { builder.AllowAnyOrigin(); builder.AllowAnyHeader(); builder.AllowAnyMethod(); });
+                options.AddPolicy("Cors", builder =>
+                {
+                    builder
+                        .WithOrigins(
+                        "http://localhost")
+                        .AllowCredentials()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowAnyMethod();
+                });
             });
 
             services.AddOcelot();
@@ -25,7 +34,7 @@ namespace ApiGateway
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors("Cors");
-
+            app.UseWebSockets();
             app.UseOcelot().Wait();
         }
     }
