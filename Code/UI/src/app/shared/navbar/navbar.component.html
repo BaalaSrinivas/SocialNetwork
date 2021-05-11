@@ -1,7 +1,29 @@
 <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-top navbar-transparent headroom headroom--top headroom--pinned">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">BS Konnect</a>
-
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <input class="form-control mt-1" placeholder="Search for friends" type="text" size="50">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" [routerLink]="['/profile']" href="javascript:void(0)">
+                    <i class="fa fa-home fa-fw"></i>
+                    <span class="font-weight-600">&nbsp;Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" [routerLink]="['/friends']" href="javascript:void(0)">
+                    <i class="fa fa-users fa-fw"></i>
+                    <span class="font-weight-600">&nbsp;Friends</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" [routerLink]="['/newsfeed']" href="javascript:void(0)">
+                    <i class="fa fa-newspaper-o fa-fw"></i>
+                    <span class="font-weight-600">&nbsp;Feed</span>
+                </a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-lg-auto">
             <li class="nav-item" ngbDropdown>
                 <a class="nav-link nav-link-icon" href="javascript:void(0)" id="navbar-default_notification_1" ngbDropdownToggle>
