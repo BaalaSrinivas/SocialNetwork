@@ -14,19 +14,20 @@ import { SignoutredirectComponent } from './signoutredirect/signoutredirect.comp
 import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
 import { PostSectionComponent } from './post-section/post-section.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes =[
-    { path: 'home',             component: HomeComponent },
-    { path: 'profile',     component: ProfileComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'register',           component: SignupComponent },
     { path: 'landing',          component: LandingComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'newsfeed', component: NewsfeedComponent },
+    { path: 'newsfeed', component: NewsfeedComponent, canActivate: [AuthGuard] },
     { path: 'signinredirect', component: SigninredirectComponent },
     { path: 'signoutredirect', component: SignoutredirectComponent },
-    { path: 'complete-signup', component: CompleteSignupComponent },
-    { path: 'view-post', component: PostSectionComponent },
-    { path: 'friends', component: FriendsListComponent },
+    { path: 'complete-signup', component: CompleteSignupComponent, canActivate: [AuthGuard] },
+    { path: 'view-post', component: PostSectionComponent, canActivate: [AuthGuard] },
+    { path: 'friends', component: FriendsListComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
