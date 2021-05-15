@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityAndAccessManagement.Data.Migrations.IdentityServer.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20210404070948_Identity")]
+    [Migration("20210515080231_Identity")]
     partial class Identity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

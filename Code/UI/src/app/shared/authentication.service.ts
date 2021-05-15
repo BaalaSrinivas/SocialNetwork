@@ -1,7 +1,16 @@
 ﻿import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User, UserManager } from "oidc-client";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
+
+const httpOptions = {
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+    }),
+    withCredentials: true
+};
+
 
 @Injectable()
 export class AuthenticationService {
@@ -15,7 +24,26 @@ export class AuthenticationService {
     loginChanged = this._loginChangedSubject.asObservable();
 
     constructor(private _httpClient: HttpClient) {
-        const smSettings = {
+        const identitySettings = {
+            authority: 'https://localhost:5004',
+            client_id: 'BSKonnectIdentityServerID',
+            redirect_uri: `http://localhost:4200/signinredirect`,
+            scope: 'profile openid',
+            response_type: 'id_token token',
+            post_logout_redirect_uri: `http://localhost:4200/signoutredirect`,
+            automaticSilentRenew: true,
+            silent_redirect_uri: `$http://localhost:4200/assets/silent-callback.html`,
+            metadata: {
+                end_session_endpoint: 'http://localhost:4200/signoutredirect',
+                authorization_endpoint: 'https://localhost:5004/connect/authorize',
+                issuer: 'https://localhost:5004',
+                jwks_uri: 'https://localhost:5004/.well-known/openid-configuration/jwks',
+                token_endpoint: 'https://localhost:5004/connect/token',
+                userinfo_endpoint: 'https://localhost:5004/connect/userinfo',
+            }
+        };
+
+        const googleSettings = {
             authority: 'https://accounts.google.com',
             client_id: '216892140019-lvs71bvj54t4s7stp195uuhl6foggrsd.apps.googleusercontent.com',
             redirect_uri: `http://localhost:4200/signinredirect`,
@@ -33,7 +61,8 @@ export class AuthenticationService {
                 userinfo_endpoint: 'https://openidconnect.googleapis.com/v1/userinfo',
             }
         };
-        this._userManager = new UserManager(smSettings);
+
+        this._userManager = new UserManager(identitySettings);
 
         this._userManager.events.addAccessTokenExpired(_ => {
             this._loginChangedSubject.next(false);
@@ -44,6 +73,16 @@ export class AuthenticationService {
                 this._user = user;
             }
         });
+    }
+
+    loginIdentity(userName: string, password: string): Observable<any> {
+
+        const data = {
+            'MailId': userName,
+            'Password': password
+        }
+
+        return this._httpClient.post<boolean>('https://localhost:5004/api/v1/Account/login', data, httpOptions);
     }
 
     login() {
@@ -66,7 +105,7 @@ export class AuthenticationService {
             console.log(user);
             this._user = user;
             sessionStorage.setItem('loggedUser', this._user.profile.name);
-            sessionStorage.setItem('accessToken', this._user.access_token);
+            sessionStorage.setItem('idToken', this._user.id_token);
             this._loginChangedSubject.next(!!user && !user.expired);           
             return user;
         });

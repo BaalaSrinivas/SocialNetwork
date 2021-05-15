@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using IdentityAndAccessManagement.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,16 @@ namespace IdentityAndAccessManagement.Services
 {
     public interface IIdentityService
     {
-        Task<IdentityUser> FindByMailId(string mailId);
+        Task<SocialUser> FindByMailId(string mailId);
 
-        Task<bool> CheckCredentials(IdentityUser user, string password);
+        Task<bool> CheckCredentials(SocialUser user, string password);
 
-        Task SignIn(IdentityUser user, AuthenticationProperties properties);
+        Task<SignInResult> SignIn(LoginModel user);
 
-        Task<IdentityResult> Register(IdentityUser user, string password);
+        Task<IdentityResult> Register(SocialUser user, string password);
 
         Task SignOut();
+
+        public Task<SocialUser> GetUserByMailId(string userId);
     }
 }

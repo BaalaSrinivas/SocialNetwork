@@ -1,21 +1,18 @@
 using IdentityAndAccessManagement.Data;
+using IdentityAndAccessManagement.Models;
 using IdentityAndAccessManagement.Services;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement
 {
@@ -33,12 +30,26 @@ namespace IdentityAndAccessManagement
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Cors", builder =>
+                {
+                    builder
+                        .WithOrigins(
+                        "http://localhost")
+                        .AllowCredentials()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowAnyMethod();
+                });
+            });
+
             //.Net Core Identity Start
             services.AddDbContext<IAMContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IAMContext>();
+            services.AddIdentity<SocialUser, IdentityRole>().AddEntityFrameworkStores<IAMContext>();
             //.Net Core Identity End
 
             //Identity Server 4 Start
@@ -46,7 +57,7 @@ namespace IdentityAndAccessManagement
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddAspNetIdentity<IdentityUser>()
+                .AddAspNetIdentity<SocialUser>()
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
@@ -88,6 +99,33 @@ namespace IdentityAndAccessManagement
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityAndAccessManagement v1"));
+            }
+
+            app.UseCors("Cors");
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                app.UseIdentityServer();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in IdServerConfig.GetClients())
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if(!context.IdentityResources.Any())
+                {
+                    foreach (var resource in IdServerConfig.IdentityResources)
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
             }
 
             app.UseIdentityServer();

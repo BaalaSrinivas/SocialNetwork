@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using IdentityAndAccessManagement.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,34 +10,40 @@ namespace IdentityAndAccessManagement.Services
 {
     public class IdentityService : IIdentityService
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
+        private UserManager<SocialUser> _userManager;
+        private SignInManager<SocialUser> _signInManager;
 
-        public IdentityService(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public IdentityService(UserManager<SocialUser> userManager,
+            SignInManager<SocialUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<bool> CheckCredentials(IdentityUser user, string password)
+        public async Task<bool> CheckCredentials(SocialUser user, string password)
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        public async Task<IdentityUser> FindByMailId(string mailId)
+        public async Task<SocialUser> FindByMailId(string mailId)
         {
             return await _userManager.FindByEmailAsync(mailId);
         }
 
-        public async Task<IdentityResult> Register(IdentityUser user, string password)
+        public async Task<IdentityResult> Register(SocialUser user, string password)
         {
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task SignIn(IdentityUser user, AuthenticationProperties properties)
-        {
-            await _signInManager.SignInAsync(user, properties);
+        public async Task<SignInResult> SignIn(LoginModel user)
+        {            
+            return await _signInManager.PasswordSignInAsync(user.MailId, user.Password, false, false);
         }
+
+        public async Task<SocialUser> GetUserByMailId(string userId)
+        {
+            return await _userManager.FindByEmailAsync(userId);
+        }
+        
 
         public async Task SignOut()
         {

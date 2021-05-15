@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using IdentityAndAccessManagement.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement.Data
 {
-    public class IAMContext : IdentityDbContext
+    public class IAMContext : IdentityDbContext<SocialUser>
     {
         public IAMContext(DbContextOptions<IAMContext> options) : base(options)
         {

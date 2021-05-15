@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../shared/authentication.service';
 
@@ -16,7 +17,8 @@ const googleLoginOptions = {
 export class LoginComponent implements OnInit {
     focus;
     focus1;
-
+    userName: string;
+    password: string
     loggedIn: boolean;
 
     constructor(private authService: AuthenticationService) { }
@@ -31,6 +33,13 @@ export class LoginComponent implements OnInit {
 
     signOut(): void {
         this.authService.logout();
+    }
+
+    signInWithIdentity(): void {
+        this.authService.loginIdentity(this.userName, this.password).subscribe((s) => {
+            //Once user is loggedin initiate Open Id flow
+            this.authService.login();        
+        });
     }
 
 }
