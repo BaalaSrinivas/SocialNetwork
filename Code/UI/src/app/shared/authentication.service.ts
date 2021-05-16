@@ -34,7 +34,7 @@ export class AuthenticationService {
             automaticSilentRenew: true,
             silent_redirect_uri: `$http://localhost:4200/assets/silent-callback.html`,
             metadata: {
-                end_session_endpoint: 'http://localhost:4200/signoutredirect',
+                end_session_endpoint: 'https://localhost:5004/connect/endsession',
                 authorization_endpoint: 'https://localhost:5004/connect/authorize',
                 issuer: 'https://localhost:5004',
                 jwks_uri: 'https://localhost:5004/.well-known/openid-configuration/jwks',
@@ -82,22 +82,11 @@ export class AuthenticationService {
             'Password': password
         }
 
-        return this._httpClient.post<boolean>('https://localhost:5004/api/v1/Account/login', data, httpOptions);
+        return this._httpClient.post<boolean>('https://localhost:5004/Account/login', data, httpOptions);
     }
 
     login() {
         return this._userManager.signinRedirect();
-    }
-
-    isLoggedIn(): Promise<boolean> {
-        return this._userManager.getUser().then(user => {
-            const userCurrent = !!user && !user.expired;
-            if (this._user !== user) {
-                this._loginChangedSubject.next(userCurrent);
-            }
-            this._user = user;
-            return userCurrent;
-        });
     }
 
     completeLogin() {
@@ -120,16 +109,5 @@ export class AuthenticationService {
         sessionStorage.clear();
         this._loginChangedSubject.next(false);        
         return this._userManager.signoutRedirectCallback();
-    }
-
-    getAccessToken(): Promise<string> {
-        return this._userManager.getUser().then(user => {
-            if (!!user && !user.expired) {
-                return user.access_token;
-            }
-            else {
-                return null;
-            }
-        });
     }
 }
