@@ -1,6 +1,7 @@
 ﻿using ContentService.Models;
 using ContentService.Repository;
 using MessageBus.MessageBusCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContentService.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("contentapi/v1/[controller]")]
     public class ContentController : ControllerBase

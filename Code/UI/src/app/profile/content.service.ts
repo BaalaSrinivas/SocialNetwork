@@ -6,12 +6,7 @@ import { environment } from "../../environments/environment";
 import { PostAdapter } from "./Models/Adapters/post.adapter";
 import { Post } from "./Models/post.model";
 
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
-    })
-};
+
 
 const contentApi = environment.apiUrl + 'v1/content/';
 
@@ -27,11 +22,22 @@ export class ContentService {
             postId: guid,
             commentText: commentText
         };
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
         return this._httpClient.post<boolean>(contentApi + 'addcomment', data, httpOptions);
     }
 
     getPosts(guids: any[]): Observable<any> {
-
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
         return this._httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
             .pipe(map((data: any[]) =>
                 data.map(item => this._postAdapter.Adapt(item))

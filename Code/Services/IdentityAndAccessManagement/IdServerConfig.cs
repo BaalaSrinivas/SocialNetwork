@@ -18,8 +18,8 @@ namespace IdentityAndAccessManagement
                 ClientSecrets = new List<Secret> { new Secret("BSKonnectPassword@123".Sha256()) },
                 RedirectUris = { "http://localhost:4200/signinredirect" },
                 AllowAccessTokensViaBrowser = true,
-                AllowedScopes = { "openid", "profile" }
-
+                AllowedScopes = { "openid", "profile" },
+                AllowedCorsOrigins = { "http://localhost:4200" }                
             };
 
             return new List<Client>() { client };

@@ -6,7 +6,6 @@ import { Observable, Subject } from "rxjs";
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
     }),
     withCredentials: true
 };
@@ -62,7 +61,7 @@ export class AuthenticationService {
             }
         };
 
-        this._userManager = new UserManager(identitySettings);
+        this._userManager = new UserManager(googleSettings);
 
         this._userManager.events.addAccessTokenExpired(_ => {
             this._loginChangedSubject.next(false);
