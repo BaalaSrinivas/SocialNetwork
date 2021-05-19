@@ -27,7 +27,7 @@ export class AuthenticationService {
             authority: 'https://localhost:5004',
             client_id: 'BSKonnectIdentityServerID',
             redirect_uri: `http://localhost:4200/signinredirect`,
-            scope: 'profile openid',
+            scope: 'profile openid email',
             response_type: 'id_token token',
             post_logout_redirect_uri: `http://localhost:4200/signoutredirect`,
             automaticSilentRenew: true,
@@ -61,7 +61,7 @@ export class AuthenticationService {
             }
         };
 
-        this._userManager = new UserManager(googleSettings);
+        this._userManager = new UserManager(identitySettings);
 
         this._userManager.events.addAccessTokenExpired(_ => {
             this._loginChangedSubject.next(false);

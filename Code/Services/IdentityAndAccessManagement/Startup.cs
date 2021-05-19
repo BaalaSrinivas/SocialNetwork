@@ -3,6 +3,7 @@ using IdentityAndAccessManagement.Models;
 using IdentityAndAccessManagement.Services;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -79,7 +80,7 @@ namespace IdentityAndAccessManagement
                                 sqlOptions.MigrationsAssembly(migrationsAssembly);
                             });
                     };
-                });
+                }).Services.AddScoped<IProfileService, SocialProfileService>();
 
             //Identity Server 4 End
 
