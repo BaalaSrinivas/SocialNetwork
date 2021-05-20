@@ -19,7 +19,8 @@ namespace IdentityAndAccessManagement
                 RedirectUris = { "http://localhost:4200/signinredirect" },
                 AllowAccessTokensViaBrowser = true,
                 AllowedScopes = { "openid", "profile", "email" },
-                AllowedCorsOrigins = { "http://localhost:4200" }                
+                AllowedCorsOrigins = { "http://localhost:4200" },
+                AlwaysIncludeUserClaimsInIdToken = true
             };
 
             return new List<Client>() { client };

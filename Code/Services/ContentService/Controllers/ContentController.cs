@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContentService.Controllers
@@ -108,8 +109,7 @@ namespace ContentService.Controllers
 
         protected string GetUserId()
         {
-            return "baala@gmail.com";
-            //return this.User.Claims.First(i => i.Type == "MailId").Value;
+            return this.User.Claims.First(i => i.Type.Contains("mail")).Value;
         }        
     }
 }
