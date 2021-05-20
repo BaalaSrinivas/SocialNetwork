@@ -61,7 +61,7 @@ export class AuthenticationService {
             }
         };
 
-        this._userManager = new UserManager(identitySettings);
+        this._userManager = new UserManager(googleSettings);
 
         this._userManager.events.addAccessTokenExpired(_ => {
             this._loginChangedSubject.next(false);

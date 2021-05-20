@@ -29,6 +29,7 @@ import { CompleteSignupComponent } from './complete-signup/complete-signup.compo
 import { UserService } from './complete-signup/user.service';
 import { PostSectionComponent } from './post-section/post-section.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
+import { PostEditorComponent } from './post-editor/post-editor.component';
 
 
 
@@ -47,7 +48,8 @@ import { FriendsListComponent } from './friends-list/friends-list.component';
         NewsfeedComponent,
         CompleteSignupComponent,
         PostSectionComponent,
-        FriendsListComponent
+        FriendsListComponent,
+        PostEditorComponent
     ],
     imports: [
         BrowserModule,

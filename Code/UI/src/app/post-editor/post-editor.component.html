@@ -1,0 +1,32 @@
+<div class="card shadow mt-4">
+    <div class="card-body">
+        <div class="d-flex pl-0 pr-2 py-2 row">
+            <div class="col-2">
+                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg font-weight-500" style="width: 60px;color:black !important">
+            </div>
+            <div class="col-10 pr-4 rounded">
+                <textarea type="text" [ngStyle]="{'background-color':textareaColor}" placeholder="Write Something" style="resize:none;text-align:justify" rows="2" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row px-3 py-2">
+            <div class="col-2">
+            </div>
+            <div class="col-4" style="cursor:pointer" (click)="colorPicker.click()">
+                <span style="color:forestgreen"><i class="fa fa-eyedropper fa-fw"></i></span>
+                <span class="font-weight-600">&nbsp;Background</span>
+                <input type="color" style="height:1px;width:1px;visibility:hidden" [(ngModel)]="textareaColor" #colorPicker />
+            </div>
+            <div class="col-3" style="cursor:pointer" (click)="file.click()">
+                <span style="color:blue"><i class="fa fa-picture-o fa-fw"></i></span>
+                <span class="font-weight-600">&nbsp;Picture</span>
+                <input type="file" (change)="previewImage($event);" accept="image/*" hidden #file>
+            </div>
+
+            <div class="col-3">
+                <button class="btn btn-icon btn-default float-right" type="button">
+                    Post
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

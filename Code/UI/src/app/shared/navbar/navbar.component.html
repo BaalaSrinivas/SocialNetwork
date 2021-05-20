@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="#">BS Konnect</a>
         <ul class="navbar-nav" *ngIf="IsUserLoggedIn()">
             <li class="nav-item">
-                <input class="form-control mt-1" placeholder="Search for friends" type="text" size="50">
+                <input class="form-control mt-1" placeholder="Search for friends" type="text" size="50" [(ngModel)]="model" [ngbTypeahead]="search"> 
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-icon" [routerLink]="['/profile']" href="javascript:void(0)">

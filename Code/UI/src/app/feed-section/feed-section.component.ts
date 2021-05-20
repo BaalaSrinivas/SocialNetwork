@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class FeedSectionComponent implements OnInit {
     constructor() { }
     comment: boolean = false;
-
+    textareaColor: string = '#1A1A1A';
   ngOnInit(): void {
   }
 
