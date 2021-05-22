@@ -5,7 +5,8 @@ import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { PostAdapter } from "./Models/Adapters/post.adapter";
 import { Post } from "./Models/post.model";
-
+import { Comment } from './Models/comment.model';
+import { CommentAdapter } from "./Models/Adapters/comment.adapter";
 
 
 const contentApi = environment.apiUrl + 'v1/content/';
@@ -13,25 +14,35 @@ const contentApi = environment.apiUrl + 'v1/content/';
 @Injectable()
 export class ContentService {
 
-    constructor(private _httpClient: HttpClient, private _postAdapter: PostAdapter) {
+    constructor(private _httpClient: HttpClient, private _postAdapter: PostAdapter, private _commentAdapter: CommentAdapter) {
         
     }
 
-    addComment(guid: any, commentText: string): Observable<boolean> {
-        var data = {
-            postId: guid,
-            commentText: commentText
-        };
+    addComment(comment: Comment): Observable<boolean> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.post<boolean>(contentApi + 'addcomment', data, httpOptions);
+        return this._httpClient.post<boolean>(contentApi + 'addcomment', comment, httpOptions);
     }
 
-    getPosts(guids: any[]): Observable<any> {
+    getComments(postId: string): Observable<Comment[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.get<Comment[]>(contentApi + 'getcomments?postid=' + postId, httpOptions)
+            .pipe(map((data: any[]) =>
+                data.map(item => this._commentAdapter.Adapt(item))
+            )
+            );
+    }
+
+    getPosts(guids: string[]): Observable<Post[]> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -43,5 +54,25 @@ export class ContentService {
                 data.map(item => this._postAdapter.Adapt(item))
             )
        );
+    }
+
+    createPost(post: Post): Observable<boolean> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.post<boolean>(contentApi + 'createpost', post, httpOptions);            
+    } 
+
+    getUserPostIds(count: number): Observable<string[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.post<string[]>(contentApi + 'getuserposts?count='+ count,null, httpOptions);        
     }
 }

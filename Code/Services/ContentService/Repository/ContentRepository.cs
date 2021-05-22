@@ -30,7 +30,7 @@ namespace ContentService.Repository
 
         public async Task<IEnumerable<Comment>> GetComments(Guid postId)
         {
-            return await _sqlContext.Comments.Where(p => p.PostId == postId).ToListAsync();
+            return await _sqlContext.Comments.Where(p => p.PostId == postId).OrderBy(p=>p.Timestamp).ToListAsync();
         }
 
         public async Task<IEnumerable<string>> GetLikedUsers(Guid parentId)
@@ -40,7 +40,7 @@ namespace ContentService.Repository
 
         public async Task<IEnumerable<Post>> GetPosts(IEnumerable<Guid> postIds)
         {
-            return await _sqlContext.Posts.Where(p => postIds.Contains(p.Id)).ToListAsync();
+            return await _sqlContext.Posts.Where(p => postIds.Contains(p.Id)).OrderByDescending(p => p.Timestamp).ToListAsync();
         }
 
         public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)

@@ -34,16 +34,12 @@ namespace ContentService.Controllers
 
         [HttpPost]
         [Route("AddComment")]
-        public async Task<bool> AddComment(Guid postId, string commentText)
+        public async Task<bool> AddComment(Comment comment)
         {
-            Comment comment = new Comment()
-            {
-                Id = Guid.NewGuid(),
-                CommentText = commentText,
-                PostId = postId,
-                Timestamp = DateTime.UtcNow,
-                UserId = GetUserId()
-            };
+            comment.Id = Guid.NewGuid();
+            comment.Timestamp = DateTime.UtcNow;
+            comment.UserId = GetUserId();
+
             return await _contentRepository.AddComment(comment);
         }
 
@@ -54,6 +50,7 @@ namespace ContentService.Controllers
             post.Id = Guid.NewGuid();
             post.UserId = GetUserId();
             post.Timestamp = DateTime.UtcNow;
+            post.LikeCount = post.CommentCount = 0;
 
             return await _contentRepository.CreatePost(post);
         }
@@ -81,9 +78,9 @@ namespace ContentService.Controllers
 
         [HttpPost]
         [Route("GetUserPosts")]
-        public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)
+        public async Task<IEnumerable<Guid>> GetUserPosts(int count)
         {
-            return await _contentRepository.GetUserPosts(userId, count);
+            return await _contentRepository.GetUserPosts(GetUserId(), count);
         }
 
         [HttpPost]
@@ -110,6 +107,6 @@ namespace ContentService.Controllers
         protected string GetUserId()
         {
             return this.User.Claims.First(i => i.Type.Contains("mail")).Value;
-        }        
+        }
     }
 }

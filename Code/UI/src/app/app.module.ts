@@ -31,6 +31,7 @@ import { PostSectionComponent } from './post-section/post-section.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { PostEditorComponent } from './post-editor/post-editor.component';
 import { UserAdapter } from './complete-signup/Models/Adapters/user.adapter';
+import { CommentAdapter } from './profile/Models/Adapters/comment.adapter';
 
 
 
@@ -61,7 +62,7 @@ import { UserAdapter } from './complete-signup/Models/Adapters/user.adapter';
         AppRoutingModule,
         HomeModule,
     ],
-    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter, UserAdapter],
+    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter, UserAdapter, CommentAdapter],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

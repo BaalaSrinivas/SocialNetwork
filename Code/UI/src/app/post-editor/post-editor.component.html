@@ -5,7 +5,7 @@
                 <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg font-weight-500" style="width: 60px;color:black !important">
             </div>
             <div class="col-10 pr-4 rounded">
-                <textarea type="text" [ngStyle]="{'background-color':textareaColor}" placeholder="Write Something" style="resize:none;text-align:justify" rows="2" class="form-control"></textarea>
+                <textarea type="text" [ngStyle]="{'background-color':textareaColor}" [(ngModel)]="post.Content" placeholder="Write Something" style="resize:none;text-align:justify" rows="2" class="form-control"></textarea>
             </div>
         </div>
         <div class="row px-3 py-2">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-3">
-                <button class="btn btn-icon btn-default float-right" type="button">
+                <button (click)="createPost()" class="btn btn-icon btn-default float-right" type="button">
                     Post
                 </button>
             </div>

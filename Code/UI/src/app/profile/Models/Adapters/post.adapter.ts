@@ -7,7 +7,8 @@ export class PostAdapter implements IModelAdapter<Post> {
             data.userId,
             data.content,
             data.likeCount,
-            data.commentCount
+            data.commentCount,
+            data.timestamp
         );
     }
 }
