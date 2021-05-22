@@ -90,7 +90,6 @@ export class AuthenticationService {
 
     completeLogin() {
         return this._userManager.signinRedirectCallback().then(user => {
-            console.log(user);
             this._user = user;
             sessionStorage.setItem('loggedUser', this._user.profile.name);
             sessionStorage.setItem('idToken', this._user.id_token);

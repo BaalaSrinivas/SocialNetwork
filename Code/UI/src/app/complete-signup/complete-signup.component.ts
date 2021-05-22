@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from './Models/user.model';
 import { UserService } from './user.service';
 
@@ -9,10 +10,11 @@ import { UserService } from './user.service';
 })
 export class CompleteSignupComponent implements OnInit {
 
-    image: any;
+    imagePreview: any;
+    profileImage: File
     user: User;
 
-    constructor(private _userService: UserService) {
+    constructor(private _userService: UserService, private _router: Router) {
         this.user = new User();
     }
 
@@ -21,19 +23,21 @@ export class CompleteSignupComponent implements OnInit {
 
     previewImage(event): void {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
+
+            this.profileImage = event.target.files[0];
 
             const reader = new FileReader();
-            reader.onload = e => this.image = reader.result;
+            reader.onload = e => this.imagePreview = reader.result;
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(this.profileImage);
         }
     }
 
     completeSignUp() {
-        console.log(this.user);
-        this._userService.createUser(this.user).subscribe((data) => {
-            console.log(data);
+        this._userService.createUser(this.user, this.profileImage).subscribe((data) => {
+            if (data) {
+                this._router.navigate(['/profile'], { replaceUrl: true });
+            }
         });
     }
 }

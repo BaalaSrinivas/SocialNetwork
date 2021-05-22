@@ -30,6 +30,7 @@ import { UserService } from './complete-signup/user.service';
 import { PostSectionComponent } from './post-section/post-section.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { PostEditorComponent } from './post-editor/post-editor.component';
+import { UserAdapter } from './complete-signup/Models/Adapters/user.adapter';
 
 
 
@@ -60,7 +61,7 @@ import { PostEditorComponent } from './post-editor/post-editor.component';
         AppRoutingModule,
         HomeModule,
     ],
-    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter],
+    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter, UserAdapter],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

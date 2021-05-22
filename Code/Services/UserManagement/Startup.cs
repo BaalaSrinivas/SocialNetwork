@@ -1,17 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UserManagement.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using UserManagement.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UserManagement
 {
@@ -38,6 +36,43 @@ namespace UserManagement
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddScoped<ISMUserRepository, SMUserRepository>();
+
+            //Defaults to Google authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "accounts.google.com",
+                    ValidAudience = "216892140019-lvs71bvj54t4s7stp195uuhl6foggrsd.apps.googleusercontent.com",
+                    ValidateAudience = true,
+                    ValidateIssuer = true
+                };
+
+                options.MetadataAddress = "https://accounts.google.com/.well-known/openid-configuration";
+                options.TokenValidationParameters = tokenValidationParameters;
+            })
+           .AddJwtBearer("IdentityServer", options =>
+           {
+
+               var tokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidIssuer = "https://localhost:5004",
+                   ValidAudience = "BSKonnectIdentityServerID",
+                   ValidateAudience = true,
+                   ValidateIssuer = true
+               };
+
+               options.MetadataAddress = "https://localhost:5004/.well-known/openid-configuration";
+               options.TokenValidationParameters = tokenValidationParameters;
+           });
+
+            services.AddAuthorization(options =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme, "IdentityServer");
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +86,10 @@ namespace UserManagement
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

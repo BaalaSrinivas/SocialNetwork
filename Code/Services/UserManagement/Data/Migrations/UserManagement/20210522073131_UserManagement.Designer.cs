@@ -10,7 +10,7 @@ using UserManagement.Context;
 namespace UserManagement.Data.Migrations.UserManagement
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210503121211_UserManagement")]
+    [Migration("20210522073131_UserManagement")]
     partial class UserManagement
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,8 +41,8 @@ namespace UserManagement.Data.Migrations.UserManagement
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProfileImageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileName")
                         .HasColumnType("nvarchar(max)");

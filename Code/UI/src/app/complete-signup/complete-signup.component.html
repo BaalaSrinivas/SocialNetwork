@@ -17,16 +17,16 @@
                         <div class="card-header bg-white pb-2">
                             <div class="text-muted text-center mb-3">
                                 <b>Complete Sign Up</b>
+                                
                             </div>
                         </div>
                         <div class="card-body px-lg-5 py-lg-5">
                             <form role="form">
 
                                 <div class="form-group">
-                                    <label class="form-control-label">Profile picture</label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <img [src]="image || './assets/img/theme/team-4-800x800.jpg'" alt="Profile Image" class="img-fluid rounded-circle shadow-lg" style="width: 250px;">
+                                            <img [src]="imagePreview || './assets/img/default/profile.jpg'" alt="Profile Image" class="img-fluid rounded-circle shadow-lg" style="width: 250px;">
                                         </div>
                                         <input type="file" (change)="previewImage($event);" accept="image/*" hidden #file>
                                         <div class="col-6 custom-control custom-radio mb-3">
@@ -42,7 +42,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
                                         </div>
-                                        <input class="form-control" [(ngModel)]="user.ProfileName" name="UserName" placeholder="Eg: @i_am_baala" type="text">
+                                        <input class="form-control" [(ngModel)]="user.ProfileName" name="UserName" placeholder="Eg: i_am_baala" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -77,7 +77,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-badge"></i></span>
                                         </div>
-                                        <input class="form-control" [(ngModel)]="user.Headline" name="Headline" placeholder="Eg: Content writer" type="text">
+                                        <input class="form-control" [(ngModel)]="user.Headline" name="Headline" placeholder="Eg: Traveller | Explorer" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">

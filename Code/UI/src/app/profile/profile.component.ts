@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAdapter } from '../complete-signup/Models/Adapters/user.adapter';
+import { User } from '../complete-signup/Models/user.model';
+import { UserService } from '../complete-signup/user.service';
 import { ContentService } from './content.service';
 
 @Component({
@@ -9,12 +12,15 @@ import { ContentService } from './content.service';
 
 export class ProfileComponent implements OnInit {
 
-    constructor(private contentService: ContentService) { }
+    constructor(private contentService: ContentService, private _userService: UserService, private _userAdapter: UserAdapter) { }
+
+    user: User = new User();
+    userName: string;
 
     ngOnInit() {
-        var data = ['116bbad4-8b14-4e3f-b0f8-28ba03e5e614'];
-        this.contentService.getPosts(data).subscribe(s => {
-            console.log(s);
+
+        this._userService.getUser().subscribe(u => {
+            this.user = this._userAdapter.Adapt(u);
         });
     }
 

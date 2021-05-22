@@ -15,7 +15,7 @@ namespace UserManagement.Data.Migrations.UserManagement
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    ProfileImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     About = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Headline = table.Column<string>(type: "nvarchar(max)", nullable: true),

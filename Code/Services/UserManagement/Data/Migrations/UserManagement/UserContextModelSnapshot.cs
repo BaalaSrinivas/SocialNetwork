@@ -39,8 +39,8 @@ namespace UserManagement.Data.Migrations.UserManagement
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProfileImageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileName")
                         .HasColumnType("nvarchar(max)");
