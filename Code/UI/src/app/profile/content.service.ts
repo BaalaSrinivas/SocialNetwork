@@ -18,14 +18,14 @@ export class ContentService {
         
     }
 
-    addComment(comment: Comment): Observable<boolean> {
+    addComment(comment: Comment): Observable<number> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.post<boolean>(contentApi + 'addcomment', comment, httpOptions);
+        return this._httpClient.post<number>(contentApi + 'addcomment', comment, httpOptions);
     }
 
     getComments(postId: string): Observable<Comment[]> {
@@ -65,6 +65,16 @@ export class ContentService {
         };
         return this._httpClient.post<boolean>(contentApi + 'createpost', post, httpOptions);            
     } 
+
+    likePost(postId: string): Observable<number> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.get<number>(contentApi + 'likepost?postId=' + postId, httpOptions);    
+    }
 
     getUserPostIds(count: number): Observable<string[]> {
         const httpOptions = {

@@ -30,13 +30,18 @@ export class FeedSectionComponent implements OnInit {
         }
     }
 
-    like() {
-        //this._contentService.
+    likePost() {
+        this._contentService.likePost(this.post.Id).subscribe(l => {
+            this.post.LikeCount = l;
+            this.post.HasUserLiked = !this.post.HasUserLiked;
+        });
     }
 
     addComment() {
         this.comment.PostId = this.post.Id
         this._contentService.addComment(this.comment).subscribe(r => {
+            console.log(r);
+            this.post.CommentCount = r;
             this.comment = new Comment();     
             this.getComments();
         });

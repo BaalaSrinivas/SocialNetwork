@@ -70,7 +70,9 @@ namespace ContentService
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
             });
 
-            services.AddScoped<IContentRepository, ContentRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentRepository, CommentRepostitory>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
 
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {

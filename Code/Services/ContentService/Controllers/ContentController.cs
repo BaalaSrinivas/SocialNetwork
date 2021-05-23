@@ -1,4 +1,5 @@
-﻿using ContentService.Models;
+﻿using ContentService.Context;
+using ContentService.Models;
 using ContentService.Repository;
 using MessageBus.MessageBusCore;
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +16,24 @@ namespace ContentService.Controllers
     [Route("contentapi/v1/[controller]")]
     public class ContentController : ControllerBase
     {
-        private IContentRepository _contentRepository;
+        private IPostRepository _postRepository;
+        private ICommentRepository _commentRepository;
+        private ILikeRepository _likeRepository;
+        private SqlContext _sqlContext;
+
         IMessageBus _messageBus;
 
-        public ContentController(IContentRepository contentRepository, IMessageBus messageBus)
+        public ContentController(IPostRepository postRepository,
+            ICommentRepository commentRepository,
+            ILikeRepository likeRepository,
+            SqlContext sqlContext,
+            IMessageBus messageBus)
         {
             _messageBus = messageBus;
-            _contentRepository = contentRepository;
+            _postRepository = postRepository;
+            _commentRepository = commentRepository;
+            _sqlContext = sqlContext;
+            _likeRepository = likeRepository;
         }
 
         [HttpGet]
@@ -34,13 +46,17 @@ namespace ContentService.Controllers
 
         [HttpPost]
         [Route("AddComment")]
-        public async Task<bool> AddComment(Comment comment)
+        public async Task<int> AddComment(Comment comment)
         {
             comment.Id = Guid.NewGuid();
             comment.Timestamp = DateTime.UtcNow;
             comment.UserId = GetUserId();
 
-            return await _contentRepository.AddComment(comment);
+            await _commentRepository.AddComment(comment);
+            int result = await _postRepository.AddCommentCount(comment.PostId);
+            await _sqlContext.SaveChangesAsync();
+
+            return result;
         }
 
         [HttpPost]
@@ -52,56 +68,98 @@ namespace ContentService.Controllers
             post.Timestamp = DateTime.UtcNow;
             post.LikeCount = post.CommentCount = 0;
 
-            return await _contentRepository.CreatePost(post);
+            await _postRepository.CreatePost(post);
+
+            return await _sqlContext.SaveChangesAsync() > 0;
         }
 
         [HttpGet]
         [Route("GetComments")]
         public async Task<IEnumerable<Comment>> GetComments(Guid postId)
         {
-            return await _contentRepository.GetComments(postId);
+            return await _commentRepository.GetComments(postId);
         }
 
         [HttpGet]
         [Route("GetLikedUsers")]
         public async Task<IEnumerable<string>> GetLikedUsers(Guid parentId)
         {
-            return await _contentRepository.GetLikedUsers(parentId);
+            return await _likeRepository.GetLikedUsers(parentId);
         }
 
         [HttpPost]
         [Route("GetPosts")]
         public async Task<IEnumerable<Post>> GetPosts(IEnumerable<Guid> postIds)
         {
-            return await _contentRepository.GetPosts(postIds);
+            List<Post> posts = await _postRepository.GetPosts(postIds);
+            string userId = GetUserId();
+            foreach (Post post in posts)
+            {
+                post.HasUserLiked = await _likeRepository.HasUserLiked(userId, post.Id);
+            }
+            return posts;
         }
 
         [HttpPost]
         [Route("GetUserPosts")]
         public async Task<IEnumerable<Guid>> GetUserPosts(int count)
         {
-            return await _contentRepository.GetUserPosts(GetUserId(), count);
+            return await _postRepository.GetUserPosts(GetUserId(), count);
         }
 
-        [HttpPost]
-        [Route("Like")]
-        public async Task<bool> Like(Guid postId)
+        [HttpGet]
+        [Route("LikePost")]
+        public async Task<int> LikePost(Guid postId)
+        {
+            int result = 0;
+            string userId = GetUserId();
+            bool hasUserLiked = await _likeRepository.HasUserLiked(userId, postId);
+
+            if (hasUserLiked)
+            {
+                await _likeRepository.RemoveLike(userId, postId);
+                result = await _postRepository.ReduceLikeCount(postId);
+                await _sqlContext.SaveChangesAsync();
+                return result;
+            }
+
+            Like like = new Like()
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                ParentId = postId,
+                Timestamp = DateTime.UtcNow
+            };
+
+            await _likeRepository.AddLike(like);
+            result = await _postRepository.AddLikeCount(postId);
+            await _sqlContext.SaveChangesAsync();
+            return result;
+        }
+
+        [HttpGet]
+        [Route("LikeComment")]
+        public async Task<int> LikeComment(Guid commentId)
         {
             Like like = new Like()
             {
                 Id = Guid.NewGuid(),
                 UserId = GetUserId(),
-                ParentId = postId,
+                ParentId = commentId,
                 Timestamp = DateTime.UtcNow
             };
-            return await _contentRepository.Like(like);
+            await _likeRepository.AddLike(like);
+            int result = await _commentRepository.AddLikeCount(commentId);
+            await _sqlContext.SaveChangesAsync();
+            return result;
         }
 
         [HttpPost]
         [Route("UpdatePost")]
         public async Task<bool> UpdatePostContent(Guid postId, string content)
         {
-            return await _contentRepository.UpdatePostContent(postId, content);
+            await _postRepository.UpdatePostContent(postId, content);
+            return await _sqlContext.SaveChangesAsync() > 0;
         }
 
         protected string GetUserId()

@@ -17,8 +17,11 @@
         </div>
         <hr class="mt-2 mb-1" />
         <div class="pt-1 pl-2 row">
-            <div class="btn col-5" style="text-align:left">
+            <div *ngIf="post.HasUserLiked == false" (click)="likePost()" class="btn col-5" style="text-align:left">
                 <i class="ni ni-like-2"></i>&nbsp;Like
+            </div>
+            <div *ngIf="post.HasUserLiked == true" (click)="likePost()" class="btn col-5" style="text-align:left">
+                <span style="color:blue"><i class="ni ni-like-2"></i>&nbsp;Like</span>
             </div>
             <div class="col-1"></div>
             <div class="btn col-5" (click)="change()" style="text-align:right">
