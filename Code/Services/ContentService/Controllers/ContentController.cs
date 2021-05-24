@@ -102,9 +102,9 @@ namespace ContentService.Controllers
 
         [HttpPost]
         [Route("GetUserPosts")]
-        public async Task<IEnumerable<Guid>> GetUserPosts(int count)
+        public async Task<IEnumerable<Guid>> GetUserPosts(UserPostDTO userPostDTO)
         {
-            return await _postRepository.GetUserPosts(GetUserId(), count);
+            return await _postRepository.GetUserPosts(userPostDTO.UserId, userPostDTO.Count);
         }
 
         [HttpGet]

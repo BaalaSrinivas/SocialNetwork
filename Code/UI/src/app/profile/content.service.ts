@@ -76,13 +76,17 @@ export class ContentService {
         return this._httpClient.get<number>(contentApi + 'likepost?postId=' + postId, httpOptions);    
     }
 
-    getUserPostIds(count: number): Observable<string[]> {
+    getUserPostIds(count: number, userId: string): Observable<string[]> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.post<string[]>(contentApi + 'getuserposts?count='+ count,null, httpOptions);        
+        var data = {
+            'userId': userId,
+            'count': count
+        }
+        return this._httpClient.post<string[]>(contentApi + 'getuserposts',data, httpOptions);        
     }
 }

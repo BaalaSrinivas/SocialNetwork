@@ -32,14 +32,14 @@ export class UserService {
         return this._httpClient.post<string>(userManagementApi, form, httpOptions);
     }
 
-    getUser(): Observable<User> {
+    getUser(userId:string): Observable<User> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.get<User>(userManagementApi, httpOptions);
+        return this._httpClient.get<User>(userManagementApi + '?userId='+ userId, httpOptions);
 
         //.pipe(map((data: any) => data.map(item => this._userAdapter.Adapt(item))));
     }

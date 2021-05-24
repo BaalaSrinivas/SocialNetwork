@@ -36,7 +36,7 @@ export class CompleteSignupComponent implements OnInit {
     completeSignUp() {
         this._userService.createUser(this.user, this.profileImage).subscribe((data) => {
             if (data) {
-                this._router.navigate(['/profile'], { replaceUrl: true });
+                this._router.navigate(['/profile'], { queryParams: { mailid: sessionStorage.getItem('mailId') }, replaceUrl: true });
             }
         });
     }

@@ -27,10 +27,15 @@ namespace UserManagement.Controllers
         }
 
         [HttpGet]
-        public SMUser GetUser()
+        public SMUser GetUser(string userId)
         {
-            return _repository.GetUser(GetUserId());
+            if(string.IsNullOrEmpty(userId))
+            {
+                userId = GetUserId();
+            }
+            return _repository.GetUser(userId);
         }
+
 
         [HttpPost]
         public async Task<SMUser> Create([FromForm] SMUser user, IFormFile profileImage)

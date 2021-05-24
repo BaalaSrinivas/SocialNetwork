@@ -61,13 +61,9 @@
                         <div class="h6 mt-4">
                             <i class="ni business_briefcase-24 mr-2"></i>{{user.Headline}}</div>
                     </div>
-                    <div class="mt-5 py-5 border-top text-center">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-9">
-                                <p>{{user.About}}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <br/>
+                    <br/>
+
                 </div>
             </div>
             <div class="row">
@@ -96,7 +92,7 @@
                     </div>
                 </div>
                 <div class="tab-content col-lg-7 pt-3">
-                    <app-post-editor></app-post-editor>
+                    <app-post-editor *ngIf="showAddPost ==  true"></app-post-editor>
                     <app-feed-section *ngFor="let post of userPosts" [post]="post" ></app-feed-section>
                 </div>
             </div>

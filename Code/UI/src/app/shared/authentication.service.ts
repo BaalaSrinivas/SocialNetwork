@@ -2,6 +2,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User, UserManager } from "oidc-client";
 import { Observable, Subject } from "rxjs";
+import { Register } from "../signup/Models/register.model";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -61,7 +62,7 @@ export class AuthenticationService {
             }
         };
 
-        this._userManager = new UserManager(googleSettings);
+        this._userManager = new UserManager(identitySettings);
 
         this._userManager.events.addAccessTokenExpired(_ => {
             this._loginChangedSubject.next(false);
@@ -84,6 +85,10 @@ export class AuthenticationService {
         return this._httpClient.post<boolean>('https://localhost:5004/Account/login', data, httpOptions);
     }
 
+    registerIdentity(register: Register): Observable<any> {
+        return this._httpClient.post<boolean>('https://localhost:5004/Account/register', register, httpOptions);
+    }
+
     login() {
         return this._userManager.signinRedirect();
     }
@@ -93,6 +98,7 @@ export class AuthenticationService {
             this._user = user;
             sessionStorage.setItem('loggedUser', this._user.profile.name);
             sessionStorage.setItem('idToken', this._user.id_token);
+            sessionStorage.setItem('mailId', this._user.profile.email);
             this._loginChangedSubject.next(!!user && !user.expired);           
             return user;
         });

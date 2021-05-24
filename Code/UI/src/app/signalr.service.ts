@@ -13,16 +13,16 @@ export class SignalrService {
     private hubConnection: HubConnection;
 
     constructor(private httpClient: HttpClient) {
-        this.hubConnection = new HubConnectionBuilder().withUrl(notificationUrl, ).build();
+       // this.hubConnection = new HubConnectionBuilder().withUrl(notificationUrl, ).build();
 
-        this.hubConnection.start().catch((err) => {
-            console.log('Signalr Error' + err);
-        });
+       // this.hubConnection.start().catch((err) => {
+            //console.log('Signalr Error' + err);
+       // });
     }
 
     addCallbackListener(callback: Function, methodName: string) {
-        this.hubConnection.on(methodName, (data: string) => {
-            callback(data);
-        });
+        //this.hubConnection.on(methodName, (data: string) => {
+        //    callback(data);
+        //});
     }
 }
