@@ -12,6 +12,6 @@ namespace FollowService.Repository
 
         Task<IEnumerable<FriendEntity>> GetFriendRequestsAsync(string userId);
 
-        Task<bool> UpdateFriendRequest(string requestId, FriendRequestState friendRequestState);
+        Task<bool> UpdateFriendRequest(FriendEntity friendEntity);
     }
 }

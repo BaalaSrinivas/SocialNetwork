@@ -10,43 +10,43 @@
         </div>
         <div class="container">
             <span class="font-weight-700" style="color:white;">Requests</span>
-            <div class="row pt-3">
-                <div class="col-6">
+            <div *ngFor="let request of pendingRequests; let i = index" class="row pt-3">
+                <div *ngIf="i%2==0" class="col-6">
                     <div class="card rounded px-0">
                         <div class="card-body d-flex row">
                             <div class="col-2">
                                 <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
                             </div>
                             <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
+                                <h6 class="title text-blue mb-0"><b>{{request.FromUser}}</b></h6>
                                 <p class="text-black font-weight-normal">SDE 3</p>
                             </div>
                             <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+                                <button class="btn btn-icon btn-2 btn-primary mt-1" (click)="acceptFriendRequest(request)" type="button">
                                     <span class="btn-inner--icon"><i class="fa fa-check"></i></span>
                                 </button>
-                                <button class="btn btn-icon btn-2 btn-danger mt-1" type="button">
+                                <button class="btn btn-icon btn-2 btn-danger mt-1"  (click)="rejectFriendRequest(request)" type="button">
                                     <span class="btn-inner--icon"><i class="fa fa-times"></i></span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div  *ngIf="i%2==1" class="col-6">
                     <div class="card rounded px-0">
                         <div class="card-body d-flex row">
                             <div class="col-2">
                                 <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
                             </div>
                             <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
+                                <h6 class="title text-blue mb-0"><b>{{request.FromUser}}</b></h6>
                                 <p class="text-black font-weight-normal">SDE 3</p>
                             </div>
                             <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+                                <button class="btn btn-icon btn-2 btn-primary mt-1" (click)="acceptFriendRequest(request)" type="button">
                                     <span class="btn-inner--icon"><i class="fa fa-check"></i></span>
                                 </button>
-                                <button class="btn btn-icon btn-2 btn-danger mt-1" type="button">
+                                <button class="btn btn-icon btn-2 btn-danger mt-1" (click)="rejectFriendRequest(request)" type="button">
                                     <span class="btn-inner--icon"><i class="fa fa-times"></i></span>
                                 </button>
                             </div>
@@ -55,16 +55,17 @@
                 </div>
             </div>
             <br/>
+            <br/>
             <span class="font-weight-700" style="color:white;">Friends</span>
-            <div class="row pt-3">
-                <div class="col-6">
+            <div *ngFor="let friend of friends; let i = index" class="row pt-3">
+                <div *ngIf="i%2==0" class="col-6">
                     <div class="card rounded px-0">
                         <div class="card-body d-flex row">
                             <div class="col-2">
                                 <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
                             </div>
                             <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
+                                <h6 class="title text-blue mb-0"><b>{{friend.FromUser}}</b></h6>
                                 <p class="text-black font-weight-normal">SDE 3</p>
                             </div>
                             <div class="pl-2 col-4">
@@ -75,90 +76,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div *ngIf="i%2==1" class="col-6">
                     <div class="card rounded px-0">
                         <div class="card-body d-flex row">
                             <div class="col-2">
                                 <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
                             </div>
                             <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
-                                <p class="text-black font-weight-normal">SDE 3</p>
-                            </div>
-                            <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                                    <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-6">
-                    <div class="card rounded px-0">
-                        <div class="card-body d-flex row">
-                            <div class="col-2">
-                                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
-                            </div>
-                            <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
-                                <p class="text-black font-weight-normal">SDE 3</p>
-                            </div>
-                            <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                                    <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card rounded px-0">
-                        <div class="card-body d-flex row">
-                            <div class="col-2">
-                                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
-                            </div>
-                            <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
-                                <p class="text-black font-weight-normal">SDE 3</p>
-                            </div>
-                            <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                                    <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-6">
-                    <div class="card rounded px-0">
-                        <div class="card-body d-flex row">
-                            <div class="col-2">
-                                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
-                            </div>
-                            <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
-                                <p class="text-black font-weight-normal">SDE 3</p>
-                            </div>
-                            <div class="pl-2 col-4">
-                                <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                                    <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card rounded px-0">
-                        <div class="card-body d-flex row">
-                            <div class="col-2">
-                                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
-                            </div>
-                            <div class="pl-2 col-6">
-                                <h6 class="title text-blue mb-0"><b>Baala Srinivas</b></h6>
+                                <h6 class="title text-blue mb-0"><b>{{friend.FromUser}}</b></h6>
                                 <p class="text-black font-weight-normal">SDE 3</p>
                             </div>
                             <div class="pl-2 col-4">

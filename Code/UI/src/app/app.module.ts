@@ -32,6 +32,9 @@ import { FriendsListComponent } from './friends-list/friends-list.component';
 import { PostEditorComponent } from './post-editor/post-editor.component';
 import { UserAdapter } from './complete-signup/Models/Adapters/user.adapter';
 import { CommentAdapter } from './profile/Models/Adapters/comment.adapter';
+import { FollowService } from './shared/follow.service';
+import { FriendAdapter } from './profile/Models/Adapters/friend.adapter';
+import { FollowAdapter } from './profile/Models/Adapters/follow.adapter';
 
 
 
@@ -62,7 +65,18 @@ import { CommentAdapter } from './profile/Models/Adapters/comment.adapter';
         AppRoutingModule,
         HomeModule,
     ],
-    providers: [AuthenticationService, ContentService, UserService, SignalrService, PostAdapter, UserAdapter, CommentAdapter],
+    providers: [
+        AuthenticationService,
+        ContentService,
+        UserService,
+        FollowService,
+        SignalrService,
+        PostAdapter,
+        UserAdapter,
+        CommentAdapter,
+        FriendAdapter,
+        FollowAdapter
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

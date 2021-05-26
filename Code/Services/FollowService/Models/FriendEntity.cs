@@ -8,15 +8,15 @@ namespace FollowService.Models
     public class FriendEntity
     {
         public Guid Id { get; set; }
-        public string UserId { get; set; }
-        public string TargetUserId { get; set; }
-        public FriendRequestState FriendRequestState { get; set; }
+        public string FromUser { get; set; }
+        public string ToUser { get; set; }
+        public State State { get; set; }
     }
 
-    public enum FriendRequestState
+    public enum State
     {
         Requested,
-        Accepted,
-        Rejected
+        Friends,
+        Deleted
     }
 }

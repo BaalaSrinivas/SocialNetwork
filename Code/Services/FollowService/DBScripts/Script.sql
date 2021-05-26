@@ -1,9 +1,15 @@
+CREATE DATABASE [SMFollow]
+GO
+
+USE [SMFollow]
+
 CREATE TABLE [dbo].[FollowEntities]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [UserId] NVARCHAR(MAX) NOT NULL, 
-    [TargetUserId] NVARCHAR(MAX) NOT NULL
+    [Follower] NVARCHAR(200) NOT NULL, 
+    [Following] NVARCHAR(200) NOT NULL
 )
+GO
 
 CREATE TABLE [dbo].[FollowMetaData]
 (
@@ -11,11 +17,13 @@ CREATE TABLE [dbo].[FollowMetaData]
     [FollowersCount] INT NOT NULL, 
     [FriendsCount] INT NOT NULL
 )
+GO
 
 CREATE TABLE [dbo].[FriendEntities]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [UserId] NVARCHAR(200) NOT NULL, 
-    [TargetUserId] NVARCHAR(200) NOT NULL, 
-    [FriendRequestState] INT NOT NULL
+    [FromUser] NVARCHAR(200) NOT NULL, 
+    [ToUser] NVARCHAR(200) NOT NULL, 
+    [State] INT NOT NULL
 )
+GO

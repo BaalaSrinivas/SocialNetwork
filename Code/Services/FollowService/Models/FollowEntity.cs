@@ -8,7 +8,7 @@ namespace FollowService.Models
     public class FollowEntity
     {
         public Guid Id { get; set; }
-        public string UserId { get; set; }
-        public string TargetUserId { get; set; }
+        public string Follower { get; set; }
+        public string Following { get; set; }
     }
 }

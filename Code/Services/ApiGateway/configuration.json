@@ -13,6 +13,18 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
+      "DownstreamPathTemplate": "/followapi/{version}/follow/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5003"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/{version}/follow/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
       "DownstreamPathTemplate": "/userapi/{version}/user",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

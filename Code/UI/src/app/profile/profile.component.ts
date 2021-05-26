@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserAdapter } from '../complete-signup/Models/Adapters/user.adapter';
 import { User } from '../complete-signup/Models/user.model';
 import { UserService } from '../complete-signup/user.service';
+import { FollowService } from '../shared/follow.service';
 import { ContentService } from './content.service';
 import { Post } from './Models/post.model';
 
@@ -19,6 +20,7 @@ export class ProfileComponent implements OnInit {
     constructor(private _contentService: ContentService,
         private _userService: UserService,
         private _userAdapter: UserAdapter,
+        private _followService: FollowService,
         private _activatedRoute: ActivatedRoute) {
       
     }
@@ -45,6 +47,18 @@ export class ProfileComponent implements OnInit {
                 });
             });
         });        
+    }
+
+    sendFriendRequest() {
+        this._followService.sendFriendRequest(this.mailId).subscribe(data => {
+
+        });
+    }
+
+    followUser() {
+        this._followService.followUser(this.mailId).subscribe(data => {
+
+        });
     }
 
 }

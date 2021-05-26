@@ -1,18 +1,15 @@
 using FollowService.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FollowService
 {
@@ -30,12 +27,57 @@ namespace FollowService
         {
 
             services.AddControllers();
+
+            //Defaults to Google authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "accounts.google.com",
+                    ValidAudience = "216892140019-lvs71bvj54t4s7stp195uuhl6foggrsd.apps.googleusercontent.com",
+                    ValidateAudience = true,
+                    ValidateIssuer = true
+                };
+
+                options.MetadataAddress = "https://accounts.google.com/.well-known/openid-configuration";
+                options.TokenValidationParameters = tokenValidationParameters;
+            })
+           .AddJwtBearer("IdentityServer", options =>
+           {
+
+               var tokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidIssuer = "https://localhost:5004",
+                   ValidAudience = "BSKonnectIdentityServerID",
+                   ValidateAudience = true,
+                   ValidateIssuer = true
+               };
+
+               options.MetadataAddress = "https://localhost:5004/.well-known/openid-configuration";
+               options.TokenValidationParameters = tokenValidationParameters;
+           });
+
+            services.AddAuthorization(options =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme, "IdentityServer");
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
             services.AddScoped<IFollowEntityRepository, FollowEntityRepository>();
             services.AddScoped<IFriendEntityRepository, FriendEntityRepository>();
             services.AddScoped<IFollowMetaDataRepository, FollowMetaDataRepository>();
             services.AddScoped<IUnitofWork, UnitofWork>();
 
-            services.AddScoped<SqlConnection>((s) =>  new SqlConnection(Configuration.GetConnectionString("Default")));
+            services.AddScoped<SqlConnection>((s) => new SqlConnection(Configuration.GetConnectionString("Default")));
+            services.AddScoped<IDbTransaction>(s =>
+            {
+                SqlConnection conn = s.GetRequiredService<SqlConnection>();
+                conn.Open();
+                return conn.BeginTransaction();
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FollowService", Version = "v1" });
@@ -55,6 +97,8 @@ namespace FollowService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
