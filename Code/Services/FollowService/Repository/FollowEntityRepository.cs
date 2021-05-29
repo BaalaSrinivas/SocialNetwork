@@ -33,6 +33,12 @@ namespace FollowService.Repository
             return await _sqlConnection.QueryAsync<string>(sql, param: new { following = userId }, transaction: _dbTransaction);
         }
 
+        public async Task<IEnumerable<string>> GetFollowing(string userId)
+        {
+            var sql = "SELECT Following FROM FollowEntities WHERE Follower = @follower";
+            return await _sqlConnection.QueryAsync<string>(sql, param: new { follower = userId }, transaction: _dbTransaction);
+        }
+
         public async Task<bool> RemoveItemAsync(FollowEntity item)
         {
             var sql = "DELETE FROM FollowEntities WHERE Follower = @follower AND Following = @following";

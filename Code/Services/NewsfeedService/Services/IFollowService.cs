@@ -7,6 +7,6 @@ namespace NewsfeedService.Services
 {
     public interface IFollowService
     {
-        public Task<IEnumerable<string>> GetUserFollowersAsync(string userId);
+        public Task<IEnumerable<string>> GetUserFollowingAsync(string userId, string token);
     }
 }

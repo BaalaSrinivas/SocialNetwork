@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NewsfeedService.Models;
 using NewsfeedService.Repository;
 using NewsfeedService.Services;
 using System;
@@ -8,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace NewsfeedService.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("newsfeed/api/v1/[controller]")]
+    [Route("newsfeedapi/v1/[controller]")]
     public class NewsfeedController : ControllerBase
     {
         ICacheRepository _cacheRepository;
@@ -22,19 +25,19 @@ namespace NewsfeedService.Controllers
             _followService = followService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetNewsfeed")]
-        public async Task<IEnumerable<Guid>> GetNewsfeed(string userId, int index, int count)
+        public async Task<IEnumerable<string>> GetNewsfeed(string userId)
         {
-            var data = await _cacheRepository.RetrieveDataAsync(userId);
-            if(data == null)
+            var data = "";// await _cacheRepository.RetrieveDataAsync(userId);
+            if(data == "")
             {
                 data = GenerateNewsfeedInternal(userId).Result;
             }
-            return data.Split('|').Select(s=>Guid.Parse(s));
+            return data.Split('|');
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GenerateNewsfeed")]
         public async Task<bool> GenerateNewsfeed(string userId)
         {
@@ -45,10 +48,19 @@ namespace NewsfeedService.Controllers
 
         private async Task<string> GenerateNewsfeedInternal(string userId)
         {
-            IEnumerable<string> followers = await _followService.GetUserFollowersAsync(userId);
-            IEnumerable<Guid> posts = await _contentService.GetUsersPosts(followers, 200);
+            var token = HttpContext.Request.Headers["Authorization"][0];
 
-            return posts.Aggregate<Guid, string>("", (a, b) => { return a.ToString() + "|" + b.ToString(); });
+            IEnumerable<string> following = await _followService.GetUserFollowingAsync(userId, token);
+
+            List<Guid> posts = new List<Guid>();
+
+            foreach (string user in following)
+            {
+                UserPostDTO userPostDTO = new UserPostDTO() { UserId = user, Count = 10 };
+                posts.AddRange(await _contentService.GetUsersPosts(userPostDTO, token));
+            }           
+
+            return posts.Aggregate<Guid, string>("", (a, b) => { return a.ToString() + "|" + b.ToString(); }).Substring(1);
         }
     }
 }

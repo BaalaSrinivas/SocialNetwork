@@ -49,16 +49,16 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/userapi/{version}/user",
+      "DownstreamPathTemplate": "/newsfeedapi/{version}/newsfeed/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "5007"
+          "Port": "5005"
         }
       ],
-      "UpstreamPathTemplate": "/api/{version}/user",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+      "UpstreamPathTemplate": "/api/{version}/newsfeed/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/{everything}",
@@ -71,6 +71,18 @@
       ],
       "UpstreamPathTemplate": "/api/notification/{everything}",
       "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/userapi/{version}/user",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/{version}/user",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     }
   ],
   "GlobalConfiguration": {

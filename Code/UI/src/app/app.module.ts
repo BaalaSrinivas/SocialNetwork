@@ -35,6 +35,7 @@ import { CommentAdapter } from './profile/Models/Adapters/comment.adapter';
 import { FollowService } from './shared/follow.service';
 import { FriendAdapter } from './profile/Models/Adapters/friend.adapter';
 import { FollowAdapter } from './profile/Models/Adapters/follow.adapter';
+import { NewsfeedService } from './newsfeed/newsfeed.service';
 
 
 
@@ -71,6 +72,7 @@ import { FollowAdapter } from './profile/Models/Adapters/follow.adapter';
         UserService,
         FollowService,
         SignalrService,
+        NewsfeedService,
         PostAdapter,
         UserAdapter,
         CommentAdapter,

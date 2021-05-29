@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NewsfeedService.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -15,11 +17,14 @@ namespace NewsfeedService.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Guid>> GetUsersPosts(IEnumerable<string> userIds, int count)
+        public async Task<IEnumerable<Guid>> GetUsersPosts(UserPostDTO userPostDTO, string token)
         {
-            var httpResponse = await _httpClient.PostAsync("", new StringContent(JsonSerializer.Serialize(userIds)));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", token);
+            var httpContent = new StringContent(JsonSerializer.Serialize(userPostDTO), Encoding.UTF8, "application/json");
+
+            var httpResponse = await _httpClient.PostAsync("getuserposts", httpContent);
             //TODO: Make it asynchronous
-            return JsonSerializer.Deserialize<IEnumerable<Guid>>(httpResponse.Content.ReadAsStringAsync().Result);
+            return JsonSerializer.Deserialize<IEnumerable<Guid>>(await httpResponse.Content.ReadAsStringAsync());
         }
     }
 }

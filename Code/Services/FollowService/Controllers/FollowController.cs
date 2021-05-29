@@ -34,11 +34,23 @@ namespace FollowService.Controllers
             return await _unitofWork.FollowEntityRepository.GetFollowers(GetUserId());
         }
 
+        [HttpGet]
+        [Route("GetFollowing")]
+        public async Task<IEnumerable<string>> GetFollowing()
+        {
+            return await _unitofWork.FollowEntityRepository.GetFollowing(GetUserId());
+        }
+
         [HttpPost]
         [Route("FollowUser")]
         public async Task<bool> FollowUser([FromBody] string followingUserId)
         {
             string userId = GetUserId();
+
+            if(userId == followingUserId)
+            {
+                return false;
+            }
 
             FollowEntity followEntity = new FollowEntity() { Id = Guid.NewGuid(), Following = followingUserId, Follower = userId };
             Task<bool> addItemResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
@@ -74,6 +86,12 @@ namespace FollowService.Controllers
         public async Task<bool> SendFriendRequest([FromBody] string toUserId)
         {
             bool result = false;
+
+            if(toUserId == GetUserId())
+            {
+                return result;
+            }
+
             FriendEntity friendEntity = new FriendEntity()
             {
                 Id = Guid.NewGuid(),

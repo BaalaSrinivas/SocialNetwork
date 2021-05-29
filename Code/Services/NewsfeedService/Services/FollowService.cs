@@ -14,11 +14,13 @@ namespace NewsfeedService.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<string>> GetUserFollowersAsync(string userId)
+        public async Task<IEnumerable<string>> GetUserFollowingAsync(string userId, string token)
         {
-            var httpResponse = await _httpClient.GetAsync($"GetFollowers?userId={userId}");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            var httpResponse = await _httpClient.GetAsync("GetFollowing");
             //TODO: Make it asynchronous
-            return JsonSerializer.Deserialize<IEnumerable<string>>(httpResponse.Content.ReadAsStringAsync().Result);
+            return JsonSerializer.Deserialize<IEnumerable<string>>(await httpResponse.Content.ReadAsStringAsync());
         }
     }
 }
