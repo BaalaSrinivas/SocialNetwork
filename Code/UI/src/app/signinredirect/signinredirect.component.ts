@@ -17,6 +17,7 @@ export class SigninredirectComponent implements OnInit {
             //fetch userinfo
             this.userService.getUser(sessionStorage.getItem('mailId')).subscribe((r) => {
                 if (r) {
+                    sessionStorage.setItem('profileUrl', r.ProfileImageUrl);
                     this.router.navigate(['/profile'], { queryParams: { mailid: sessionStorage.getItem('mailId') }, replaceUrl: true });
                 }
                 else {

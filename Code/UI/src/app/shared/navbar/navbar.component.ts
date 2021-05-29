@@ -29,11 +29,13 @@ export class NavbarComponent implements OnInit {
     private yScrollStack: number[] = [];
 
     private userName: string;
+    private profileUrl: string;
     private notifications: string[];
 
     constructor(public location: Location, private signalrService: SignalrService, private router: Router, private authService: AuthenticationService) {
         this.authService.loginChanged.subscribe(x => {
             this.userName = sessionStorage.getItem('loggedUser')
+            this.profileUrl = sessionStorage.getItem('profileUrl')
         });
 
         signalrService.addCallbackListener((data) => {
@@ -59,6 +61,7 @@ export class NavbarComponent implements OnInit {
             this.lastPoppedUrl = ev.url;
         });
         this.userName = sessionStorage.getItem('loggedUser');
+        this.profileUrl = sessionStorage.getItem('profileUrl');
     }
 
     isHome() {

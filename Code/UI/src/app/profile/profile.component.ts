@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
             this.showAddPost = this.mailId == sessionStorage.getItem('mailId');
 
             this._userService.getUser(this.mailId).subscribe(u => {
-                this.user = this._userAdapter.Adapt(u);
+                this.user = u;
             });
 
             this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {

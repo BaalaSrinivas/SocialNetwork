@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="d-flex pl-0 pr-2 py-2 row">
             <div class="col-2">
-                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg font-weight-500" style="width: 60px;color:black !important">
+                <img [src]="userProfile || './assets/img/theme/team-4-800x800.jpg'" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg font-weight-500" style="width: 60px;color:black !important">
             </div>
             <div class="col-10 pr-4 rounded">
                 <textarea type="text" [ngStyle]="{'background-color':textareaColor}" [(ngModel)]="post.Content" placeholder="Write Something" style="resize:none;text-align:justify" rows="2" class="form-control"></textarea>

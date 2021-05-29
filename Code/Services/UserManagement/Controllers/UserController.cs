@@ -36,6 +36,12 @@ namespace UserManagement.Controllers
             return _repository.GetUser(userId);
         }
 
+        [HttpPost]
+        [Route("getusers")]
+        public IEnumerable<SMUser> GetUsers(IEnumerable<string> userId)
+        {
+            return _repository.GetUsers(userId);
+        }
 
         [HttpPost]
         public async Task<SMUser> Create([FromForm] SMUser user, IFormFile profileImage)

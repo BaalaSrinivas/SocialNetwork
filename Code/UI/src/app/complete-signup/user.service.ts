@@ -39,8 +39,6 @@ export class UserService {
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.get<User>(userManagementApi + '?userId='+ userId, httpOptions);
-
-        //.pipe(map((data: any) => data.map(item => this._userAdapter.Adapt(item))));
+        return this._httpClient.get<User>(userManagementApi + '?userId=' + userId, httpOptions).pipe(map(item => this._userAdapter.Adapt(item)));
     }
 }

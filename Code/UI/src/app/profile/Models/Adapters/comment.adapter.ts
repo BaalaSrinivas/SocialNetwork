@@ -8,7 +8,9 @@ export class CommentAdapter implements IModelAdapter<Comment> {
             data.commentText,
             data.postId,
             data.likesCount,
-            data.timestamp
+            data.timestamp,
+            data.userName,
+            data.profileImageUrl
         );
     }
 

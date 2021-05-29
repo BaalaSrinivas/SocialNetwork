@@ -30,6 +30,11 @@ namespace UserManagement.Repository
             return _context.SMUsers.Where(u => u.MailId == mailId).FirstOrDefault();
         }
 
+        public IEnumerable<SMUser> GetUsers(IEnumerable<string> mailId)
+        {
+            return _context.SMUsers.Where(u => mailId.Contains(u.MailId));
+        }
+
         public void UpdateUser(SMUser user)
         {
             _context.SMUsers.Update(user);

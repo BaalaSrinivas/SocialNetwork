@@ -10,6 +10,8 @@ namespace UserManagement.Repository
     {
         SMUser GetUser(string mailId);
 
+        IEnumerable<SMUser> GetUsers(IEnumerable<string> mailId);
+
         void CreateUser(SMUser user);
 
         void UpdateUser(SMUser user);

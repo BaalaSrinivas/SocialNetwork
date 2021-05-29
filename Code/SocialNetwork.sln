@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsfeedService", "Services\NewsfeedService\NewsfeedService.csproj", "{4341A710-FF95-4961-B43B-B3649DCF6289}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsfeedService", "Services\NewsfeedService\NewsfeedService.csproj", "{4341A710-FF95-4961-B43B-B3649DCF6289}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

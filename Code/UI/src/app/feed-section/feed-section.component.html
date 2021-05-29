@@ -2,10 +2,10 @@
     <div class="card-body">
         <div class="d-flex pl-0 row">
             <div class="col-2">
-                <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
+                <img src="{{post.ProfileImageUrl}}" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 60px;">
             </div>
             <div class="pl-2 col-10">
-                <h6 class="title text-blue mb-0"><b>{{post.UserId}}</b></h6>
+                <h6 class="title text-blue mb-0"><b>{{post.UserName}}</b></h6>
                 <p class="text-black font-weight-normal">{{post.Timestamp | date:'MMM d, y, h:mm:ss a'}}</p>
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div *ngIf="commentToggle == true">
             <div class="d-flex pl-0 pr-2 py-2 row">
                 <div class="col-2">
-                    <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 40px;">
+                    <img [src]="profileUrl || './assets/img/theme/team-4-800x800.jpg'" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 40px;">
                 </div>
                 <div class="px-0 col-8 rounded">
                     <textarea type="text" placeholder="Enter your comment" [(ngModel)]="comment.CommentText" style="resize:none;" rows="1" class="form-control"></textarea>
@@ -46,10 +46,10 @@
             <div class="mt-2">
                 <div *ngFor="let comment of postComments" class="d-flex pl-0 pr-2 py-2 row">
                     <div class="col-2">
-                        <img src="./assets/img/theme/team-4-800x800.jpg" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 40px;">
+                        <img src="{{comment.ProfileImageUrl}}" alt="Raised circle image" class="img-fluid rounded-circle shadow-lg" style="width: 40px;">
                     </div>
                     <div class="pl-3 pt-2 col-10 rounded" style="background-color: #f2f2f2">
-                        <p class="title text-blue mb-0 font-weight-600" style="font-size:small"><b>{{comment.UserId}}</b></p>
+                        <p class="title text-blue mb-0 font-weight-600" style="font-size:small"><b>{{comment.UserName}}</b></p>
                         <p class="text-black font-weight-normal mb-0" style="font-size:small">{{comment.Timestamp | date:'MMM d, y, h:mm:ss a'}}</p>
                         <div class="py-2">
                             {{comment.CommentText}}

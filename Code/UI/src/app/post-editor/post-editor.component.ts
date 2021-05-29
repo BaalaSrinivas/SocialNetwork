@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ContentService } from '../profile/content.service';
 import { Post } from '../profile/Models/post.model';
 
@@ -10,6 +10,8 @@ import { Post } from '../profile/Models/post.model';
 export class PostEditorComponent implements OnInit {
 
     post: Post = new Post();
+    @Input()
+    userProfile: string
 
     constructor(private _contentService: ContentService) { }
     textareaColor: string = '#ffffff';

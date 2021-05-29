@@ -92,8 +92,8 @@
                     </div>
                 </div>
                 <div class="tab-content col-lg-7 pt-3">
-                    <app-post-editor *ngIf="showAddPost ==  true"></app-post-editor>
-                    <app-feed-section *ngFor="let post of userPosts" [post]="post" ></app-feed-section>
+                    <app-post-editor [userProfile]="user.ProfileImageUrl" *ngIf="showAddPost ==  true"></app-post-editor>
+                    <app-feed-section *ngFor="let post of userPosts" [post]="post"></app-feed-section>
                 </div>
             </div>
         </div>

@@ -12,6 +12,8 @@ import { Comment } from '../profile/Models/comment.model';
 export class FeedSectionComponent implements OnInit {
     @Input()
     post: Post = new Post();
+    profileUrl: string;
+
     comment: Comment = new Comment();    
 
     postComments: Comment[];
@@ -21,6 +23,7 @@ export class FeedSectionComponent implements OnInit {
 
 
     ngOnInit(): void {
+        this.profileUrl = sessionStorage.getItem('profileUrl');
     }
 
     change() {
