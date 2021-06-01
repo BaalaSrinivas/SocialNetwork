@@ -6,6 +6,8 @@
     Headline: string;
     ProfileImageUrl: string;
     Name: string;
+    MailId: string;
+
     constructor(
         profileName?: string,
         gender?: number,
@@ -13,7 +15,8 @@
         location?: string,
         headline?: string,
         profileImageUrl?: string,
-        name?: string
+        name?: string,
+        mailId?: string
     ) {
         this.ProfileName = profileName;
         this.Gender = gender;
@@ -22,5 +25,6 @@
         this.Headline = headline;
         this.ProfileImageUrl = profileImageUrl;
         this.Name = name;
+        this.MailId = mailId;
     }
 }

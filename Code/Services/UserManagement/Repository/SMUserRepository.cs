@@ -14,6 +14,12 @@ namespace UserManagement.Repository
         {
             _context = userContext;
         }
+
+        public IEnumerable<SMUser> SearchUsers(string key)
+        {
+            return _context.SMUsers.Where(s => s.Name.Contains(key)).Take(15);
+        }
+
         public void CreateUser(SMUser user)
         {
             _context.SMUsers.Add(user);

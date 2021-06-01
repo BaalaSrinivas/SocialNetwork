@@ -8,6 +8,8 @@ namespace UserManagement.Repository
 {
     public interface ISMUserRepository
     {
+        public IEnumerable<SMUser> SearchUsers(string key);
+
         SMUser GetUser(string mailId);
 
         IEnumerable<SMUser> GetUsers(IEnumerable<string> mailId);

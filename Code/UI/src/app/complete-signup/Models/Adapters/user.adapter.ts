@@ -10,7 +10,8 @@ export class UserAdapter implements IModelAdapter<User>
             data.location,
             data.headline,
             data.profileImageUrl,
-            data.name
+            data.name,
+            data.mailId
         );
     }
 }

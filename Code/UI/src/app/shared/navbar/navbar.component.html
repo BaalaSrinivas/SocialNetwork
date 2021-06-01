@@ -3,7 +3,15 @@
         <a class="navbar-brand" href="#">BS Konnect</a>
         <ul class="navbar-nav" *ngIf="IsUserLoggedIn()">
             <li class="nav-item">
-                <input class="form-control mt-1" placeholder="Search for friends" type="text" size="50" [(ngModel)]="model" [ngbTypeahead]="search"> 
+                <input class="form-control mt-1" placeholder="Search for friends" [(ngModel)]="searchKey" (keyup)="getNames(searchKey)" type="text" size="50"> 
+                <div style="background-color:white;z-index:100;position:absolute;width:400px;">
+                    <div class="px-3 py-2" (click)="getNames('', true)" [routerLink]="['/profile']" [queryParams]="{mailid: user.MailId}" style="cursor:pointer; vertical-align:middle" *ngFor="let user of users">
+                        <span class="avatar avatar-sm rounded-circle">
+                            <img alt="Image Placholder" [src]="user.ProfileImageUrl || 'assets/img/theme/team-4-800x800.jpg'">
+                        </span>
+                        <span class="font-weight-bold ml-2 mb-4">{{user.Name}}</span>
+                    </div>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-icon" [routerLink]="['/profile']" href="javascript:void(0)">

@@ -41,4 +41,14 @@ export class UserService {
         };
         return this._httpClient.get<User>(userManagementApi + '?userId=' + userId, httpOptions).pipe(map(item => this._userAdapter.Adapt(item)));
     }
+
+    searchUser(userKey: string): Observable<User[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.get<User[]>(userManagementApi + '/search?key=' + userKey, httpOptions).pipe(map((data: any) => data.map(item => this._userAdapter.Adapt(item))));
+    }
 }

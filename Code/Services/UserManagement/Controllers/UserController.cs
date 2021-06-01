@@ -27,6 +27,13 @@ namespace UserManagement.Controllers
         }
 
         [HttpGet]
+        [Route("search")]
+        public IEnumerable<SMUser> SearchUsers(string key)
+        {
+            return _repository.SearchUsers(key);
+        }
+
+        [HttpGet]
         public SMUser GetUser(string userId)
         {
             if(string.IsNullOrEmpty(userId))
