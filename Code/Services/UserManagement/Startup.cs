@@ -10,6 +10,8 @@ using UserManagement.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using UserManagement.Services;
+using System;
 
 namespace UserManagement
 {
@@ -35,6 +37,8 @@ namespace UserManagement
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("BlobServiceUrl")));
             services.AddScoped<ISMUserRepository, SMUserRepository>();
 
             //Defaults to Google authentication

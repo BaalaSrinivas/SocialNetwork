@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../shared/authentication.service';
 import { Register } from './Models/register.model';
 
@@ -9,7 +10,7 @@ import { Register } from './Models/register.model';
 })
 export class SignupComponent implements OnInit {
 
-    constructor(private _authService: AuthenticationService) {
+    constructor(private _authService: AuthenticationService, private router: Router) {
 
     }
 
@@ -25,6 +26,10 @@ export class SignupComponent implements OnInit {
     registerUser() {
         this._authService.registerIdentity(this.registerModel).subscribe(s => {
             console.log(s);
+            console.log(s.succeeded == true);
+            if (s.succeeded == true) {
+                this.router.navigate(['/complete-signup'], { replaceUrl: true });
+            }
         });
     }
 }

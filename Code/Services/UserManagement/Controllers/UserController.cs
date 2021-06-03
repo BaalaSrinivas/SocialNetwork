@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UserManagement.Models;
 using UserManagement.Repository;
+using UserManagement.Services;
 
 namespace UserManagement.Controllers
 {
@@ -19,11 +20,13 @@ namespace UserManagement.Controllers
     {
         private ISMUserRepository _repository;
         private IConfiguration _configuration;
+        private IBlobService _blobService;
 
-        public UserController(ISMUserRepository userRepository, IConfiguration configuration)
+        public UserController(ISMUserRepository userRepository, IConfiguration configuration, IBlobService blobService)
         {
             _repository = userRepository;
             _configuration = configuration;
+            _blobService = blobService;
         }
 
         [HttpGet]
@@ -56,14 +59,9 @@ namespace UserManagement.Controllers
             user.Name = GetUserName();
             user.Timestamp = DateTime.UtcNow;
             user.MailId = GetUserId();
-            string imageName = $"{Guid.NewGuid()}{Path.GetExtension(profileImage.FileName)}";
-            user.ProfileImageUrl = Path.Combine(_configuration.GetValue<string>("ProfileStoragePath"), imageName);
+            var token = HttpContext.Request.Headers["Authorization"][0];
 
-            using (Stream fileStream = new FileStream($@"C:\Work\Learning\Projects\Images\{imageName}", FileMode.Create))
-            {
-                await profileImage.CopyToAsync(fileStream);
-            }
-
+            user.ProfileImageUrl = await _blobService.UploadImage(profileImage, token);
             try
             {
                 if (_repository.GetUser(user.MailId) == null)
