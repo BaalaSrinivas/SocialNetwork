@@ -35,13 +35,13 @@ namespace FollowService.Repository
 
         public async Task<IEnumerable<FriendEntity>> GetFriendsAsync(string userId)
         {
-            var sql = "SELECT Id, FromUser, ToUser, State FROM FriendEntities WHERE State = 1 AND ToUser = @userId";
+            var sql = "SELECT Id, FromUser, ToUser, State FROM FriendEntities WHERE State = 1 AND (ToUser = @userId OR FromUser = @userId)";
             return await _sqlConnection.QueryAsync<FriendEntity>(sql, new { userId = userId }, transaction: _dbTransaction);
         }
 
         public async Task<bool> RemoveItemAsync(FriendEntity item)
         {
-            var sql = "DELETE FROM FriendEntities where FromUser = @fromUser AND ToUser = @toUser";
+            var sql = "DELETE FROM FriendEntities where Id = @id AND (FromUser = @fromUser OR ToUser = @fromUser)";
             return await _sqlConnection.ExecuteAsync(sql, item, transaction: _dbTransaction) > 0;
         }
 

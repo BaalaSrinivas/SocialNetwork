@@ -69,14 +69,24 @@ export class FollowService {
         return this._httpClient.post<boolean>(followApi + 'unfriend', friendEntity, httpOptions);
     }
 
-    updateFriendRequest(friendEntity: Friend): Observable<boolean> {
+    acceptFriendRequest(friendEntity: Friend): Observable<boolean> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
             })
         };
-        return this._httpClient.post<boolean>(followApi + 'updatefriendrequest', friendEntity, httpOptions);
+        return this._httpClient.post<boolean>(followApi + 'acceptfriendrequest', friendEntity, httpOptions);
+    }
+
+    deleteFriendRequest(friendEntity: Friend): Observable<boolean> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+            })
+        };
+        return this._httpClient.post<boolean>(followApi + 'deleteFriendRequest', friendEntity, httpOptions);
     }
 
     getFriendRequests(): Observable<Friend[]> {

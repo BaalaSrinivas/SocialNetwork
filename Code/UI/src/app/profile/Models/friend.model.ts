@@ -1,13 +1,20 @@
 ﻿export class Friend {
     Id: string;
-    FromUser: string;
-    ToUser: string;
-    State: number;
+    UserId: string;
+    UserName: string
+    ProfileImageUrl: string
+    UserHeadline: string
 
-    constructor(id?: string, fromUser?: string, toUser?: string, state?: number) {
+    constructor(id?: string,
+        userId?: string,
+        userName?: string,
+        profileImageUrl?: string,
+        userHeadline?: string
+    ) {
         this.Id = id;
-        this.FromUser = fromUser;
-        this.ToUser = toUser;
-        this.State = state;
+        this.UserId = userId;
+        this.UserName = userName;
+        this.ProfileImageUrl = profileImageUrl;
+        this.UserHeadline = userHeadline
     }
 }

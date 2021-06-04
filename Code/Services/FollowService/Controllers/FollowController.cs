@@ -56,10 +56,19 @@ namespace FollowService.Controllers
             Task<bool> addItemResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
             Task<bool> addCountResult = _unitofWork.FollowMetaDataRepository.AddFollowerCount(userId);
 
-            bool[] result = await Task.WhenAll(addItemResult, addCountResult);
-            _unitofWork.Commit();
+            bool[] resultArr = await Task.WhenAll(addItemResult, addCountResult);
+            bool result  = resultArr.Count(s => s == false) == 0;
 
-            return result.Count(s => s == false) == 0;
+            if (!result)
+            {
+                _unitofWork.Rollback();
+            }
+            else
+            {
+                _unitofWork.Commit();
+            }
+
+            return result;
         }
 
         [HttpPost]
@@ -71,10 +80,19 @@ namespace FollowService.Controllers
             Task<bool> removeItemResult = _unitofWork.FollowEntityRepository.RemoveItemAsync(followEntity);
             Task<bool> reduceCountResult = _unitofWork.FollowMetaDataRepository.ReduceFollowerCount(followEntity.Follower);
 
-            bool[] result = await Task.WhenAll(removeItemResult, reduceCountResult);
-            _unitofWork.Commit();
+            bool[] resultArr = await Task.WhenAll(removeItemResult, reduceCountResult);
+            bool result = resultArr.Count(s => s == false) == 0;
 
-            return result.Count(s => s == false) == 0;
+            if (!result)
+            {
+                _unitofWork.Rollback();
+            }
+            else
+            {
+                _unitofWork.Commit();
+            }
+
+            return result;
         }
 
         #endregion
@@ -89,6 +107,7 @@ namespace FollowService.Controllers
 
             if(toUserId == GetUserId())
             {
+                _logger.LogInformation($"Malicious: Friend request sent from id {GetUserId()} to {toUserId}");
                 return result;
             }
 
@@ -107,61 +126,147 @@ namespace FollowService.Controllers
 
         [HttpPost]
         [Route("Unfriend")]
-        public async Task<bool> Unfriend(FriendEntity friendEntity)
+        public async Task<bool> Unfriend(FriendEntityDTO friendEntityDTO)
         {
-            friendEntity.FromUser = GetUserId();
-            Task<bool> reduceFollowerCountResult = _unitofWork.FollowMetaDataRepository.ReduceFollowerCount(friendEntity.FromUser);
-            Task<bool> reduceFriendCountResult = _unitofWork.FollowMetaDataRepository.ReduceFriendsCount(friendEntity.FromUser);
-            Task<bool> unFriendResult = _unitofWork.FriendEntityRepository.RemoveItemAsync(friendEntity);
+            if (friendEntityDTO.UserId == GetUserId())
+            {
+                _logger.LogInformation($"Malicious: Unfriend request sent from id {GetUserId()} to {friendEntityDTO.UserId}");
+                return false;
+            }
 
-            FollowEntity followEntity = new FollowEntity() { Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
-            Task<bool> removeFollowResult = _unitofWork.FollowEntityRepository.RemoveItemAsync(followEntity);
+            FriendEntity friendEntity = new FriendEntity() { Id = friendEntityDTO.Id, FromUser = GetUserId(), ToUser = friendEntityDTO.UserId };
 
-            bool[] result = await Task.WhenAll(unFriendResult, removeFollowResult, reduceFollowerCountResult, reduceFriendCountResult);
-            _unitofWork.Commit();
+            List<Task<bool>> results = new List<Task<bool>>();
 
-            return result.Count(s => s == false) == 0;
+            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFollowerCount(friendEntity.FromUser));
+            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFriendsCount(friendEntity.FromUser));
+
+            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFollowerCount(friendEntity.ToUser));
+            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFriendsCount(friendEntity.ToUser));
+
+            results.Add(_unitofWork.FriendEntityRepository.RemoveItemAsync(friendEntity));
+
+            FollowEntity followEntitySource = new FollowEntity() { Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
+            FollowEntity followEntityTarget = new FollowEntity() { Following = friendEntity.FromUser, Follower = friendEntity.ToUser };
+            results.Add(_unitofWork.FollowEntityRepository.RemoveItemAsync(followEntitySource));
+            results.Add(_unitofWork.FollowEntityRepository.RemoveItemAsync(followEntityTarget));
+
+            bool[] resultArr = await Task.WhenAll(results);
+            bool result = resultArr.Count(s => s == false) == 0;
+
+            if (!result)
+            {
+                _unitofWork.Rollback();
+            }
+            else
+            {
+                _unitofWork.Commit();
+            }
+
+            return result;
         }
 
         [HttpPost]
-        [Route("UpdateFriendRequest")]
-        public async Task<bool> UpdateFriendRequest(FriendEntity friendEntity)
+        [Route("AcceptFriendRequest")]
+        public async Task<bool> AcceptFriendRequest(FriendEntityDTO friendEntityDTO)
         {
             bool result = false;
 
-            friendEntity.FromUser = GetUserId();
-
-            Task<bool> updateResult = _unitofWork.FriendEntityRepository.UpdateFriendRequest(friendEntity);
-            if (friendEntity.State != State.Friends)
+            if (friendEntityDTO.UserId == GetUserId())
             {
-                result = await updateResult;
-                _unitofWork.Commit();
+                _logger.LogInformation($"Malicious: Accept Friend request sent from id {GetUserId()} to {friendEntityDTO.UserId}");
                 return result;
             }
 
-            Task<bool> addFollowerCountResult = _unitofWork.FollowMetaDataRepository.AddFollowerCount(friendEntity.FromUser);
-            Task<bool> addFriendCountResult = _unitofWork.FollowMetaDataRepository.AddFriendsCount(friendEntity.FromUser);
-            FollowEntity followEntity = new FollowEntity() { Id = Guid.NewGuid(), Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
-            Task<bool> addFollowResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
+            FriendEntity friendEntity = new FriendEntity() { Id = friendEntityDTO.Id, FromUser = friendEntityDTO.UserId, ToUser = GetUserId() };
+            friendEntity.State = State.Friends;
 
-            bool[] resultArr = await Task.WhenAll(updateResult, addFollowerCountResult, addFriendCountResult, addFollowResult);
+            List<Task<bool>> results = new List<Task<bool>>();         
+
+            results.Add(_unitofWork.FriendEntityRepository.UpdateFriendRequest(friendEntity));
+
+            results.Add(_unitofWork.FollowMetaDataRepository.AddFollowerCount(friendEntity.FromUser));
+            results.Add(_unitofWork.FollowMetaDataRepository.AddFriendsCount(friendEntity.FromUser));
+
+            results.Add(_unitofWork.FollowMetaDataRepository.AddFollowerCount(friendEntity.ToUser));
+            results.Add(_unitofWork.FollowMetaDataRepository.AddFriendsCount(friendEntity.ToUser));
+
+            FollowEntity followEntitySource = new FollowEntity() { Id = Guid.NewGuid(), Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
+            FollowEntity followEntityTarget = new FollowEntity() { Id = Guid.NewGuid(), Following = friendEntity.FromUser, Follower = friendEntity.ToUser };
+            results.Add(_unitofWork.FollowEntityRepository.AddItemAsync(followEntitySource));
+            results.Add(_unitofWork.FollowEntityRepository.AddItemAsync(followEntityTarget));
+
+            bool[] resultArr = await Task.WhenAll(results);
+            result = resultArr.Count(s => s == false) == 0;
+
+            if (!result)
+            {
+                _unitofWork.Rollback();
+            }
+            else
+            {
+                _unitofWork.Commit();
+            }
+
+            return result;
+        }
+
+        [HttpPost]
+        [Route("deleteFriendRequest")]
+        public async Task<bool> DeleteFriendRequest(FriendEntityDTO friendEntityDTO)
+        {
+            bool result = false;
+            FriendEntity friendEntity = new FriendEntity() { Id = friendEntityDTO.Id, FromUser = GetUserId(), ToUser = friendEntityDTO.UserId };
+
+            if (friendEntity.ToUser == GetUserId())
+            {
+                _logger.LogInformation($"Malicious: Delete Friend request sent from id {GetUserId()} to {friendEntity.ToUser}");
+                return result;
+            }
+
+            result = await _unitofWork.FriendEntityRepository.RemoveItemAsync(friendEntity);
             _unitofWork.Commit();
 
-            return resultArr.Count(s => s == false) == 0;
+            return result;
+
         }
 
         [HttpGet]
         [Route("GetFriendRequests")]
-        public async Task<IEnumerable<FriendEntity>> GetFriendRequests()
+        public async Task<IEnumerable<FriendEntityDTO>> GetFriendRequests()
         {
-            return await _unitofWork.FriendEntityRepository.GetFriendRequestsAsync(GetUserId());
+            List<FriendEntityDTO> result = new List<FriendEntityDTO>();
+            IEnumerable<FriendEntity> friendRequestEntities = await _unitofWork.FriendEntityRepository.GetFriendRequestsAsync(GetUserId());
+
+            foreach(FriendEntity friendRequestEntity in friendRequestEntities)
+            {
+                result.Add(new FriendEntityDTO()
+                {
+                    Id = friendRequestEntity.Id,
+                    UserId = friendRequestEntity.FromUser == GetUserId() ? friendRequestEntity.ToUser : friendRequestEntity.FromUser
+                });
+            }
+
+            return result;
         }
 
         [HttpGet]
         [Route("GetFriends")]
-        public async Task<IEnumerable<FriendEntity>> GetFriends()
+        public async Task<IEnumerable<FriendEntityDTO>> GetFriends()
         {
-            return await _unitofWork.FriendEntityRepository.GetFriendsAsync(GetUserId());
+            List<FriendEntityDTO> result = new List<FriendEntityDTO>();
+            IEnumerable<FriendEntity> friendEntities = await _unitofWork.FriendEntityRepository.GetFriendsAsync(GetUserId());
+
+            foreach (FriendEntity friendEntity in friendEntities)
+            {
+                result.Add(new FriendEntityDTO()
+                {
+                    Id = friendEntity.Id,
+                    UserId = friendEntity.FromUser == GetUserId() ? friendEntity.ToUser : friendEntity.FromUser
+                });
+            }
+
+            return result;
         }
 
         #endregion

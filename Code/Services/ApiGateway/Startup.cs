@@ -80,6 +80,7 @@ namespace ApiGateway
 
             services.AddHttpClient<IUserService, UserService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("UserServiceUrl")));
             services.AddHttpClient<IContentService, ContentService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("ContentServiceUrl")));
+            services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("FollowServiceUrl")));
 
             services.AddSwaggerGen(c =>
             {

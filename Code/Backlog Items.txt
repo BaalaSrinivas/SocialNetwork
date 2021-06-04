@@ -2,4 +2,7 @@
 How to handle notification for million users?
 
 <!--Content Service-->
-How to respond back to UI with UserName for posts instead of UserId?
+How to respond back to UI with UserName for posts instead of UserId? -> Used Aggregation pattern on API Gateway
+
+<!--Follow Service-->
+How to shape the content for Follow Entity and Friend Entity

@@ -5,9 +5,10 @@ export class FriendAdapter implements IModelAdapter<Friend>
     Adapt(data: any): Friend {
         return new Friend(
             data.id,
-            data.fromUser,
-            data.toUser,
-            data.state
+            data.userId,
+            data.userName,
+            data.profileImageUrl,
+            data.userHeadline
         )
     }
 

@@ -24,13 +24,12 @@ export class FriendsListComponent implements OnInit {
         this._followService.getFriendRequests().subscribe(data => {
 
             this.pendingRequests = data;
-            console.log(this.pendingRequests);
+
         });
     }
 
     acceptFriendRequest(friend: Friend) {
-        friend.State = 1;
-        this._followService.updateFriendRequest(friend).subscribe(data => {
+        this._followService.acceptFriendRequest(friend).subscribe(data => {
             this._followService.getFriends().subscribe(data => {
                 this.friends = data;
             });
@@ -44,9 +43,7 @@ export class FriendsListComponent implements OnInit {
     }
 
     rejectFriendRequest(friend: Friend) {
-        friend.State = 2;
-
-        this._followService.updateFriendRequest(friend).subscribe(data => {
+        this._followService.deleteFriendRequest(friend).subscribe(data => {
             this._followService.getFriendRequests().subscribe(data => {
                 this.pendingRequests = data;
             });

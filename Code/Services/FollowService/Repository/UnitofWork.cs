@@ -34,5 +34,10 @@ namespace FollowService.Repository
                 _dbTransaction.Rollback();
             }
         }
+
+        public void Rollback()
+        {
+            _dbTransaction.Rollback();
+        }
     }
 }

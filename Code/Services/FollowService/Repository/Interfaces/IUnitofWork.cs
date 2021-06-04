@@ -12,5 +12,7 @@ namespace FollowService.Repository
         public IFollowMetaDataRepository FollowMetaDataRepository { get; }
 
         void Commit();
+
+        void Rollback();
     }
 }
