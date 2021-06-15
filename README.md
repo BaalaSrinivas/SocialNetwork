@@ -1,2 +1,3 @@
 # SocialNetwork
-![image](https://user-images.githubusercontent.com/15153745/121809933-6eb07080-cc7c-11eb-866c-ec2375fc242e.png)
+
+![image](https://user-images.githubusercontent.com/15153745/122074001-7c99f900-ce16-11eb-9e86-61dc3064087a.png)
