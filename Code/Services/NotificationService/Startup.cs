@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NotificationService.Events.EventHandler;
+using NotificationService.Events.EventModel;
 using NotificationService.SignalR;
 
 namespace NotificationService
@@ -31,7 +33,13 @@ namespace NotificationService
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
-            services.AddSingleton<IMessageBus, RabbitMQBus>(s => { return new RabbitMQBus(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue"); });
+            services.AddSingleton<IQueue<ContentEventModel>>(
+                           s =>
+                           {
+                               return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue")
+                               .AddSubscriber<ContentEventHandler>();
+                           });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,12 +56,6 @@ namespace NotificationService
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotificationService v1"));
             }
-
-            IMessageBus messageBus = app.ApplicationServices.GetRequiredService<IMessageBus>();
-            IHubContext<NotificationHub> notificationHub = app.ApplicationServices.GetRequiredService<IHubContext<NotificationHub>>();
-            messageBus.Subscribe((message)=> {
-                notificationHub.Clients.All.SendAsync("Notification", message.MessageText);            
-            });
 
             app.UseHttpsRedirection();
 

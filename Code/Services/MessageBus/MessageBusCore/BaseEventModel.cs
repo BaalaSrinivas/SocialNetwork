@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MessageBus.MessageBusCore
 {
-    public class Message
+    public class BaseEventModel
     {
         public Guid MessageId { get; set; } = Guid.NewGuid();
 

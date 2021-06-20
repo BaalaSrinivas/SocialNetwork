@@ -1,4 +1,6 @@
 using ContentService.Context;
+using ContentService.Events.EventHandler;
+using ContentService.Events.EventModel;
 using ContentService.Repository;
 using MessageBus.MessageBusCore;
 using MessageBus.RabbitMQ;
@@ -82,7 +84,10 @@ namespace ContentService
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
-            services.AddSingleton<IMessageBus, RabbitMQBus>(s => { return new RabbitMQBus(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue"); });
+            services.AddSingleton<IQueue<ContentEventModel>>(
+                s => { return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue")
+                    .AddSubscriber<ContentEventHandler>(); 
+                });
 
             services.AddSwaggerGen(c =>
             {

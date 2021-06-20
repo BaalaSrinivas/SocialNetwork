@@ -1,9 +1,11 @@
 ﻿using ContentService.Context;
+using ContentService.Events.EventModel;
 using ContentService.Models;
 using ContentService.Repository;
 using MessageBus.MessageBusCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,27 +22,29 @@ namespace ContentService.Controllers
         private ICommentRepository _commentRepository;
         private ILikeRepository _likeRepository;
         private SqlContext _sqlContext;
-
-        IMessageBus _messageBus;
+        private ILogger<ContentController> _logger;
+        IQueue<ContentEventModel> _contentQueue;
 
         public ContentController(IPostRepository postRepository,
             ICommentRepository commentRepository,
             ILikeRepository likeRepository,
             SqlContext sqlContext,
-            IMessageBus messageBus)
+             IQueue<ContentEventModel> contentQueue,
+             ILogger<ContentController> logger)
         {
-            _messageBus = messageBus;
+            _contentQueue = contentQueue;
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _sqlContext = sqlContext;
             _likeRepository = likeRepository;
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("Test")]
         public string SampleGet()
         {
-            _messageBus.Publish(new Message() { MessageText = $"Get called at {DateTime.Now}" });
+            _contentQueue.Publish(new ContentEventModel() { MessageText = $"Get called at {DateTime.Now}", PostId = Guid.NewGuid() });
             return "hi";
         }
 
@@ -69,7 +73,7 @@ namespace ContentService.Controllers
             post.LikeCount = post.CommentCount = 0;
 
             await _postRepository.CreatePost(post);
-
+            _contentQueue.Publish(new ContentEventModel() { MessageText = $"New post by {post.UserId}, {post.Content}", PostId = post.Id });
             return await _sqlContext.SaveChangesAsync() > 0;
         }
 
