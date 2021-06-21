@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MessageBus.MessageBusCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using UserManagement.Events.EventModel;
 using UserManagement.Models;
 using UserManagement.Repository;
 using UserManagement.Services;
@@ -21,12 +23,17 @@ namespace UserManagement.Controllers
         private ISMUserRepository _repository;
         private IConfiguration _configuration;
         private IBlobService _blobService;
+        IQueue<UserAddedEventModel> _userAddedQueue;
 
-        public UserController(ISMUserRepository userRepository, IConfiguration configuration, IBlobService blobService)
+        public UserController(ISMUserRepository userRepository, 
+            IConfiguration configuration, 
+            IBlobService blobService,
+            IQueue<UserAddedEventModel> userAddedQueue)
         {
             _repository = userRepository;
             _configuration = configuration;
             _blobService = blobService;
+            _userAddedQueue = userAddedQueue;
         }
 
         [HttpGet]
@@ -74,6 +81,10 @@ namespace UserManagement.Controllers
             {
                 return null;
             }
+
+            //Trigger Message to Event Queue to notify other services
+            UserAddedEventModel userAddedEventModel = new UserAddedEventModel() { UserId = user.MailId, MessageText = "New user added" };
+            _userAddedQueue.Publish(userAddedEventModel);
 
             return _repository.GetUser(user.MailId);
         }

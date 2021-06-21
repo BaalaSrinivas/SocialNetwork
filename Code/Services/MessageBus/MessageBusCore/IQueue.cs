@@ -7,6 +7,6 @@ namespace MessageBus.MessageBusCore
     {
         void Publish(T message);
 
-        public IQueue<T> AddSubscriber<EH>() where EH : IEventHandler<T>, new();
+        public IQueue<T> AddSubscriber<EH>() where EH : IEventHandler<T>;
     }
 }

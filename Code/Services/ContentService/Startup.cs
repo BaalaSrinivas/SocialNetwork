@@ -4,6 +4,7 @@ using ContentService.Events.EventModel;
 using ContentService.Repository;
 using MessageBus.MessageBusCore;
 using MessageBus.RabbitMQ;
+using MessageBusCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -75,6 +76,7 @@ namespace ContentService
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepostitory>();
             services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddTransient<IEventHandler<ContentEventModel> ,ContentEventHandler>();
 
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {
@@ -85,9 +87,19 @@ namespace ContentService
             };
 
             services.AddSingleton<IQueue<ContentEventModel>>(
-                s => { return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue")
+                s => { return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue", s)
                     .AddSubscriber<ContentEventHandler>(); 
                 });
+
+            services.AddSingleton<IQueue<UserLikedEventModel>>(
+               s => {
+                   return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s);
+               });
+
+            services.AddSingleton<IQueue<UserCommentedEventModel>>(
+               s => {
+                   return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
+               });
 
             services.AddSwaggerGen(c =>
             {

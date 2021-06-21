@@ -12,6 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
 using UserManagement.Services;
 using System;
+using UserManagement.Events.EventModel;
+using MessageBus.RabbitMQ;
+using MessageBus.MessageBusCore;
 
 namespace UserManagement
 {
@@ -77,6 +80,19 @@ namespace UserManagement
                 defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
             });
+
+            RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
+            {
+                HostName = Configuration.GetSection("RabbitMq")["HostName"],
+                UserName = Configuration.GetSection("RabbitMq")["UserName"],
+                Password = Configuration.GetSection("RabbitMq")["Password"],
+                Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
+            };
+
+            services.AddSingleton<IQueue<UserAddedEventModel>>(
+               s => {
+                   return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s);
+               });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

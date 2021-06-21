@@ -1,4 +1,9 @@
+using FollowService.Events.EventHandler;
+using FollowService.Events.EventModel;
 using FollowService.Repository;
+using MessageBus.MessageBusCore;
+using MessageBus.RabbitMQ;
+using MessageBusCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -82,6 +87,21 @@ namespace FollowService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FollowService", Version = "v1" });
             });
+
+            RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
+            {
+                HostName = Configuration.GetSection("RabbitMq")["HostName"],
+                UserName = Configuration.GetSection("RabbitMq")["UserName"],
+                Password = Configuration.GetSection("RabbitMq")["Password"],
+                Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
+            };
+
+            services.AddTransient<IEventHandler<UserAddedEventModel>, UserAddedEventHandler>();
+            services.AddSingleton<IQueue<UserAddedEventModel>>(
+               s => {
+                   return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s).
+                   AddSubscriber<UserAddedEventHandler>();
+               });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

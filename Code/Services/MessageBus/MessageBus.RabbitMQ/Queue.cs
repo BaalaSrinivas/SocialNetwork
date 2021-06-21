@@ -16,11 +16,14 @@ namespace MessageBus.RabbitMQ
         private RabbitMQCore _rabbitMQCore;
         private string _queueName;
         private IModel _channel;
+        private IServiceProvider _serviceProvider;
+        private bool _isSubscribed;
 
         IEventHandler<T> _subscriber;
 
-        public Queue(RabbitMQCore rabbitMQCore, string queueName)
+        public Queue(RabbitMQCore rabbitMQCore, string queueName, IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _rabbitMQCore = rabbitMQCore;
             _queueName = queueName;
             InitializeQueue();
@@ -51,7 +54,12 @@ namespace MessageBus.RabbitMQ
         private void MessageEventHandler(object sender, BasicDeliverEventArgs basicDeliverEventArgs)
         {
             T message = JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(basicDeliverEventArgs.Body.Span));
-            _subscriber.Handle(message);
+
+            if (_isSubscribed)
+            {
+                _subscriber = (IEventHandler<T>)_serviceProvider.GetService(typeof(IEventHandler<T>));
+                _subscriber.Handle(message);
+            }
         }
 
         public void Publish(T message)
@@ -61,9 +69,9 @@ namespace MessageBus.RabbitMQ
             _channel.BasicPublish(exchange: string.Empty, routingKey: _queueName, body: Encoding.UTF8.GetBytes(messageString));
         }
 
-        public IQueue<T> AddSubscriber<EH>() where EH: IEventHandler<T>, new()
+        public IQueue<T> AddSubscriber<EH>() where EH: IEventHandler<T>
         {
-            _subscriber = new EH();
+            _isSubscribed = true;
             return this;
         }
     }

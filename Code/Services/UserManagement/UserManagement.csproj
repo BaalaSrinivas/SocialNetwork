@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Events\EventHandler\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageBus\MessageBus.RabbitMQ\MessageBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\MessageBus\MessageBusCore\MessageBusCore.csproj" />
   </ItemGroup>
 
 </Project>

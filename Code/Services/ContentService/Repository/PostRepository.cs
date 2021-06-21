@@ -61,5 +61,10 @@ namespace ContentService.Repository
             post.Content = content;
             _sqlContext.Posts.Update(post);
         }
+
+        public async Task<Post> GetPost(Guid postId)
+        {
+            return await _sqlContext.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+        }
     }
 }

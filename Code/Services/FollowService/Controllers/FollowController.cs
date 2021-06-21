@@ -282,23 +282,6 @@ namespace FollowService.Controllers
 
         #endregion
         
-        /// <summary>
-        /// Will be called when a new user is added to the application
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("AddNewUser")]
-        public async Task<bool> AddNewUser(string userId)
-        {
-            bool result = false;
-            //TODO: To be called on listening to new user added event
-            FollowMetaData followInfo = new FollowMetaData(userId);
-            result = await _unitofWork.FollowMetaDataRepository.AddItemAsync(followInfo);
-
-            _unitofWork.Commit();
-
-            return result;
-        }
 
         protected string GetUserId()
         {

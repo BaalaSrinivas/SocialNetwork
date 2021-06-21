@@ -11,4 +11,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MessageBus\MessageBus.RabbitMQ\MessageBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\MessageBus\MessageBusCore\MessageBusCore.csproj" />
+  </ItemGroup>
+
 </Project>

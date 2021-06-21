@@ -11,9 +11,15 @@ namespace ContentService.Events.EventHandler
 {
     public class ContentEventHandler : IEventHandler<ContentEventModel>
     {
+        ILogger<ContentController> _logger;
+        public ContentEventHandler(ILogger<ContentController> logger)
+        {
+            _logger = logger;
+        }
+
         public void Handle(ContentEventModel message)
         {
-           Console.WriteLine("New Message from Content Queue");
+           _logger.LogInformation("New Message from Content Queue");
         }
     }
 }

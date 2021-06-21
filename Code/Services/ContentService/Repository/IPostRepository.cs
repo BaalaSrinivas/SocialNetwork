@@ -16,6 +16,8 @@ namespace ContentService.Repository
 
         public Task<List<Post>> GetPosts(IEnumerable<Guid> postIds);
 
+        public Task<Post> GetPost(Guid postId);
+
         public Task<int> AddLikeCount(Guid postId);
 
         public Task<int> ReduceLikeCount(Guid postId);

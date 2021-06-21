@@ -24,15 +24,21 @@ namespace ContentService.Controllers
         private SqlContext _sqlContext;
         private ILogger<ContentController> _logger;
         IQueue<ContentEventModel> _contentQueue;
+        IQueue<UserLikedEventModel> _userLikedQueue;
+        IQueue<UserCommentedEventModel> _userCommentedQueue;
 
         public ContentController(IPostRepository postRepository,
             ICommentRepository commentRepository,
             ILikeRepository likeRepository,
             SqlContext sqlContext,
-             IQueue<ContentEventModel> contentQueue,
-             ILogger<ContentController> logger)
+            IQueue<ContentEventModel> contentQueue,
+            IQueue<UserLikedEventModel> userLikedQueue,
+            IQueue<UserCommentedEventModel> userCommentedQueue,
+            ILogger<ContentController> logger)
         {
             _contentQueue = contentQueue;
+            _userLikedQueue = userLikedQueue;
+            _userCommentedQueue = userCommentedQueue;
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _sqlContext = sqlContext;
@@ -59,6 +65,18 @@ namespace ContentService.Controllers
             await _commentRepository.AddComment(comment);
             int result = await _postRepository.AddCommentCount(comment.PostId);
             await _sqlContext.SaveChangesAsync();
+
+            Post post = await _postRepository.GetPost(comment.PostId);
+
+            UserCommentedEventModel userCommentedEventModel = new UserCommentedEventModel()
+            {
+                CommentedBy = comment.UserId,
+                CommentText = comment.CommentText,
+                OwnerUserId = post.UserId,
+                MessageText = "New comment added to post"
+            };
+
+            _userCommentedQueue.Publish(userCommentedEventModel);
 
             return result;
         }
@@ -138,6 +156,17 @@ namespace ContentService.Controllers
             await _likeRepository.AddLike(like);
             result = await _postRepository.AddLikeCount(postId);
             await _sqlContext.SaveChangesAsync();
+
+            Post post = await _postRepository.GetPost(postId);
+
+            UserLikedEventModel userLikedEventModel = new UserLikedEventModel() { 
+            LikedBy = userId,
+            OwnerUserId = post.UserId,
+            MessageText = "New User Like"
+            };
+
+            _userLikedQueue.Publish(userLikedEventModel);
+
             return result;
         }
 

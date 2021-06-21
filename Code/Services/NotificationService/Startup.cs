@@ -1,5 +1,6 @@
 using MessageBus.MessageBusCore;
 using MessageBus.RabbitMQ;
+using MessageBusCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
@@ -33,10 +34,12 @@ namespace NotificationService
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
+            services.AddTransient<IEventHandler<ContentEventModel>, ContentEventHandler>();
+
             services.AddSingleton<IQueue<ContentEventModel>>(
                            s =>
                            {
-                               return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue")
+                               return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue", s)
                                .AddSubscriber<ContentEventHandler>();
                            });
 
