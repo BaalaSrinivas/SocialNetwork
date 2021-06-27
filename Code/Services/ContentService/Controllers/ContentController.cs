@@ -23,7 +23,7 @@ namespace ContentService.Controllers
         private ILikeRepository _likeRepository;
         private SqlContext _sqlContext;
         private ILogger<ContentController> _logger;
-        IQueue<ContentEventModel> _contentQueue;
+        IQueue<NewContentEventModel> _contentQueue;
         IQueue<UserLikedEventModel> _userLikedQueue;
         IQueue<UserCommentedEventModel> _userCommentedQueue;
 
@@ -31,7 +31,7 @@ namespace ContentService.Controllers
             ICommentRepository commentRepository,
             ILikeRepository likeRepository,
             SqlContext sqlContext,
-            IQueue<ContentEventModel> contentQueue,
+            IQueue<NewContentEventModel> contentQueue,
             IQueue<UserLikedEventModel> userLikedQueue,
             IQueue<UserCommentedEventModel> userCommentedQueue,
             ILogger<ContentController> logger)
@@ -50,7 +50,7 @@ namespace ContentService.Controllers
         [Route("Test")]
         public string SampleGet()
         {
-            _contentQueue.Publish(new ContentEventModel() { MessageText = $"Get called at {DateTime.Now}", PostId = Guid.NewGuid() });
+            _contentQueue.Publish(new NewContentEventModel() { MessageText = $"Get called at {DateTime.Now}", PostId = Guid.NewGuid() });
             return "hi";
         }
 
@@ -73,7 +73,7 @@ namespace ContentService.Controllers
                 CommentedBy = comment.UserId,
                 CommentText = comment.CommentText,
                 OwnerUserId = post.UserId,
-                MessageText = "New comment added to post"
+                MessageText = "<UserName> has commented on your post"
             };
 
             _userCommentedQueue.Publish(userCommentedEventModel);
@@ -91,7 +91,7 @@ namespace ContentService.Controllers
             post.LikeCount = post.CommentCount = 0;
 
             await _postRepository.CreatePost(post);
-            _contentQueue.Publish(new ContentEventModel() { MessageText = $"New post by {post.UserId}, {post.Content}", PostId = post.Id });
+            _contentQueue.Publish(new NewContentEventModel() { MessageText = $"New post by {post.UserId}", PostUserId = post.UserId, PostId = post.Id });
             return await _sqlContext.SaveChangesAsync() > 0;
         }
 
@@ -159,10 +159,11 @@ namespace ContentService.Controllers
 
             Post post = await _postRepository.GetPost(postId);
 
-            UserLikedEventModel userLikedEventModel = new UserLikedEventModel() { 
-            LikedBy = userId,
-            OwnerUserId = post.UserId,
-            MessageText = "New User Like"
+            UserLikedEventModel userLikedEventModel = new UserLikedEventModel()
+            {
+                LikedBy = userId,
+                OwnerUserId = post.UserId,
+                MessageText = "<UserName> has liked your post"
             };
 
             _userLikedQueue.Publish(userLikedEventModel);

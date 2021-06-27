@@ -4,10 +4,8 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageBus.RabbitMQ
 {
@@ -41,7 +39,7 @@ namespace MessageBus.RabbitMQ
             }
 
             _channel = _rabbitMQCore.CreateModel();
-            _channel.QueueDeclare(_queueName, durable: false, exclusive: false, autoDelete: false);
+            _channel.QueueDeclare(_queueName, durable: true, exclusive: false, autoDelete: false);
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += MessageEventHandler;
@@ -57,8 +55,11 @@ namespace MessageBus.RabbitMQ
 
             if (_isSubscribed)
             {
-                _subscriber = (IEventHandler<T>)_serviceProvider.GetService(typeof(IEventHandler<T>));
-                _subscriber.Handle(message);
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    _subscriber = (IEventHandler<T>)scope.ServiceProvider.GetRequiredService(typeof(IEventHandler<T>));
+                    _subscriber.Handle(message);
+                }
             }
         }
 

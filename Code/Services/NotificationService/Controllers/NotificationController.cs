@@ -1,8 +1,11 @@
 ﻿using MessageBus.MessageBusCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using NotificationService.Events.EventModel;
 using NotificationService.Models;
+using NotificationService.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +13,23 @@ using System.Threading.Tasks;
 
 namespace NotificationService.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("notificationapi/v1/[controller]")]
     public class NotificationController : ControllerBase
     {
         private readonly ILogger<NotificationController> _logger;
-        private IQueue<ContentEventModel> _contentQueue;
+        IHubContext<NotificationHub> _notificationHub;
 
-        public NotificationController(ILogger<NotificationController> logger, IQueue<ContentEventModel> contentQueue)
+        public NotificationController(ILogger<NotificationController> logger, IHubContext<NotificationHub> notificationHub)
         {
             _logger = logger;
-            _contentQueue = contentQueue;
+            _notificationHub = notificationHub;
         }
 
         [HttpGet]
-        public IEnumerable<Notification> GetUndeliveredNotifications()
+        public async Task<IEnumerable<Notification>> GetUndeliveredNotifications()
         {
-            _contentQueue.Publish(new ContentEventModel() { MessageText = $"Get called at {DateTime.Now}", PostId = Guid.NewGuid() });
             return new List<Notification>() { new Notification() { } };
         }
     }

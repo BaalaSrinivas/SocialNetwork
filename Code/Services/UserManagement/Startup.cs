@@ -15,6 +15,8 @@ using System;
 using UserManagement.Events.EventModel;
 using MessageBus.RabbitMQ;
 using MessageBus.MessageBusCore;
+using MessageBusCore;
+using UserManagement.Events.EventHandler;
 
 namespace UserManagement
 {
@@ -89,10 +91,28 @@ namespace UserManagement
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
-            services.AddSingleton<IQueue<UserAddedEventModel>>(
-               s => {
-                   return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s);
-               });
+            services.AddTransient<IEventHandler<UserLikedEventModel>, UserLikedEventHandler>();
+            services.AddTransient<IEventHandler<UserCommentedEventModel>, UserCommentedEventHandler>();
+
+            services.AddSingleton<IQueue<UserLikedEventModel>>(s =>
+            {
+                return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s);
+            });
+
+            services.AddSingleton<IQueue<UserCommentedEventModel>>(s =>
+            {
+                return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
+            });
+
+            services.AddSingleton<IQueue<NotificationEventModel>>(s =>
+            {
+                return new Queue<NotificationEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "NotificationQueue", s);
+            });
+
+            services.AddSingleton<IQueue<UserAddedEventModel>>(s =>
+            {
+                return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,10 +131,19 @@ namespace UserManagement
 
             app.UseAuthorization();
 
+            AddEventSubscription(app);
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+        }
+
+        private void AddEventSubscription(IApplicationBuilder app)
+        {
+            app.ApplicationServices.GetRequiredService<IQueue<UserLikedEventModel>>().AddSubscriber<UserLikedEventHandler>();
+            app.ApplicationServices.GetRequiredService<IQueue<UserCommentedEventModel>>().AddSubscriber<UserCommentedEventHandler>();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContentService.Events.EventHandler
 {
-    public class ContentEventHandler : IEventHandler<ContentEventModel>
+    public class ContentEventHandler : IEventHandler<NewContentEventModel>
     {
         ILogger<ContentController> _logger;
         public ContentEventHandler(ILogger<ContentController> logger)
@@ -17,7 +17,7 @@ namespace ContentService.Events.EventHandler
             _logger = logger;
         }
 
-        public void Handle(ContentEventModel message)
+        public void Handle(NewContentEventModel message)
         {
            _logger.LogInformation("New Message from Content Queue");
         }

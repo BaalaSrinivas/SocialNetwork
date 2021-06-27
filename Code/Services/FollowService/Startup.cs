@@ -96,12 +96,20 @@ namespace FollowService
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
-            services.AddTransient<IEventHandler<UserAddedEventModel>, UserAddedEventHandler>();
-            services.AddSingleton<IQueue<UserAddedEventModel>>(
-               s => {
-                   return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s).
-                   AddSubscriber<UserAddedEventHandler>();
-               });
+            services.AddScoped<IEventHandler<UserAddedEventModel>, UserAddedEventHandler>();
+
+            services.AddSingleton<IQueue<UserAddedEventModel>>(s =>
+            {
+                return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s);
+            });
+            services.AddSingleton<IQueue<NewUserFollowEventModel>>(s =>
+            {
+                return new Queue<NewUserFollowEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserFollowing", s);
+            });
+            services.AddSingleton<IQueue<FriendRequestStateChangeEventModel>>(s =>
+            {
+                return new Queue<FriendRequestStateChangeEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "FriendStateChange", s);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,10 +130,17 @@ namespace FollowService
 
             app.UseAuthorization();
 
+            AddEventSubscription(app);
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void AddEventSubscription(IApplicationBuilder app)
+        {
+            app.ApplicationServices.GetRequiredService<IQueue<UserAddedEventModel>>().AddSubscriber<UserAddedEventHandler>();
         }
     }
 }

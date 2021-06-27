@@ -76,7 +76,7 @@ namespace ContentService
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepostitory>();
             services.AddScoped<ILikeRepository, LikeRepository>();
-            services.AddTransient<IEventHandler<ContentEventModel> ,ContentEventHandler>();
+            services.AddTransient<IEventHandler<NewContentEventModel>, ContentEventHandler>();
 
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {
@@ -86,20 +86,20 @@ namespace ContentService
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
 
-            services.AddSingleton<IQueue<ContentEventModel>>(
-                s => { return new Queue<ContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "ContentQueue", s)
-                    .AddSubscriber<ContentEventHandler>(); 
-                });
+            services.AddSingleton<IQueue<NewContentEventModel>>(s =>
+            {
+                return new Queue<NewContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserPost", s);
+            });
 
-            services.AddSingleton<IQueue<UserLikedEventModel>>(
-               s => {
-                   return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s);
-               });
+            services.AddSingleton<IQueue<UserLikedEventModel>>(s =>
+            {
+                return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s);
+            });
 
-            services.AddSingleton<IQueue<UserCommentedEventModel>>(
-               s => {
-                   return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
-               });
+            services.AddSingleton<IQueue<UserCommentedEventModel>>(s =>
+            {
+                return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
+            });
 
             services.AddSwaggerGen(c =>
             {

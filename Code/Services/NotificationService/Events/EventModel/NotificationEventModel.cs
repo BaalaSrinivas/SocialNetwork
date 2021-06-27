@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace NotificationService.Events.EventModel
 {
-    public class ContentEventModel: BaseEventModel
+    public class NotificationEventModel : BaseEventModel
     {
-        public Guid PostId;
+        public string UserId { get; set; }
+
+        public string ProfileImageUrl { get; set;}
     }
 }

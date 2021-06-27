@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ContentService.Events.EventModel
 {
-    public class ContentEventModel: BaseEventModel
+    public class NewContentEventModel: BaseEventModel
     {
-        public Guid PostId;
+        public Guid PostId { get; set; }
+
+        public string PostUserId { get; set; }
     }
 }

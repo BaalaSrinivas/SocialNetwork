@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
     private searchKey: string;
     private users: User[];
 
-    private notifications: string[];
+    private notifications: string[] = [];
 
     constructor(public location: Location,
         private signalrService: SignalrService,
@@ -36,7 +36,14 @@ export class NavbarComponent implements OnInit {
         });
 
         signalrService.addCallbackListener((data) => {
-            this.notifications.unshift(data);
+            if (this.notifications.length > 0) {
+                this.notifications.unshift(data);
+            }
+            else {
+                console.log(data);
+                this.notifications.push(data);
+                console.log(this.notifications);
+            }
         }, 'ReceiveMessage');
     }
 
@@ -73,8 +80,7 @@ export class NavbarComponent implements OnInit {
     }
 
 
-    IsUserLoggedIn(): Boolean
-    {
+    IsUserLoggedIn(): Boolean {
         return sessionStorage.getItem('loggedUser') != null;
     }
 

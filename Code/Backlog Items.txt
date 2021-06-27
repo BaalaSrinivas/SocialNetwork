@@ -1,5 +1,10 @@
 <!--Notification Service-->
 How to handle notification for million users?
+How to manage notification settings? Because follow service is a seperate container, when pushing notification, the info is obtained from follow service. If the uiser has unsubscribed  and if this is handled in follow service unnecesary load on notification queue can be prevented. 
+
+In current implementation the list of user ids is sent via message bus. 
+
+Proper way to construct notification messages, in current implementation to construct a single notification multiple microservices are involved
 
 <!--Content Service-->
 How to respond back to UI with UserName for posts instead of UserId? -> Used Aggregation pattern on API Gateway
