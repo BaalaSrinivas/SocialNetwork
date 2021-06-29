@@ -23,6 +23,7 @@ import { FollowAdapter } from './models/adapters/follow.adapter';
 import { FriendAdapter } from './models/adapters/friend.adapter';
 import { PostAdapter } from './models/adapters/post.adapter';
 import { UserAdapter } from './models/adapters/user.adapter';
+import { FullPostViewComponent } from './full-post-view/full-post-view.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { UserAdapter } from './models/adapters/user.adapter';
     NavBarComponent,
     NewsfeedComponent,
     ProfileComponent,
-    FriendsComponent
+    FriendsComponent,
+    FullPostViewComponent
   ],
   imports: [
     BrowserModule,
