@@ -1,4 +1,5 @@
-﻿import { Comment } from "../comment.model";
+import { Comment } from "../comment.model";
+import { IModelAdapter } from "./interface/IModelAdapter.interface";
 
 export class CommentAdapter implements IModelAdapter<Comment> {
     Adapt(data: any): Comment {

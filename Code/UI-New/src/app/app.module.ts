@@ -13,6 +13,16 @@ import { ProfileComponent } from './profile/profile.component';
 import { FriendsComponent } from './friends/friends.component';
 import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
+import { UserService } from './services/user.service';
+import { NewsfeedService } from './services/newsfeed.service';
+import { ContentService } from './services/content.service';
+import { FollowService } from './services/follow.service';
+import { SignalrService } from './services/signalr.service';
+import { CommentAdapter } from './models/adapters/comment.adapter';
+import { FollowAdapter } from './models/adapters/follow.adapter';
+import { FriendAdapter } from './models/adapters/friend.adapter';
+import { PostAdapter } from './models/adapters/post.adapter';
+import { UserAdapter } from './models/adapters/user.adapter';
 
 @NgModule({
   declarations: [
@@ -31,7 +41,19 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     NgbModule
   ],
-  providers: [AuthenticationService],
+  providers: [
+    AuthenticationService,
+    ContentService,
+    FollowService,
+    NewsfeedService,
+    SignalrService,
+    UserService,
+    CommentAdapter,
+    FollowAdapter,
+    FriendAdapter,
+    PostAdapter,
+    UserAdapter
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

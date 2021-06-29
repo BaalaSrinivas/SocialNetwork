@@ -1,4 +1,5 @@
-﻿import { Post } from "../post.model";
+import { Post } from "../post.model";
+import { IModelAdapter } from "./interface/IModelAdapter.interface";
 
 export class PostAdapter implements IModelAdapter<Post> {
     Adapt(data: any): Post {

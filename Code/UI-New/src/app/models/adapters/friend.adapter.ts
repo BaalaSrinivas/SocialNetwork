@@ -1,4 +1,5 @@
-﻿import { Friend } from "../friend.model";
+import { Friend } from "../friend.model";
+import { IModelAdapter } from "./interface/IModelAdapter.interface";
 
 export class FriendAdapter implements IModelAdapter<Friend>
 {

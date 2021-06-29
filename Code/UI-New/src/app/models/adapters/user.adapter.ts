@@ -1,4 +1,5 @@
-﻿import { User } from "../user.model";
+import { User } from "../user.model";
+import { IModelAdapter } from "./interface/IModelAdapter.interface";
 
 export class UserAdapter implements IModelAdapter<User>
 {

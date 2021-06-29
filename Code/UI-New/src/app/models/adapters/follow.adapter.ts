@@ -1,4 +1,5 @@
-﻿import { Follow } from "../follow.model";
+import { Follow } from "../follow.model";
+import { IModelAdapter } from "./interface/IModelAdapter.interface";
 
 export class FollowAdapter implements IModelAdapter<Follow>
 {

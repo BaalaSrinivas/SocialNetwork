@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User, UserManager } from "oidc-client";
 import { from, Observable, Subject } from "rxjs";
-import { Register } from "src/app/models/register.model"
+import { Register } from "../models/register.model";
 
 const httpOptions = {
     headers: new HttpHeaders({
