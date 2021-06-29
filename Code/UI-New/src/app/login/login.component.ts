@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -8,24 +9,27 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
 
-  constructor() { }
+  constructor(private _authenticationService: AuthenticationService) { }
+
+  userName: string;
+  password: string
 
   ngOnInit(): void {
   }
 
   signInWithGoogle(): void {
-    //this.authService.login();
+    this._authenticationService.login();
   }
 
   signOut(): void {
-    //this.authService.logout();
+    this._authenticationService.logout();
   }
 
   signInWithIdentity(): void {
-    //this.authService.loginIdentity(this.userName, this.password).subscribe((s) => {
-    //  //Once user is loggedin initiate Open Id flow
-    //  this.authService.login();
-    //});
+    this._authenticationService.loginIdentity(this.userName, this.password).subscribe((s) => {
+      //Once user is loggedin initiate Open Id flow
+      this._authenticationService.login();
+    });
   }
 
 }
