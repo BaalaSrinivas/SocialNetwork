@@ -24,6 +24,8 @@ import { FriendAdapter } from './models/adapters/friend.adapter';
 import { PostAdapter } from './models/adapters/post.adapter';
 import { UserAdapter } from './models/adapters/user.adapter';
 import { FullPostViewComponent } from './full-post-view/full-post-view.component';
+import { PostElementComponent } from './ui-elements/post-element/post-element.component';
+import { PostEditorElementComponent } from './ui-elements/post-editor-element/post-editor-element.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { FullPostViewComponent } from './full-post-view/full-post-view.component
     NewsfeedComponent,
     ProfileComponent,
     FriendsComponent,
-    FullPostViewComponent
+    FullPostViewComponent,
+    PostElementComponent,
+    PostEditorElementComponent
   ],
   imports: [
     BrowserModule,
