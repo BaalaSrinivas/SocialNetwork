@@ -1,1 +1,64 @@
-<p>post-element works!</p>
+<div class="card shadow my-3">
+  <div class="card-body">
+    <div class="pl-0 row">
+      <div class="col-md-2 col-3">
+        <img src="{{post.ProfileImageUrl}}" alt="Raised circle image" class="img-fluid rounded-circle">
+      </div>
+      <div class="pl-2 pt-md-1 col-md-10 col-9">
+        <h6 class="mb-0"><b>{{post.UserName}}</b></h6>
+        <p class="">{{post.Timestamp | date:'MMM d, y, h:mm:ss a'}}</p>
+      </div>
+    </div>
+    <div class="col-md-12 px-2 py-2 py-md-3" [innerHTML]=content>
+    </div>
+    <div class="mt-2 pl-2">
+      <p class="font-weight-normal"><a class="font-italic" href="#">{{post.LikeCount}} Likes</a> | <a class="font-italic" href="#">{{post.CommentCount}} Comments</a></p>
+    </div>
+    <hr class="mt-2 mb-1" />
+    <!--Like and comment area-->
+    <div class="pt-1 pl-2 row">
+      <div *ngIf="post.HasUserLiked == false" (click)="likePost()" class="btn col-5" style="text-align:left">
+        <i class="fa fa-thumbs-o-up"></i>&nbsp;Like
+      </div>
+      <div *ngIf="post.HasUserLiked == true" (click)="likePost()" class="btn col-5" style="text-align:left">
+        <span style="color:blue"><i class="fa fa-thumbs-o-up"></i>&nbsp;Liked</span>
+      </div>
+      <div class="col-1"></div>
+      <div class="btn col-5" (click)="change()" style="text-align:right">
+        <i class="fa fa-comments"></i>&nbsp;Comment
+      </div>
+    </div>
+    <!--Comment Section-->
+    <div *ngIf="commentToggle == true">
+      <!--New Comment-->
+      <div class="pl-0 pr-2 py-3 row">
+        <div class="col-md-2 col-3">
+          <img [src]="profileUrl || 'assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 50px;">
+        </div>
+        <div class="px-0 py-1 col-md-9 col-7">
+          <textarea type="text" placeholder="Enter your comment" [(ngModel)]="comment.CommentText" style="resize:none;" rows="1" class="form-control"></textarea>
+        </div>
+        <div class="col-md-1 col-2 px-2 ">
+          <button class="btn btn-primary" (click)="addComment()">
+            <span><i class="fa fa-paper-plane"></i></span>
+          </button>
+        </div>
+      </div>
+      <!--List of comments-->
+      <div class="mt-2">
+        <div *ngFor="let comment of postComments" class="pl-0 pr-2 py-2 row">
+          <div class="col-md-2 col-3">
+            <img src="{{comment.ProfileImageUrl}}" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 50px;">
+          </div>
+          <div class="pl-3 pt-2 col-md-10 col-9 rounded" style="background-color: #f2f2f2">
+            <p class="text-blue mb-0 font-weight-600" style="font-size:small"><b>{{comment.UserName}}</b></p>
+            <p class="text-black font-weight-normal mb-0" style="font-size:small">{{comment.Timestamp | date:'MMM d, y, h:mm:ss a'}}</p>
+            <div class="py-2">
+              {{comment.CommentText}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,3 +25,29 @@ B 54
 Font 
 b -> Harlow solid 94
 s -> Dubai - 72
+
+
+
+
+Profile Page
+
+Profile Picture
+Cover Picture
+Name -> Baala Srinivas 
+Profile Name -> @baala
+Headline
+Interests
+Location
+Work/School
+
+Friends Count
+Followers Count
+Photos Count
+
+Photos List
+
+Connect and Follow button
+
+
+
+

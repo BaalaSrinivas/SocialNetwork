@@ -12,10 +12,10 @@ import { UserService } from '../../services/user.service';
 })
 export class NavBarComponent implements OnInit {
 
-  private userName: string;
-  private profileUrl: string;
-  private searchKey: string;
-  private users: User[];
+  userName: string;
+  profileUrl: string;
+  searchKey: string;
+  users: User[];
 
   private notifications: string[] = [];
 
@@ -61,7 +61,7 @@ export class NavBarComponent implements OnInit {
     }
     if (key.length >= 2) {
       this._userService.searchUser(key).subscribe(data => {
-        this.users = data.splice(0, 10);
+        this.users = data.splice(0, 8);
       });
     }
     else {

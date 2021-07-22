@@ -26,6 +26,9 @@ import { UserAdapter } from './models/adapters/user.adapter';
 import { FullPostViewComponent } from './full-post-view/full-post-view.component';
 import { PostElementComponent } from './ui-elements/post-element/post-element.component';
 import { PostEditorElementComponent } from './ui-elements/post-editor-element/post-editor-element.component';
+import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { PostImageAdapter } from './models/adapters/postimage.adapter';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { PostEditorElementComponent } from './ui-elements/post-editor-element/po
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CKEditorModule,
+    FormsModule,
     HttpClientModule,
     NgbModule
   ],
@@ -58,6 +63,7 @@ import { PostEditorElementComponent } from './ui-elements/post-editor-element/po
     FollowAdapter,
     FriendAdapter,
     PostAdapter,
+    PostImageAdapter,
     UserAdapter
   ],
   bootstrap: [AppComponent]

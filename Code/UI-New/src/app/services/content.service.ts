@@ -7,6 +7,8 @@ import { PostAdapter } from "../models/adapters/post.adapter";
 import { Post } from "../models/post.model";
 import { Comment } from '../models/comment.model';
 import { CommentAdapter } from "../models/adapters/comment.adapter";
+import { PostImageAdapter } from "../models/adapters/postimage.adapter";
+import { PostImage } from "../models/postimage.model";
 
 
 const contentApi = environment.apiUrl + 'v1/content/';
@@ -14,79 +16,98 @@ const contentApi = environment.apiUrl + 'v1/content/';
 @Injectable()
 export class ContentService {
 
-    constructor(private _httpClient: HttpClient, private _postAdapter: PostAdapter, private _commentAdapter: CommentAdapter) {
-        
-    }
+  constructor(private _httpClient: HttpClient,
+    private _postAdapter: PostAdapter,
+    private _commentAdapter: CommentAdapter,
+    private _postImageAdapter: PostImageAdapter) {
 
-    addComment(comment: Comment): Observable<number> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        return this._httpClient.post<number>(contentApi + 'addcomment', comment, httpOptions);
-    }
+  }
 
-    getComments(postId: string): Observable<Comment[]> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        return this._httpClient.get<Comment[]>(contentApi + 'getcomments?postid=' + postId, httpOptions)
-            .pipe(map((data: any[]) =>
-                data.map(item => this._commentAdapter.Adapt(item))
-            )
-            );
-    }
+  addComment(comment: Comment): Observable<number> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.post<number>(contentApi + 'addcomment', comment, httpOptions);
+  }
 
-    getPosts(guids: string[]): Observable<Post[]> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        return this._httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
-            .pipe(map((data: any[]) =>
-                data.map(item => this._postAdapter.Adapt(item))
-            )
-       );
-    }
+  getComments(postId: string): Observable<Comment[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.get<Comment[]>(contentApi + 'getcomments?postid=' + postId, httpOptions)
+      .pipe(map((data: any[]) =>
+        data.map(item => this._commentAdapter.Adapt(item))
+      )
+      );
+  }
 
-    createPost(post: Post): Observable<boolean> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        return this._httpClient.post<boolean>(contentApi + 'createpost', post, httpOptions);            
-    } 
+  getPosts(guids: string[]): Observable<Post[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.post<Post[]>(contentApi + 'getposts', guids, httpOptions)
+      .pipe(map((data: any[]) =>
+        data.map(item => this._postAdapter.Adapt(item))
+      )
+      );
+  }
 
-    likePost(postId: string): Observable<number> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        return this._httpClient.get<number>(contentApi + 'likepost?postId=' + postId, httpOptions);    
+  getImages(count: number): Observable<PostImage[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    var data = {
+      'count': count
     }
+    return this._httpClient.get<PostImage[]>(contentApi + 'getuserimages?count=' + count, httpOptions)
+      .pipe(map((data: any[]) =>
+        data.map(item => this._postImageAdapter.Adapt(item))
+      ));
+  }
 
-    getUserPostIds(count: number, userId: string): Observable<string[]> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
-            })
-        };
-        var data = {
-            'userId': userId,
-            'count': count
-        }
-        return this._httpClient.post<string[]>(contentApi + 'getuserposts',data, httpOptions);        
+  createPost(post: Post): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.post<boolean>(contentApi + 'createpost', post, httpOptions);
+  }
+
+  likePost(postId: string): Observable<number> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.get<number>(contentApi + 'likepost?postId=' + postId, httpOptions);
+  }
+
+  getUserPostIds(count: number, userId: string): Observable<string[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    var data = {
+      'userId': userId,
+      'count': count
     }
+    return this._httpClient.post<string[]>(contentApi + 'getuserposts', data, httpOptions);
+  }
 }

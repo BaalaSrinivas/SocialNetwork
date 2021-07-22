@@ -4455,7 +4455,8 @@ tbody.collapse.show {
   }
 }
 
-@media (min-width: 576px) {
+
+@media (min-width: 200px) { /*M*/
   .navbar-expand-sm {
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -15432,7 +15433,7 @@ h5,
 h6,
 .h6 {
   font-size: 0.75rem;
-  text-transform: uppercase;
+  text-transform: none; /*E*/
   font-weight: 500;
 }
 
@@ -18566,7 +18567,7 @@ footer .pull-center {
 
   .navbar .dropdown.show .dropdown-menu,
   .navbar .dropdown .dropdown-menu {
-    background-color: transparent;
+    background-color: white;
     border: 0;
     padding-bottom: 15px;
     transition: none;
@@ -18576,7 +18577,7 @@ footer .pull-center {
     width: auto;
     margin-bottom: 15px;
     padding-top: 0;
-    height: 300px;
+    height: auto; /*M*/
     animation: none;
     opacity: 1;
     overflow-y: scroll;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from '../models/post.model';
+import { PostImage } from '../models/postimage.model';
 import { User } from '../models/user.model';
 import { ContentService } from '../services/content.service';
 import { FollowService } from '../services/follow.service';
@@ -26,6 +27,8 @@ export class ProfileComponent implements OnInit {
   user: User = new User();
   userName: string;
 
+  userImages: PostImage[];
+
   userPosts: Post[];
 
   ngOnInit() {
@@ -44,6 +47,8 @@ export class ProfileComponent implements OnInit {
           console.log(this.userPosts);
         });
       });
+
+      this.getImages();
     });
   }
 
@@ -56,6 +61,12 @@ export class ProfileComponent implements OnInit {
   followUser() {
     this._followService.followUser(this.mailId).subscribe(data => {
 
+    });
+  }
+
+  getImages() {
+    this._contentService.getImages(6).subscribe(data => {
+      this.userImages = data;
     });
   }
 

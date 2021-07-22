@@ -1,1 +1,18 @@
-<p>newsfeed works!</p>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-12">
+      <div class="row row-grid">
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-8">
+          <app-post-editor-element [userProfile]="profileImageUrl"></app-post-editor-element>
+          <app-post-element *ngFor="let post of feedPosts" [post]="post"></app-post-element>
+        </div>
+        <div class="col-lg-3">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

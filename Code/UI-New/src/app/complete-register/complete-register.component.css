@@ -1,0 +1,12 @@
+.image-upload:hover {
+  cursor: pointer;
+}
+
+.image-btn {
+  cursor: pointer;
+}
+
+.image-btn:hover
+{
+    display:block;
+}

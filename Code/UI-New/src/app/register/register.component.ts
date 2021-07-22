@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
       console.log(s);
       console.log(s.succeeded == true);
       if (s.succeeded == true) {
-        this.router.navigate(['/complete-signup'], { replaceUrl: true });
+        this.router.navigate(['/complete-registration'], { replaceUrl: true });
       }
     });
   }

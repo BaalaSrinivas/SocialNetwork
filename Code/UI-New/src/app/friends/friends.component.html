@@ -1,1 +1,89 @@
-<p>friends works!</p>
+<div class="container">
+  <span class="font-weight-700">Requests</span>
+  <!--[ngClass]="{'row': i%2 == 0}-->
+  <div *ngFor="let request of pendingRequests; let i = index">
+    <div *ngIf="i%2==0" class="col-md-6 col-sm-12">
+      <div class="card rounded px-0">
+        <div class="card-body d-flex">
+          <div class="col-md-2">
+            <img [src]="request.ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+          </div>
+          <div class="col-md-7 pl-2 pt-1">
+            <h6 class="text-blue mb-0"><b>{{request.UserName}}</b></h6>
+            <p class="text-black font-weight-normal">{{request.UserHeadline}}</p>
+          </div>
+          <div class="col-md-3 pl-2">
+            <button class="btn btn-icon btn-primary mt-1" (click)="acceptFriendRequest(request)" type="button">
+              <span class="btn-inner--icon"><i class="fa fa-check"></i></span>
+            </button>
+            <button class="btn btn-icon btn-danger mt-1" (click)="rejectFriendRequest(request)" type="button">
+              <span class="btn-inner--icon"><i class="fa fa-times"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="i%2==1" class="col-md-6 col-sm-12">
+      <div class="card rounded px-0">
+        <div class="card-body d-flex">
+          <div class="col-md-2">
+            <img [src]="request.ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+          </div>
+          <div class="col-md-7 pl-2 pt-1">
+            <h6 class="text-blue mb-0"><b>{{request.UserName}}</b></h6>
+            <p class="text-black font-weight-normal">{{request.UserHeadline}}</p>
+          </div>
+          <div class="col-md-3 pl-2">
+            <button class="btn btn-icon btn-primary mt-1" (click)="acceptFriendRequest(request)" type="button">
+              <span class="btn-inner--icon"><i class="fa fa-check"></i></span>
+            </button>
+            <button class="btn btn-icon btn-danger mt-1" (click)="rejectFriendRequest(request)" type="button">
+              <span class="btn-inner--icon"><i class="fa fa-times"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <span class="font-weight-700">Friends</span>
+  <div *ngFor="let friend of friends; let i = index" class="d-flex">
+    <div *ngIf="i%2==0" class="col-md-6 col-sm-12">
+      <div class="card rounded px-0">
+        <div class="card-body d-flex">
+          <div class="px-2">
+            <img [src]="friend.ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+          </div>
+          <div class="flex-fill pl-2 pt-1">
+            <h6 class="text-blue mb-0"><b>{{friend.UserName}}</b></h6>
+            <p class="text-black font-weight-normal">{{friend.UserHeadline}}</p>
+          </div>
+          <div class="mr-auto pl-2">
+            <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+              <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="i%2==1" class="col-md-6 col-sm-12">
+      <div class="card rounded px-0">
+        <div class="card-body row">
+          <div class="col-2">
+            <img [src]="friend.ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+          </div>
+          <div class="pl-2 col-6">
+            <h6 class="text-blue mb-0"><b>{{friend.UserName}}</b></h6>
+            <p class="text-black font-weight-normal">{{friend.UserHeadline}}</p>
+          </div>
+          <div class="pl-2 col-4">
+            <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+              <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

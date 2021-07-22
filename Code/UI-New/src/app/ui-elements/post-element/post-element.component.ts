@@ -10,8 +10,18 @@ import { ContentService } from '../../services/content.service';
 })
 export class PostElementComponent implements OnInit {
 
-  @Input()
-  post: Post = new Post();
+  _post: Post = new Post();
+  content: string;
+
+  @Input() set post(value: any) {
+    this._post = value;
+    //TODO: This is poor handling, but fed up with css, will fix it after some days
+    this.content = this._post.Content.replace(new RegExp("<img", "g"), "<img class=\"img-fluid\"");
+  }
+  get post() {
+    return this._post;
+  }
+
   profileUrl: string;
 
   comment: Comment = new Comment();
@@ -35,8 +45,8 @@ export class PostElementComponent implements OnInit {
 
   likePost() {
     this._contentService.likePost(this.post.Id).subscribe(l => {
-      this.post.LikeCount = l;
-      this.post.HasUserLiked = !this.post.HasUserLiked;
+      this._post.LikeCount = l;
+      this._post.HasUserLiked = !this.post.HasUserLiked;
     });
   }
 
@@ -44,7 +54,7 @@ export class PostElementComponent implements OnInit {
     this.comment.PostId = this.post.Id
     this._contentService.addComment(this.comment).subscribe(r => {
       console.log(r);
-      this.post.CommentCount = r;
+      this._post.CommentCount = r;
       this.comment = new Comment();
       this.getComments();
     });

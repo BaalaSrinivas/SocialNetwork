@@ -1,1 +1,17 @@
-<p>post-editor-element works!</p>
+<div class="card mt-4">
+  <div class="card-body">
+    <div class="d-flex pl-0 pr-2 py-2 row">
+      <div class="col-md-2 col-3">
+        <img [src]="userProfile || 'assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle">
+      </div>
+      <div class="col-md-10 col-9" style="margin-top:-15px;">
+        <ckeditor id="editor" class="col-12" [(ngModel)]="post.Content" [config]="editorConfig" (ready)="onReady($event)" [editor]="Editor"></ckeditor>
+      </div>
+    </div>
+    <div>
+      <button (click)="createPost()" class="btn btn-primary float-right" type="button">
+        Post
+      </button>
+    </div>
+  </div>
+</div>
