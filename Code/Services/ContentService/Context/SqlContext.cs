@@ -23,5 +23,7 @@ namespace ContentService.Context
         public DbSet<Like> Likes { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<PostImage> PostImages { get; set; }
     }
 }

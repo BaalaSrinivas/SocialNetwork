@@ -2,6 +2,7 @@ using ContentService.Context;
 using ContentService.Events.EventHandler;
 using ContentService.Events.EventModel;
 using ContentService.Repository;
+using ContentService.Services;
 using MessageBus.MessageBusCore;
 using MessageBus.RabbitMQ;
 using MessageBusCore;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace ContentService
 {
@@ -76,7 +78,9 @@ namespace ContentService
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepostitory>();
             services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddScoped<IPostImageRepository, PostImageRepository>();
             services.AddTransient<IEventHandler<NewContentEventModel>, ContentEventHandler>();
+            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("BlobServiceUrl")));
 
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {

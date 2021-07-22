@@ -14,10 +14,8 @@ namespace BlobService.Controllers
     [Route("blobapi/v1/[controller]")]
     public class ImageController : ControllerBase
     {
-        IConfiguration _configuration;
-        public ImageController(IConfiguration configuration)
+        public ImageController()
         {
-            _configuration = configuration;
         }
 
         [HttpPost]
@@ -30,7 +28,7 @@ namespace BlobService.Controllers
                 await image.CopyToAsync(fileStream);
             }
 
-            return Ok(@$"{_configuration.GetValue<string>("ServiceUrl")}/Images/{imageName}");
+            return Ok(@$"BlobUrlBSK/Images/{imageName}");
         }
     }
 }

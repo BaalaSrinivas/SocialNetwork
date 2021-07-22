@@ -90,6 +90,26 @@ namespace ContentService.Data.Migrations.Content
 
                     b.ToTable("Posts");
                 });
+
+            modelBuilder.Entity("ContentService.Models.PostImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostImages");
+                });
 #pragma warning restore 612, 618
         }
     }

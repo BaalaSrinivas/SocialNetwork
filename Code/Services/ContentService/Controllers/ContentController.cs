@@ -2,6 +2,7 @@
 using ContentService.Events.EventModel;
 using ContentService.Models;
 using ContentService.Repository;
+using ContentService.Services;
 using MessageBus.MessageBusCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ContentService.Controllers
@@ -21,20 +23,24 @@ namespace ContentService.Controllers
         private IPostRepository _postRepository;
         private ICommentRepository _commentRepository;
         private ILikeRepository _likeRepository;
+        private IPostImageRepository _postImageRepository;
         private SqlContext _sqlContext;
         private ILogger<ContentController> _logger;
-        IQueue<NewContentEventModel> _contentQueue;
-        IQueue<UserLikedEventModel> _userLikedQueue;
-        IQueue<UserCommentedEventModel> _userCommentedQueue;
+        private IQueue<NewContentEventModel> _contentQueue;
+        private IQueue<UserLikedEventModel> _userLikedQueue;
+        private IQueue<UserCommentedEventModel> _userCommentedQueue;
+        private IBlobService _blobService;
 
         public ContentController(IPostRepository postRepository,
             ICommentRepository commentRepository,
             ILikeRepository likeRepository,
+            IPostImageRepository postImageRepository,
             SqlContext sqlContext,
             IQueue<NewContentEventModel> contentQueue,
             IQueue<UserLikedEventModel> userLikedQueue,
             IQueue<UserCommentedEventModel> userCommentedQueue,
-            ILogger<ContentController> logger)
+            ILogger<ContentController> logger,
+            IBlobService blobService)
         {
             _contentQueue = contentQueue;
             _userLikedQueue = userLikedQueue;
@@ -44,6 +50,8 @@ namespace ContentService.Controllers
             _sqlContext = sqlContext;
             _likeRepository = likeRepository;
             _logger = logger;
+            _blobService = blobService;
+            _postImageRepository = postImageRepository;
         }
 
         [HttpGet]
@@ -89,7 +97,27 @@ namespace ContentService.Controllers
             post.UserId = GetUserId();
             post.Timestamp = DateTime.UtcNow;
             post.LikeCount = post.CommentCount = 0;
+            var token = HttpContext.Request.Headers["Authorization"][0];
 
+            Regex imageDataRegex = new Regex(@"(?<=<img src="")(.*?)(?="">)");
+            MatchCollection matchCollection = imageDataRegex.Matches(post.Content);
+
+            List<PostImage> imageList = new List<PostImage>();
+
+            foreach (Match match in matchCollection)
+            {
+                string[] image = match.Value.Split(',');
+                string type = image[0].Split(';')[0].Replace("data:image/", string.Empty);
+                string imageString = image[1];
+                byte[] imageBytes = Convert.FromBase64String(imageString);
+                string path = await _blobService.UploadImage(imageBytes, type ,token);
+                post.Content = post.Content.Replace(match.Value, path);
+
+                PostImage postImage = new PostImage() { Id = Guid.NewGuid(), PostId = post.Id, UserId = post.UserId, ImageUrl = path };
+                imageList.Add(postImage);
+            }
+
+            await _postImageRepository.AddImages(imageList);
             await _postRepository.CreatePost(post);
             _contentQueue.Publish(new NewContentEventModel() { MessageText = $"New post by {post.UserId}", PostUserId = post.UserId, PostId = post.Id });
             return await _sqlContext.SaveChangesAsync() > 0;
@@ -116,7 +144,7 @@ namespace ContentService.Controllers
             List<Post> posts = await _postRepository.GetPosts(postIds);
             string userId = GetUserId();
             foreach (Post post in posts)
-            {
+            {             
                 post.HasUserLiked = await _likeRepository.HasUserLiked(userId, post.Id);
             }
             return posts;
@@ -127,6 +155,14 @@ namespace ContentService.Controllers
         public async Task<IEnumerable<Guid>> GetUserPosts(UserPostDTO userPostDTO)
         {
             return await _postRepository.GetUserPosts(userPostDTO.UserId, userPostDTO.Count);
+        }
+
+        [HttpGet]
+        [Route("GetUserImages")]
+        public async Task<IEnumerable<PostImage>> GetImages(int count)
+        {
+            string userId = GetUserId();
+            return await _postImageRepository.GetImages(userId, count);
         }
 
         [HttpGet]

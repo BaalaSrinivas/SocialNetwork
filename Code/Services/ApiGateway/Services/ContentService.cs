@@ -25,9 +25,7 @@ namespace ApiGateway.Services
             {
                 PropertyNameCaseInsensitive = true
             };
-            _contentHttpClient.DefaultRequestHeaders.Add("Authorization", token);
-
-            var httpContent = new StringContent(JsonSerializer.Serialize(postId, jsonSerializerOptions), Encoding.UTF8, "application/json");
+            _contentHttpClient.DefaultRequestHeaders.Add("Authorization", token);            
 
             var httpResponse = await _contentHttpClient.GetAsync($"getcomments?postid={postId}");
 
@@ -52,6 +50,19 @@ namespace ApiGateway.Services
 
             var httpResponse = await _contentHttpClient.PostAsync("getposts", httpContent);
             return JsonSerializer.Deserialize<IEnumerable<Post>>(await httpResponse.Content.ReadAsStringAsync(), jsonSerializerOptions);
+        }
+
+        public async Task<List<PostImage>> GetImages(int count, string token)
+        {
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            _contentHttpClient.DefaultRequestHeaders.Add("Authorization", token);            
+
+            var httpResponse = await _contentHttpClient.GetAsync($"getuserimages?count={count}");
+            return JsonSerializer.Deserialize<List<PostImage>>(await httpResponse.Content.ReadAsStringAsync(), jsonSerializerOptions);
         }
     }
 }

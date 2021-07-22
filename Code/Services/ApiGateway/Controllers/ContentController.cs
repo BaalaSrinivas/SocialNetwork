@@ -3,6 +3,7 @@ using ApiGateway.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,13 @@ namespace ApiGateway.Controllers
 
         private IUserService _userService;
 
-        public ContentController(IContentService contentService, IUserService userService)
+        private IConfiguration _configuration;
+
+        public ContentController(IContentService contentService, IUserService userService, IConfiguration configuration)
         {
             _contentService = contentService;
             _userService = userService;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -42,11 +46,12 @@ namespace ApiGateway.Controllers
             foreach (Post post in posts)
             {
                 SMUser targetUser = userDetails.FirstOrDefault(s => s.MailId == post.UserId);
-
+                
                 result.Add(new PostDTO()
                 {
                     CommentCount = post.CommentCount,
-                    Content = post.Content,
+                    //TODO: Find Better Approach
+                    Content = GetCompleteImageUrl(post.Content),
                     HasUserLiked = post.HasUserLiked,
                     Id = post.Id,
                     LikeCount = post.LikeCount,
@@ -58,6 +63,11 @@ namespace ApiGateway.Controllers
             }
 
             return result;
+        }
+
+        private string GetCompleteImageUrl(string imageUrl)
+        {
+            return imageUrl.Replace("BlobUrlBSK", _configuration.GetValue<string>("ApiGateWayUrl"));
         }
 
         [HttpGet]
@@ -91,6 +101,22 @@ namespace ApiGateway.Controllers
                 });
             }
 
+            return result;
+        }
+
+        [HttpGet]
+        [Route("GetUserImages")]
+        public async Task<IEnumerable<PostImage>> GetImages(int count)
+        {
+            var token = HttpContext.Request.Headers["Authorization"][0];
+
+            List<PostImage> result = await _contentService.GetImages(count, token);
+
+            result.ForEach(s =>
+            {
+                s.ImageUrl = GetCompleteImageUrl(s.ImageUrl);
+            });
+            
             return result;
         }
     }

@@ -12,5 +12,7 @@ namespace ApiGateway.Services
         public Task<IEnumerable<Comment>> GetComments(Guid postId, string token);
 
         public Task<IEnumerable<string>> GetLikedUsers(Guid parentId);
+
+        public Task<List<PostImage>> GetImages(int count, string token);
     }
 }
