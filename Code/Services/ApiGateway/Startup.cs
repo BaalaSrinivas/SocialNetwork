@@ -88,6 +88,7 @@ namespace ApiGateway
             });
 
             services.AddOcelot();
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +112,7 @@ namespace ApiGateway
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
 
             app.UseOcelot().Wait();

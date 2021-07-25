@@ -37,3 +37,7 @@
 /Code/Services/BlobService/obj
 /Code/Services/BlobService/wwwroot/Images
 /Images
+/Code/Services/ApiGateway/bin/Release/net5.0
+/Code/Services/ContentService/bin/Release/net5.0
+/Code/Services/MessageBus/MessageBus.RabbitMQ/bin/Release/net5.0
+/Code/Services/MessageBus/MessageBusCore/bin/Release/net5.0

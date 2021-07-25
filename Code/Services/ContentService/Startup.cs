@@ -32,6 +32,8 @@ namespace ContentService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks().AddDbContextCheck<SqlContext>();
+
             services.AddDbContext<SqlContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
@@ -109,6 +111,8 @@ namespace ContentService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContentService", Version = "v1" });
             });
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,6 +136,7 @@ namespace ContentService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
