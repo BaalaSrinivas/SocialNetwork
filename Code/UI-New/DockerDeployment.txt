@@ -1,0 +1,2 @@
+docker build -t contactbalasrinivas/bsk-ui .
+docker run -p 4200:80 --name ui contactbalasrinivas/bsk-ui
