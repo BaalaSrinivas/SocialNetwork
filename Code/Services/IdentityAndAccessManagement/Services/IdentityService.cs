@@ -49,5 +49,20 @@ namespace IdentityAndAccessManagement.Services
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<IdentityResult> ConfirmEmail(SocialUser user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<SocialUser> FindByUserId(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(SocialUser user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
     }
 }

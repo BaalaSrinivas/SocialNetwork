@@ -50,7 +50,11 @@ namespace IdentityAndAccessManagement
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddIdentity<SocialUser, IdentityRole>().AddEntityFrameworkStores<IAMContext>();
+            services.AddIdentity<SocialUser, IdentityRole>(config =>
+            {
+                //config.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<IAMContext>();
+            //.AddDefaultTokenProviders();
             //.Net Core Identity End
 
             //Identity Server 4 Start
@@ -90,6 +94,7 @@ namespace IdentityAndAccessManagement
             });
 
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IEmailService, EMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

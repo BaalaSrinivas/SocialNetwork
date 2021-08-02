@@ -2,9 +2,9 @@ cd ./Services/ApiGateway
 start cmd /c ApiGateway.cmd
 cd ../../
 
-REM cd ./Services/BlobService
-REM start cmd /c BlobService.cmd
-REM cd ../../
+cd ./Services/BlobService
+start cmd /c BlobService.cmd
+cd ../../
 
 cd ./Services/ContentService
 start cmd /c ContentService.cmd
@@ -33,6 +33,11 @@ REM cd ../../
 cd ./Services/UserManagement
 start cmd /c UserManagement.cmd
 cd ../../
+
+cd ./UI-New
+start cmd /c UI-New.cmd
+cd ../../
+
 
 
 

@@ -11,10 +11,12 @@ namespace IdentityAndAccessManagement.Controllers
     public class AccountController : ControllerBase
     {
         private IIdentityService _identityService;
+        private IEmailService _emailService;
 
-        public AccountController(IIdentityService identityService)
+        public AccountController(IIdentityService identityService, IEmailService emailService)
         {
             _identityService = identityService;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -26,7 +28,15 @@ namespace IdentityAndAccessManagement.Controllers
                 Email = registerModel.MailId,
                 UserName = registerModel.MailId
             };
-            return await _identityService.Register(socialUser, registerModel.Password);
+            IdentityResult result = await _identityService.Register(socialUser, registerModel.Password);
+
+           /* if(result.Succeeded)
+            {
+                string token = await _identityService.GenerateEmailConfirmationTokenAsync(socialUser);
+                _emailService.SendEmail(socialUser.Email, "Token", token);
+            }*/
+
+            return result;
         }
 
         [HttpGet]
@@ -53,6 +63,16 @@ namespace IdentityAndAccessManagement.Controllers
             
             //TODO:Hardcoding for now, Has to be fixed
             return Redirect("http://localhost:4200/signoutredirect");
+        }
+
+        [HttpGet]
+        [Route("confirmemail")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            SocialUser user = await _identityService.FindByUserId(userId);
+            await _identityService.ConfirmEmail(user, token);
+
+            return Redirect("http://localhost:4200/login");
         }
     }
 }

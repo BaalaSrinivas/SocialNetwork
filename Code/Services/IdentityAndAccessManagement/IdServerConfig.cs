@@ -20,7 +20,8 @@ namespace IdentityAndAccessManagement
                 AllowAccessTokensViaBrowser = true,
                 AllowedScopes = { "openid", "profile", "email" },
                 AllowedCorsOrigins = { "http://localhost:4200" },
-                AlwaysIncludeUserClaimsInIdToken = true
+                AlwaysIncludeUserClaimsInIdToken = true,
+                IdentityTokenLifetime = 3600
             };
 
             return new List<Client>() { client };
