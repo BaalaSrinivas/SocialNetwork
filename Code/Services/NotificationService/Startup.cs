@@ -29,6 +29,20 @@ namespace NotificationService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Cors", builder =>
+                {
+                    builder
+                        .WithOrigins(
+                        "http://localhost")
+                        .AllowCredentials()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddSignalR();
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {
@@ -100,7 +114,7 @@ namespace NotificationService
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("Cors");
             app.UseRouting();
 
             app.UseAuthentication();

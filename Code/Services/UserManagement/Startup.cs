@@ -106,12 +106,12 @@ namespace UserManagement
 
             services.AddSingleton<IQueue<NotificationEventModel>>(s =>
             {
-                return new Queue<NotificationEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "NotificationQueue", s);
+                return new Queue<NotificationEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "NotificationQueue", s, false);
             });
 
             services.AddSingleton<IQueue<UserAddedEventModel>>(s =>
             {
-                return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s);
+                return new Queue<UserAddedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCreated", s, false);
             });
         }
 

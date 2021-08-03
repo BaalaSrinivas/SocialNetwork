@@ -94,17 +94,17 @@ namespace ContentService
 
             services.AddSingleton<IQueue<NewContentEventModel>>(s =>
             {
-                return new Queue<NewContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserPost", s);
+                return new Queue<NewContentEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserPost", s, false);
             });
 
             services.AddSingleton<IQueue<UserLikedEventModel>>(s =>
             {
-                return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s);
+                return new Queue<UserLikedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserLiked", s, false);
             });
 
             services.AddSingleton<IQueue<UserCommentedEventModel>>(s =>
             {
-                return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
+                return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s, false);
             });
 
             services.AddSwaggerGen(c =>

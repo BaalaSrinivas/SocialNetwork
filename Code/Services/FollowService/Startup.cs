@@ -104,11 +104,11 @@ namespace FollowService
             });
             services.AddSingleton<IQueue<NewUserFollowEventModel>>(s =>
             {
-                return new Queue<NewUserFollowEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserFollowing", s);
+                return new Queue<NewUserFollowEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserFollowing", s, false);
             });
             services.AddSingleton<IQueue<FriendRequestStateChangeEventModel>>(s =>
             {
-                return new Queue<FriendRequestStateChangeEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "FriendStateChange", s);
+                return new Queue<FriendRequestStateChangeEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "FriendStateChange", s, false);
             });
         }
 

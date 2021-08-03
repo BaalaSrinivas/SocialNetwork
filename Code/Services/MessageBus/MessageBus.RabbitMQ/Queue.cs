@@ -19,15 +19,15 @@ namespace MessageBus.RabbitMQ
 
         IEventHandler<T> _subscriber;
 
-        public Queue(RabbitMQCore rabbitMQCore, string queueName, IServiceProvider serviceProvider)
+        public Queue(RabbitMQCore rabbitMQCore, string queueName, IServiceProvider serviceProvider, bool hasConsumer = true)
         {
             _serviceProvider = serviceProvider;
             _rabbitMQCore = rabbitMQCore;
             _queueName = queueName;
-            InitializeQueue();
+            InitializeQueue(hasConsumer);
         }
 
-        private void InitializeQueue()
+        private void InitializeQueue(bool hasConsumer)
         {
             if (!_rabbitMQCore.IsConnected)
             {
@@ -41,12 +41,15 @@ namespace MessageBus.RabbitMQ
             _channel = _rabbitMQCore.CreateModel();
             _channel.QueueDeclare(_queueName, durable: true, exclusive: false, autoDelete: false);
 
-            var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += MessageEventHandler;
-
-            _channel.BasicConsume(queue: _queueName,
+            if (hasConsumer)
+            {
+                var consumer = new EventingBasicConsumer(_channel);
+                
+                consumer.Received += MessageEventHandler;
+                _channel.BasicConsume(queue: _queueName,
                                  autoAck: true,
                                  consumer: consumer);
+            }
         }
 
         private void MessageEventHandler(object sender, BasicDeliverEventArgs basicDeliverEventArgs)
