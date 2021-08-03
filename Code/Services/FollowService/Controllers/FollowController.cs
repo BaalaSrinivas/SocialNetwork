@@ -43,16 +43,16 @@ namespace FollowService.Controllers
 
         [HttpPost]
         [Route("FollowUser")]
-        public async Task<bool> FollowUser([FromBody] string followingUserId)
+        public async Task<bool> FollowUser(FollowEntity follow)
         {
             string userId = GetUserId();
 
-            if(userId == followingUserId)
+            if(userId == follow.Following)
             {
                 return false;
             }
 
-            FollowEntity followEntity = new FollowEntity() { Id = Guid.NewGuid(), Following = followingUserId, Follower = userId };
+            FollowEntity followEntity = new FollowEntity() { Id = Guid.NewGuid(), Following = follow.Following, Follower = userId };
             Task<bool> addItemResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
             Task<bool> addCountResult = _unitofWork.FollowMetaDataRepository.AddFollowerCount(userId);
 

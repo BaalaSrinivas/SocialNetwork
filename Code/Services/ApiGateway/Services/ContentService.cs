@@ -52,16 +52,18 @@ namespace ApiGateway.Services
             return JsonSerializer.Deserialize<IEnumerable<Post>>(await httpResponse.Content.ReadAsStringAsync(), jsonSerializerOptions);
         }
 
-        public async Task<List<PostImage>> GetImages(int count, string token)
+        public async Task<List<PostImage>> GetImages(ImagesDTO imagesDTO, string token)
         {
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             };
 
-            _contentHttpClient.DefaultRequestHeaders.Add("Authorization", token);            
+            _contentHttpClient.DefaultRequestHeaders.Add("Authorization", token);
 
-            var httpResponse = await _contentHttpClient.GetAsync($"getuserimages?count={count}");
+            var httpContent = new StringContent(JsonSerializer.Serialize(imagesDTO, jsonSerializerOptions), Encoding.UTF8, "application/json");
+
+            var httpResponse = await _contentHttpClient.PostAsync($"getuserimages", httpContent);
             return JsonSerializer.Deserialize<List<PostImage>>(await httpResponse.Content.ReadAsStringAsync(), jsonSerializerOptions);
         }
     }

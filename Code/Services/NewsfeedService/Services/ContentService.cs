@@ -19,7 +19,10 @@ namespace NewsfeedService.Services
 
         public async Task<IEnumerable<Guid>> GetUsersPosts(UserPostDTO userPostDTO, string token)
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", token);
+            if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Authorization", token);
+            }
             var httpContent = new StringContent(JsonSerializer.Serialize(userPostDTO), Encoding.UTF8, "application/json");
 
             var httpResponse = await _httpClient.PostAsync("getuserposts", httpContent);

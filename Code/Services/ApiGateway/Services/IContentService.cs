@@ -13,6 +13,6 @@ namespace ApiGateway.Services
 
         public Task<IEnumerable<string>> GetLikedUsers(Guid parentId);
 
-        public Task<List<PostImage>> GetImages(int count, string token);
+        public Task<List<PostImage>> GetImages(ImagesDTO imagesDTO, string token);
     }
 }

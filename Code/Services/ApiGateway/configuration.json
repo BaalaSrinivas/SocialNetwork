@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/{version}/content/getUserImages",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "POST" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/agg/content/getPosts",

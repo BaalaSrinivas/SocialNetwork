@@ -23,8 +23,15 @@ namespace FollowService.Repository
 
         public async Task<bool> AddItemAsync(FollowEntity item)
         {
-            var sql = "INSERT INTO FollowEntities (Id, Follower, Following) VALUES (@id, @follower, @following)";
-            return await _sqlConnection.ExecuteAsync(sql, item, transaction: _dbTransaction) > 0;
+            var check = "SELECT COUNT(*) FROM FollowEntities WHERE Following = @following AND Follower = @follower";
+            int count = await _sqlConnection.ExecuteScalarAsync<int>(check, item, transaction: _dbTransaction);
+
+            if (count == 0)
+            {
+                var sql = "INSERT INTO FollowEntities (Id, Follower, Following) VALUES (@id, @follower, @following)";
+                return await _sqlConnection.ExecuteAsync(sql, item, transaction: _dbTransaction) > 0;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<string>> GetFollowers(string userId)
@@ -34,7 +41,7 @@ namespace FollowService.Repository
         }
 
         public async Task<IEnumerable<string>> GetFollowing(string userId)
-        {
+        {            
             var sql = "SELECT Following FROM FollowEntities WHERE Follower = @follower";
             return await _sqlConnection.QueryAsync<string>(sql, param: new { follower = userId }, transaction: _dbTransaction);
         }

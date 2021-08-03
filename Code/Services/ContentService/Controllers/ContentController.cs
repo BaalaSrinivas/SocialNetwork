@@ -157,12 +157,11 @@ namespace ContentService.Controllers
             return await _postRepository.GetUserPosts(userPostDTO.UserId, userPostDTO.Count);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetUserImages")]
-        public async Task<IEnumerable<PostImage>> GetImages(int count)
+        public async Task<IEnumerable<PostImage>> GetImages(ImagesDTO imagesDTO)
         {
-            string userId = GetUserId();
-            return await _postImageRepository.GetImages(userId, count);
+            return await _postImageRepository.GetImages(imagesDTO.UserId, imagesDTO.Count);
         }
 
         [HttpGet]

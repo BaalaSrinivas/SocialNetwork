@@ -104,13 +104,13 @@ namespace ApiGateway.Controllers
             return result;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetUserImages")]
-        public async Task<IEnumerable<PostImage>> GetImages(int count)
+        public async Task<IEnumerable<PostImage>> GetImages(ImagesDTO imagesDTO)
         {
             var token = HttpContext.Request.Headers["Authorization"][0];
 
-            List<PostImage> result = await _contentService.GetImages(count, token);
+            List<PostImage> result = await _contentService.GetImages(imagesDTO, token);
 
             result.ForEach(s =>
             {

@@ -61,17 +61,20 @@ export class ContentService {
       );
   }
 
-  getImages(count: number): Observable<PostImage[]> {
+  getImages(count: number, userId: string): Observable<PostImage[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
       })
     };
+
     var data = {
-      'count': count
+      "userId": userId,
+      "count": count
     }
-    return this._httpClient.get<PostImage[]>(contentApi + 'getuserimages?count=' + count, httpOptions)
+
+    return this._httpClient.post<PostImage[]>(contentApi + 'getuserimages', data, httpOptions)
       .pipe(map((data: any[]) =>
         data.map(item => this._postImageAdapter.Adapt(item))
       ));
