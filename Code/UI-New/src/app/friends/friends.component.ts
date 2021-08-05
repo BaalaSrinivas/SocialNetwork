@@ -30,6 +30,9 @@ export class FriendsComponent implements OnInit {
 
   acceptFriendRequest(friend: Friend) {
     this._followService.acceptFriendRequest(friend).subscribe(data => {
+
+      console.log(data);
+
       this._followService.getFriends().subscribe(data => {
         this.friends = data;
       });

@@ -16,17 +16,17 @@
           </div>
         </div>
         <div class="col-lg-4 order-lg-1">
-          <div class="card-profile-stats d-flex justify-content-center">
-            <div>
-              <span class="heading">22</span>
+          <div class="d-flex justify-content-center pt-4" style="text-align:center">
+            <div class="px-2">
+              <h5 class="heading">22</h5>
               <span class="description">Friends</span>
             </div>
-            <div>
-              <span class="heading">10</span>
+            <div class="px-2">
+              <h5 class="heading">10</h5>
               <span class="description">Photos</span>
             </div>
-            <div>
-              <span class="heading">89</span>
+            <div class="px-2">
+              <h5 class="heading">89</h5>
               <span class="description">Comments</span>
             </div>
           </div>
@@ -50,19 +50,8 @@
   <div class="row">
     <div class="tab-content col-lg-5" style="overflow:hidden">
       <div class="row pt-5 pl-1">
-        <div class="col-4 px-1" *ngFor="let userImage of userImages">
+        <div class="col-4 px-1 py-2" *ngFor="let userImage of userImages">
           <img src="{{userImage.ImageUrl}}" alt="Rounded image" class="img-fluid rounded" style="width: 250px;">
-        </div>
-      </div>
-      <div class="row pt-3 pl-1">
-        <div class="col-4 px-1">
-          <img src="./assets/img/theme/team-4-800x800.jpg" alt="Rounded image" class="img-fluid rounded shadow" style="width: 250px;">
-        </div>
-        <div class="col-4 px-1">
-          <img src="./assets/img/theme/team-1-800x800.jpg" alt="Rounded image" class="img-fluid rounded shadow" style="width: 250px;">
-        </div>
-        <div class="col-4 px-1">
-          <img src="./assets/img/theme/team-4-800x800.jpg" alt="Rounded image" class="img-fluid rounded shadow" style="width: 250px;">
         </div>
       </div>
     </div>

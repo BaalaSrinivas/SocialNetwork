@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getImages() {
-    this._contentService.getImages(6).subscribe(data => {
+    this._contentService.getImages(6, this.mailId).subscribe(data => {
       this.userImages = data;
     });
   }
