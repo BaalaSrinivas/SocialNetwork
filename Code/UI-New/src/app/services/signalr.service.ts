@@ -15,7 +15,7 @@ export class SignalrService {
     constructor(private httpClient: HttpClient) {
 
         var options: IHttpConnectionOptions = {
-            accessTokenFactory: () => { return `${sessionStorage.getItem('idToken')}` }        
+            accessTokenFactory: () => { return `${sessionStorage.getItem('accessToken')}` }        
         };
 
         this.hubConnection = new HubConnectionBuilder().withUrl(notificationUrl, options).build();

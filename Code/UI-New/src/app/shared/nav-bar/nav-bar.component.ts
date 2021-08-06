@@ -17,7 +17,7 @@ export class NavBarComponent implements OnInit {
   searchKey: string;
   users: User[];
 
-  private notifications: string[] = [];
+  notifications: string[] = [];
 
   constructor(
     private signalrService: SignalrService,
@@ -32,6 +32,7 @@ export class NavBarComponent implements OnInit {
 
     signalrService.addCallbackListener((data) => {
       if (this.notifications.length > 0) {
+        console.log(data);
         this.notifications.unshift(data);
       }
       else {
