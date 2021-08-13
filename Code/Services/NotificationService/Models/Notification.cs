@@ -11,8 +11,12 @@ namespace NotificationService.Models
 
         public string UserId { get; set; }
 
-        public bool IsDelivered { get; set; }
+        public bool IsRead { get; set; }
 
         public string Content { get; set; }
+
+        public string UserProfileUrl { get; set; }
+
+        public DateTime Timestamp { get; set; }
     }
 }

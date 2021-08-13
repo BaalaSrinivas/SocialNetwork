@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
+import { NotificationService } from '../../services/notification.service';
 import { SignalrService } from '../../services/signalr.service';
 import { UserService } from '../../services/user.service';
+import { Notification } from '../../models/notification.model';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,30 +20,41 @@ export class NavBarComponent implements OnInit {
   searchKey: string;
   users: User[];
 
-  notifications: string[] = [];
+  notifications: Notification[] = [];
 
   constructor(
     private signalrService: SignalrService,
     private router: Router,
     private authService: AuthenticationService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _notificationService: NotificationService
   ) {
     this.authService.loginChanged.subscribe(x => {
       this.userName = sessionStorage.getItem('loggedUser')
       this.profileUrl = sessionStorage.getItem('profileUrl')
     });
 
+    this.GetNotifications();
+
     signalrService.addCallbackListener((data) => {
       if (this.notifications.length > 0) {
         console.log(data);
         this.notifications.unshift(data);
+        this.playAudio();
       }
       else {
         console.log(data);
         this.notifications.push(data);
-        console.log(this.notifications);
+        this.notifications = this.notifications;
+        this.playAudio();
       }
     }, 'ReceiveMessage');
+  }
+
+  GetNotifications() {
+    this._notificationService.getNotifications().subscribe((data) => {
+      this.notifications = data;
+    });
   }
 
   ngOnInit(): void {
@@ -70,4 +84,17 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+  UpdateNotificationReadStatus(notificationId: string) {
+    this._notificationService.UpdateNotificationReadStatus(notificationId).subscribe(data => {
+      console.log(data);
+      this.GetNotifications();
+    });
+  }
+
+  playAudio() {
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/noti-sound.mp3";
+    audio.load();
+    audio.play();
+  }
 }

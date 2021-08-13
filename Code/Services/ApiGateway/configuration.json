@@ -109,6 +109,18 @@
       "UpstreamHttpMethod": []
     },
     {
+      "DownstreamPathTemplate": "/notificationapi/{version}/notification/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5006"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/{version}/notification/{everything}",
+      "UpstreamHttpMethod": ["GET","POST"]
+    },
+    {
       "DownstreamPathTemplate": "/userapi/{version}/user/search",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

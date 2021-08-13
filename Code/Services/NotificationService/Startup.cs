@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NotificationService.Context;
 using NotificationService.Events.EventHandler;
 using NotificationService.Events.EventModel;
 using NotificationService.SignalR;
@@ -51,6 +53,11 @@ namespace NotificationService
                 Password = Configuration.GetSection("RabbitMq")["Password"],
                 Port = Configuration.GetSection("RabbitMq").GetValue<int>("Port")
             };
+
+            services.AddDbContext<NotificationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
 
             services.AddScoped<IEventHandler<NotificationEventModel>, NotificationEventHandler>();
 

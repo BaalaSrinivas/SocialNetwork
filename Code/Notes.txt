@@ -14,7 +14,9 @@ dotnet ef database update --context SqlContext
 dotnet ef migrations add UserManagement --context UserContext --output-dir Data/Migrations/UserManagement
 dotnet ef database update --context UserContext
 
-
+<!--Notification Service-->
+dotnet ef migrations add Notification --context NotificationDbContext --output-dir Data/Migrations/Notification
+dotnet ef database update --context NotificationDbContext
 
 
 ICON

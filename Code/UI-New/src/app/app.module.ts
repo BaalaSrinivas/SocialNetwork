@@ -29,6 +29,8 @@ import { PostEditorElementComponent } from './ui-elements/post-editor-element/po
 import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostImageAdapter } from './models/adapters/postimage.adapter';
+import { NotificationService } from './services/notification.service';
+import { NotificationAdapter } from './models/adapters/notification.adapter';
 
 @NgModule({
   declarations: [
@@ -57,11 +59,13 @@ import { PostImageAdapter } from './models/adapters/postimage.adapter';
     ContentService,
     FollowService,
     NewsfeedService,
+    NotificationService,
     SignalrService,
     UserService,
     CommentAdapter,
     FollowAdapter,
     FriendAdapter,
+    NotificationAdapter,
     PostAdapter,
     PostImageAdapter,
     UserAdapter
