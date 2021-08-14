@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement.Services
 {
+    /// <summary>
+    /// Fetches additonal profile information like Name for the users to UI
+    /// </summary>
     public class SocialProfileService : IProfileService
     {
         UserManager<SocialUser> _userManager;

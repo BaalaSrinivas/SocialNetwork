@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-5 col-md-5 ml-auto mr-auto">
-      <div class="card card-login">
-        <form class="form">
+    <div class="col-sm-5 col-md-5 ml-auto mr-auto pt-md-3 pt-5">
+      <form class="form" (ngSubmit)="f.form.valid && signInWithIdentity()" #f="ngForm">
+        <div class="card card-login">
           <div class="card-header card-header-primary text-center">
             <h5 class="card-title">Login</h5>
             <div class="text-center">
@@ -19,26 +19,29 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-envelope"></i></span>
               </div>
-              <input type="email" class="form-control" [(ngModel)]="userName" name="EMail" placeholder="Email...">
+              <input type="email" (change)="emailChange()" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" #email="ngModel" [(ngModel)]="userName" name="EMail" placeholder="Email..." title="Email is required">
             </div>
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text" style="padding-right:20px;"><i class="fa fa-lock"></i></span>
               </div>
-              <input type="password" class="form-control" [(ngModel)]="password" name="Password" placeholder="Password...">
+              <input type="password" class="form-control" [(ngModel)]="password" name="Password" placeholder="Password..." required [ngClass]="{ 'is-invalid': f.submitted && Password.invalid }" #Password="ngModel" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters">
             </div>
+            <div class="text-danger" style="text-align:center" *ngIf="isSuccess == '0'">Invalid username or password</div>
           </div>
           <div class="text-center">
-            <button class="btn btn-primary" (click)="signInWithIdentity()">Log in</button>
+            <button class="btn btn-primary">Log in</button>
           </div>
-        </form>
-      </div>
+          <div class="pb-3"></div>
+        </div>
+      </form>
+    
       <div class="text-right">
         <a routerLink="/register" class="text-light">
           <small>Create Account&nbsp;</small>
         </a>
       </div>
-      <div class="pt-5"></div>
+      <div class="pt-2"></div>
     </div>
   </div>
 </div>

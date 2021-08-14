@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -8,13 +9,24 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
+  isSuccess: string;
 
-  constructor(private _authenticationService: AuthenticationService) { }
+  constructor(private _authenticationService: AuthenticationService,
+    private _activatedRoute: ActivatedRoute)
+  {
+    this._activatedRoute.queryParams.subscribe(params => {
+      this.isSuccess = params['isSuccess'];
+    });
+  }
 
   userName: string;
   password: string
 
   ngOnInit(): void {
+  }
+
+  emailChange() {
+    this.isSuccess = "1";
   }
 
   signInWithGoogle(): void {

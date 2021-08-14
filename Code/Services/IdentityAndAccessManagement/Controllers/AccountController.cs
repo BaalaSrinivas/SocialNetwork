@@ -41,10 +41,11 @@ namespace IdentityAndAccessManagement.Controllers
 
         [HttpGet]
         [Route("login")]
-        public async Task<string> Login([FromQuery] string returnUrl)
+        public async Task<IActionResult> Login([FromQuery] string returnUrl)
         {
             await _identityService.SignOut();
-            return "User is not authenticated";
+            //TODO:Hardcoding for now, Has to be fixed
+            return Redirect("http://localhost:4200/signoutredirect?isSuccess=0");
         }
 
         [HttpPost]
