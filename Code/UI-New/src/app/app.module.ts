@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +30,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostImageAdapter } from './models/adapters/postimage.adapter';
 import { NotificationService } from './services/notification.service';
 import { NotificationAdapter } from './models/adapters/notification.adapter';
+import { ToastcontainerComponent } from './shared/toastcontainer/toastcontainer.component';
+import { ToastService } from './services/toast.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { NotificationAdapter } from './models/adapters/notification.adapter';
     FriendsComponent,
     FullPostViewComponent,
     PostElementComponent,
-    PostEditorElementComponent
+    PostEditorElementComponent,
+    ToastcontainerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +63,7 @@ import { NotificationAdapter } from './models/adapters/notification.adapter';
     NewsfeedService,
     NotificationService,
     SignalrService,
+    ToastService,
     UserService,
     CommentAdapter,
     FollowAdapter,

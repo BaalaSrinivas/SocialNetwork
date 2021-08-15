@@ -1,7 +1,67 @@
 <div class="container">
-  <span class="font-weight-700">Requests</span>
-  <!--[ngClass]="{'row': i%2 == 0}-->
-
+  <span class="font-weight-bold">Friends</span>
+  <div *ngIf="friends === undefined" class="d-flex justify-content-center" style="flex:auto">
+    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="friends !== undefined && friends.length == 0" class="d-flex justify-content-center" style="flex:auto">
+    Start connecting with friends
+  </div>
+  <div *ngFor="let friend of friends; let i = index">
+    <div *ngIf="i%2==0" class="row">
+      <div class="col-md-6 col-sm-12">
+        <div class="card rounded px-0">
+          <div class="card-body d-flex">
+            <div class="px-2">
+              <img [src]="friends[i].ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+            </div>
+            <div class="flex-fill pl-2 pt-1">
+              <h6 class="text-blue mb-0"><b>{{friends[i].UserName}}</b></h6>
+              <p class="text-black font-weight-normal">{{friends[i].UserHeadline}}</p>
+            </div>
+            <div class="mr-auto pl-2">
+              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+                <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(i+1)< friends.length" class="col-md-6 col-sm-12">
+        <div class="card rounded px-0">
+          <div class="card-body row">
+            <div class="col-2">
+              <img [src]="friends[i+1].ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
+            </div>
+            <div class="pl-2 col-6">
+              <h6 class="text-blue mb-0"><b>{{friends[i+1].UserName}}</b></h6>
+              <p class="text-black font-weight-normal">{{friends[i+1].UserHeadline}}</p>
+            </div>
+            <div class="pl-2 col-4">
+              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+                <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <span class="font-weight-bold">Requests</span>
+  <div *ngIf="pendingRequests === undefined" class="d-flex justify-content-center" style="flex:auto">
+    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="pendingRequests !== undefined && pendingRequests.length == 0" class="d-flex justify-content-center" style="flex:auto">
+    No new friend requests
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
   <div *ngFor="let request of pendingRequests; let i = index">
     <div *ngIf="i%2==0" class="row">
       <div class="col-md-6 col-sm-12">
@@ -41,49 +101,6 @@
               </button>
               <button class="btn btn-icon btn-danger mt-1" (click)="rejectFriendRequest(request)" type="button">
                 <span class="btn-inner--icon"><i class="fa fa-times"></i></span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br />
-  <span class="font-weight-700">Friends</span>
-  <div *ngFor="let friend of friends; let i = index">
-    <div *ngIf="i%2==0" class="row">
-      <div class="col-md-6 col-sm-12">
-        <div class="card rounded px-0">
-          <div class="card-body d-flex">
-            <div class="px-2">
-              <img [src]="friends[i].ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
-            </div>
-            <div class="flex-fill pl-2 pt-1">
-              <h6 class="text-blue mb-0"><b>{{friends[i].UserName}}</b></h6>
-              <p class="text-black font-weight-normal">{{friends[i].UserHeadline}}</p>
-            </div>
-            <div class="mr-auto pl-2">
-              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="(i+1)< friends.length" class="col-md-6 col-sm-12">
-        <div class="card rounded px-0">
-          <div class="card-body row">
-            <div class="col-2">
-              <img [src]="friends[i+1].ProfileImageUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 60px;">
-            </div>
-            <div class="pl-2 col-6">
-              <h6 class="text-blue mb-0"><b>{{friends[i+1].UserName}}</b></h6>
-              <p class="text-black font-weight-normal">{{friends[i+1].UserHeadline}}</p>
-            </div>
-            <div class="pl-2 col-4">
-              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
-                <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
               </button>
             </div>
           </div>

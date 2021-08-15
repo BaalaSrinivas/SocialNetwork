@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
 
   userName: string;
   password: string
+  showLoading: boolean = false;
 
   ngOnInit(): void {
   }
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithIdentity(): void {
+    this.showLoading = true;
     this._authenticationService.loginIdentity(this.userName, this.password).subscribe((s) => {
       //Once user is loggedin initiate Open Id flow
       this._authenticationService.login();

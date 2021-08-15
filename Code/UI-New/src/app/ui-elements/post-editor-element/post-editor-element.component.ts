@@ -3,6 +3,7 @@ import { Post } from '../../models/post.model';
 import { ContentService } from '../../services/content.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ImageUploadAdapter } from '../../models/adapters/imageupload.adapter';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-post-editor-element',
@@ -21,7 +22,8 @@ export class PostEditorElementComponent implements OnInit {
   @Input()
   userProfile: string
 
-  constructor(private _contentService: ContentService) { }
+  constructor(private _contentService: ContentService,
+    private toastService: ToastService  ) { }
   textareaColor: string = '#ffffff';
 
   ngOnInit(): void {
@@ -32,6 +34,17 @@ export class PostEditorElementComponent implements OnInit {
     this._contentService.createPost(this.post).subscribe(c => {
       this.post = new Post();
       this.post.Content = "Write something...";
+      this.toastService.show({
+        title: 'Success',
+        content: 'Posted Successfully',
+        class: 'text-success'
+      });
+    }, (error) => {
+        this.toastService.show({
+          title: 'Error',
+          content: 'Error while posting. Please try again later',
+          class: 'text-danger'
+        });
     });
   }
 

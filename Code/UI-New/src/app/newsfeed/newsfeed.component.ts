@@ -19,7 +19,6 @@ export class NewsfeedComponent implements OnInit {
     this._newsfeedService.getNewsfeed(sessionStorage.getItem('mailId')).subscribe(data => {
       this._contentService.getPosts(data).subscribe(posts => {
         this.feedPosts = posts;
-        console.log(this.feedPosts);
       });
       this.profileImageUrl = sessionStorage.getItem('profileUrl');
     });

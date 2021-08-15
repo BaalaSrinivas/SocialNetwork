@@ -1,0 +1,10 @@
+:host {
+  position: fixed;
+  top: 0 !important;
+  bottom: auto !important;
+  right: auto !important;
+  left: 40% !important;
+  margin: 0.5em;
+  z-index: 1200;
+  opacity:100%
+}

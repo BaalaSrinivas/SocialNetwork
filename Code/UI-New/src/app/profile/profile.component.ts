@@ -5,6 +5,7 @@ import { PostImage } from '../models/postimage.model';
 import { User } from '../models/user.model';
 import { ContentService } from '../services/content.service';
 import { FollowService } from '../services/follow.service';
+import { ToastService } from '../services/toast.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -20,8 +21,8 @@ export class ProfileComponent implements OnInit {
   constructor(private _contentService: ContentService,
     private _userService: UserService,
     private _followService: FollowService,
-    private _activatedRoute: ActivatedRoute) {
-
+    private _activatedRoute: ActivatedRoute,
+    private toastService: ToastService) {
   }
 
   user: User = new User();

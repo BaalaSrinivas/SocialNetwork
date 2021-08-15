@@ -44,20 +44,36 @@
       </div>
       <br />
       <br />
-
     </div>
   </div>
   <div class="row">
-    <div class="tab-content col-lg-5" style="overflow:hidden">
-      <div class="row pt-5 pl-1">
+    <div class="col-lg-5 pt-3" style="overflow:hidden">
+      <span class="font-weight-bold">Photos</span>
+      <div class="row pl-1 px-1 py-2 mt-1 mb-4" style="box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);border: 1px solid rgba(0,0,0,.125);border-radius: .25rem">
         <div class="col-4 px-1 py-2" *ngFor="let userImage of userImages">
           <img src="{{userImage.ImageUrl}}" alt="Rounded image" class="img-fluid rounded" style="width: 250px;">
+        </div>
+        <div *ngIf="userImages === undefined" class="d-flex justify-content-center" style="flex:auto">
+          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div *ngIf="userImages !== undefined && userImages.length == 0" class="d-flex justify-content-center" style="flex:auto">
+          This user does not have any images
         </div>
       </div>
     </div>
     <div class="tab-content col-lg-7 pt-3">
       <app-post-editor-element [userProfile]="user.ProfileImageUrl" *ngIf="showAddPost ==  true"></app-post-editor-element>
       <app-post-element *ngFor="let post of userPosts" [post]="post"></app-post-element>
+      <div *ngIf="userPosts === undefined" class="d-flex justify-content-center pb-5" style="flex:auto">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="userPosts !== undefined && userPosts.length == 0" class="d-flex justify-content-center pb-5" style="flex:auto">
+       This user does not have any posts
+      </div>
     </div>
   </div>
 </div>
