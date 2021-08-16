@@ -21,7 +21,7 @@
               <p class="text-black font-weight-normal">{{friends[i].UserHeadline}}</p>
             </div>
             <div class="mr-auto pl-2">
-              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+              <button class="btn btn-icon btn-2 btn-primary mt-1" (click)="UnfriendConfirmation(friends[i])" type="button">
                 <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
               </button>
             </div>
@@ -39,7 +39,7 @@
               <p class="text-black font-weight-normal">{{friends[i+1].UserHeadline}}</p>
             </div>
             <div class="pl-2 col-4">
-              <button class="btn btn-icon btn-2 btn-primary mt-1" type="button">
+              <button class="btn btn-icon btn-2 btn-primary mt-1" (click)="UnfriendConfirmation(friends[i+1])" type="button">
                 <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
               </button>
             </div>

@@ -280,8 +280,19 @@ namespace FollowService.Controllers
             return await _unitofWork.FollowMetaDataRepository.GetFollowMetaData(GetUserId());
         }
 
+        [HttpGet]
+        [Route("friendfollowInfo")]
+        public FriendFollowEntity GetFriendFollowInfo(string userId)
+        {
+            FriendFollowEntity friendFollowEntity = new FriendFollowEntity();
+            friendFollowEntity.IsFriend = _unitofWork.FriendEntityRepository.GetFriendsAsync(GetUserId()).Result.
+                Count(f => (f.FromUser == userId && f.ToUser == GetUserId()) || (f.FromUser == GetUserId() && f.ToUser == userId)) > 0;
+            friendFollowEntity.IsFollowing = _unitofWork.FollowEntityRepository.GetFollowing(GetUserId()).Result.Count(f => f == userId) > 0;
+
+            return friendFollowEntity;
+        }
         #endregion
-        
+
 
         protected string GetUserId()
         {

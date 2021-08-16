@@ -116,4 +116,14 @@ export class FollowService {
       data.map(item => this._friendAdapter.Adapt(item))
     ));
   }
+
+  getFriendFollowInfo(userId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.get<Friend[]>(followApi + 'friendfollowInfo?userId=' + userId, httpOptions);
+  }
 }

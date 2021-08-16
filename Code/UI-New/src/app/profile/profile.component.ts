@@ -16,7 +16,9 @@ import { UserService } from '../services/user.service';
 export class ProfileComponent implements OnInit {
 
   mailId: string
-  showAddPost: boolean;
+  isHost: boolean;
+  isFriend: boolean;
+  isFollowing: boolean;
 
   constructor(private _contentService: ContentService,
     private _userService: UserService,
@@ -35,23 +37,31 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this._activatedRoute.queryParams.subscribe(params => {
       this.mailId = params['mailid'] != undefined ? params['mailid'] : sessionStorage.getItem('mailId');
-      this.showAddPost = this.mailId == sessionStorage.getItem('mailId');
+      this.isHost = this.mailId == sessionStorage.getItem('mailId');
 
       this._userService.getUser(this.mailId).subscribe(u => {
         this.user = u;
       });
 
-      this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {
-
-        this._contentService.getPosts(ids).subscribe(posts => {
-          this.userPosts = posts;
-          console.log(this.userPosts);
-        });
-      });
+      this.getUserPosts();
 
       this.getImages();
+
+      this._followService.getFriendFollowInfo(this.mailId).subscribe(data => {
+        this.isFriend = data.isFriend;
+        this.isFollowing = data.isFollowing;
+      });
     });
   }
+
+  getUserPosts() {
+        this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {
+            this._contentService.getPosts(ids).subscribe(posts => {
+                this.userPosts = posts;
+                console.log(this.userPosts);
+            });
+        });
+    }
 
   sendFriendRequest() {
     this._followService.sendFriendRequest(this.mailId).subscribe(data => {

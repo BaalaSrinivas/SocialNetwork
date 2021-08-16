@@ -5,7 +5,11 @@ import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'app-signinredirect',
-    template: `<div></div>`
+  template: `<div class="position-fixed" style="left:45%;top:45%;z-index:100">
+              <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>`
 })
 export class SigninredirectComponent implements OnInit {
 

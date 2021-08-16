@@ -11,8 +11,14 @@
         </div>
         <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
           <div class="py-4 mt-lg-0">
-            <a href="javascript:void(0)" (click)="sendFriendRequest()" class="btn btn-sm btn-primary mr-4">Connect</a>
-            <a href="javascript:void(0)" (click)="followUser()" class="btn btn-sm btn-default float-right">Follow</a>
+            <a href="javascript:void(0)"  [ngClass]="{ 'disabled': isHost }" *ngIf="!isFriend" (click)="sendFriendRequest()" class="btn btn-sm btn-primary mr-4">Connect</a>
+            <a href="javascript:void(0)" *ngIf="isFriend" class="btn btn-sm btn-primary mr-4">
+              <span class="btn-inner--icon">Friends &nbsp;<i class="fa fa-check"></i></span>
+            </a>
+            <a href="javascript:void(0)" [ngClass]="{ 'disabled': isHost }" *ngIf="!isFollowing" (click)="followUser()" class="btn btn-sm btn-default float-right">Follow</a>
+            <a href="javascript:void(0)" *ngIf="isFollowing" class="btn btn-sm btn-default float-right">
+              <span class="btn-inner--icon">Following &nbsp;<i class="fa fa-check"></i></span>
+            </a>
           </div>
         </div>
         <div class="col-lg-4 order-lg-1">
@@ -64,7 +70,7 @@
       </div>
     </div>
     <div class="tab-content col-lg-7 pt-3">
-      <app-post-editor-element [userProfile]="user.ProfileImageUrl" *ngIf="showAddPost ==  true"></app-post-editor-element>
+      <app-post-editor-element (newPost)="getUserPosts()" [userProfile]="user.ProfileImageUrl" *ngIf="isHost ==  true"></app-post-editor-element>
       <app-post-element *ngFor="let post of userPosts" [post]="post"></app-post-element>
       <div *ngIf="userPosts === undefined" class="d-flex justify-content-center pb-5" style="flex:auto">
         <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
@@ -72,7 +78,7 @@
         </div>
       </div>
       <div *ngIf="userPosts !== undefined && userPosts.length == 0" class="d-flex justify-content-center pb-5" style="flex:auto">
-       This user does not have any posts
+        This user does not have any posts
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { ContentService } from '../../services/content.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -22,6 +22,8 @@ export class PostEditorElementComponent implements OnInit {
   @Input()
   userProfile: string
 
+  @Output() newPost = new EventEmitter<boolean>();
+
   constructor(private _contentService: ContentService,
     private toastService: ToastService  ) { }
   textareaColor: string = '#ffffff';
@@ -39,6 +41,7 @@ export class PostEditorElementComponent implements OnInit {
         content: 'Posted Successfully',
         class: 'text-success'
       });
+      this.newPost.emit(true);
     }, (error) => {
         this.toastService.show({
           title: 'Error',
