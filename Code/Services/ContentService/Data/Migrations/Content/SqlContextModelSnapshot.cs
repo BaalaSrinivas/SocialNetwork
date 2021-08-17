@@ -103,6 +103,9 @@ namespace ContentService.Data.Migrations.Content
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSoftDelete")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 

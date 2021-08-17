@@ -11,5 +11,7 @@ namespace ContentService.Repository
         public Task AddImages(IEnumerable<PostImage> postImages);
 
         public Task<IEnumerable<PostImage>> GetImages(string userId, int count);
+
+        public void SoftDeleteImages(Guid postId);
     }
 }

@@ -52,6 +52,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  RefreshPosts() {
+    this.getUserPosts();
+
+    this.getImages();
+  }
+
   getFriendFollowInfo() {
     this._followService.getFriendFollowInfo(this.mailId).subscribe(data => {
       this.friendState = data.friendState;
@@ -80,6 +86,11 @@ export class ProfileComponent implements OnInit {
 
   followUser() {
     this._followService.followUser(this.mailId).subscribe(data => {
+      this.toastService.show({
+        title: 'Success',
+        content: 'Following ' + this.user.Name,
+        class: 'text-success'
+      });
       this.getFriendFollowInfo();
     });
   }
@@ -101,6 +112,10 @@ export class ProfileComponent implements OnInit {
   getImages() {
     this._contentService.getImages(6, this.mailId).subscribe(data => {
       this.userImages = data;
+      this.userImages.forEach((c, i) => {
+        //TODO: Replace size in URL
+        this.userImages[i].ImageUrl = this.userImages[i].ImageUrl.replace(".", "_1x1.");
+      })
     });
   }
 }

@@ -24,7 +24,17 @@ namespace ContentService.Repository
 
         public async Task<IEnumerable<PostImage>> GetImages(string userId, int count)
         {
-            return await _sqlContext.PostImages.Where(pi => pi.UserId == userId).Take(count).ToListAsync();
+            return await _sqlContext.PostImages.Where(pi => pi.UserId == userId && pi.IsSoftDelete == false).Take(count).ToListAsync();
+        }
+
+        public void SoftDeleteImages(Guid postId)
+        {
+            List<PostImage> postImages = _sqlContext.PostImages.Where(p => p.PostId == postId).ToList();
+            postImages.ForEach((i) =>
+            {
+                i.IsSoftDelete = true;
+            });
+            _sqlContext.UpdateRange(postImages);
         }
     }
 }

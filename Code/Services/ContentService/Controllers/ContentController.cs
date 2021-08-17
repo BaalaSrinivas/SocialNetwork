@@ -236,6 +236,7 @@ namespace ContentService.Controllers
         public async Task<bool> DeletePost(Post post)
         {
             await _postRepository.SoftDeletePost(post.Id, GetUserId());
+            _postImageRepository.SoftDeleteImages(post.Id);
             return await _sqlContext.SaveChangesAsync() > 0;
         }
 

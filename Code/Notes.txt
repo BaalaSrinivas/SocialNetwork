@@ -10,6 +10,9 @@ dotnet ef database update --context ConfigurationDbContext
 dotnet ef migrations add Content --context SqlContext --output-dir Data/Migrations/Content
 dotnet ef database update --context SqlContext
 
+ALTER TABLE PostImages
+ADD IsSoftDelete Bit DEFAULT 0 NOT NULL
+
 <!--User Management Service-->
 dotnet ef migrations add UserManagement --context UserContext --output-dir Data/Migrations/UserManagement
 dotnet ef database update --context UserContext

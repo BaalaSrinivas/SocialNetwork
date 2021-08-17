@@ -14,5 +14,7 @@ namespace ContentService.Models
         public Guid PostId { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public bool IsSoftDelete { get; set; }
     }
 }

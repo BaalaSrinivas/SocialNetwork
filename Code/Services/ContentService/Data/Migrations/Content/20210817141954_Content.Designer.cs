@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContentService.Data.Migrations.Content
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20210817050424_Content")]
+    [Migration("20210817141954_Content")]
     partial class Content
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,9 @@ namespace ContentService.Data.Migrations.Content
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDelete")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
