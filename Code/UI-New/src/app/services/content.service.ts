@@ -90,6 +90,20 @@ export class ContentService {
     return this._httpClient.post<boolean>(contentApi + 'createpost', post, httpOptions);
   }
 
+  deletePost(postId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+
+    var data = {
+      "Id": postId
+    }
+    return this._httpClient.post<boolean>(contentApi + 'deletepost', data, httpOptions);
+  }
+
   likePost(postId: string): Observable<number> {
     const httpOptions = {
       headers: new HttpHeaders({

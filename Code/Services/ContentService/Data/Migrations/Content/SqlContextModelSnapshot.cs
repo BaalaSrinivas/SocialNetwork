@@ -77,6 +77,9 @@ namespace ContentService.Data.Migrations.Content
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSoftDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LikeCount")
                         .HasColumnType("int");
 

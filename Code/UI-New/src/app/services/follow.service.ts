@@ -41,14 +41,17 @@ export class FollowService {
     return this._httpClient.post<boolean>(followApi + 'followuser', data, httpOptions);
   }
 
-  unFollowUser(followEntity: Follow): Observable<boolean> {
+  unFollowUser(userId: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
       })
     };
-    return this._httpClient.post<boolean>(followApi + 'unfollowuser', followEntity, httpOptions);
+    var data = {
+      'following': userId
+    }
+    return this._httpClient.post<boolean>(followApi + 'unfollowuser', data, httpOptions);
   }
 
   sendFriendRequest(userId: string): Observable<boolean> {

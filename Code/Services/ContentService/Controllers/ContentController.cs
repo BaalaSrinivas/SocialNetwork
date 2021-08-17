@@ -231,6 +231,14 @@ namespace ContentService.Controllers
             return await _sqlContext.SaveChangesAsync() > 0;
         }
 
+        [HttpPost]
+        [Route("DeletePost")]
+        public async Task<bool> DeletePost(Post post)
+        {
+            await _postRepository.SoftDeletePost(post.Id, GetUserId());
+            return await _sqlContext.SaveChangesAsync() > 0;
+        }
+
         protected string GetUserId()
         {
             return this.User.Claims.First(i => i.Type.Contains("mail")).Value;

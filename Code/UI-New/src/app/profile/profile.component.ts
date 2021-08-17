@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Post } from '../models/post.model';
 import { PostImage } from '../models/postimage.model';
 import { User } from '../models/user.model';
@@ -17,18 +18,18 @@ export class ProfileComponent implements OnInit {
 
   mailId: string
   isHost: boolean;
-  isFriend: boolean;
+  friendState: number = 2;
   isFollowing: boolean;
 
   constructor(private _contentService: ContentService,
     private _userService: UserService,
     private _followService: FollowService,
     private _activatedRoute: ActivatedRoute,
-    private toastService: ToastService) {
+    private toastService: ToastService,
+    private _modalService: NgbModal  ) {
   }
 
   user: User = new User();
-  userName: string;
 
   userImages: PostImage[];
 
@@ -47,31 +48,53 @@ export class ProfileComponent implements OnInit {
 
       this.getImages();
 
-      this._followService.getFriendFollowInfo(this.mailId).subscribe(data => {
-        this.isFriend = data.isFriend;
-        this.isFollowing = data.isFollowing;
-      });
+      this.getFriendFollowInfo();
+    });
+  }
+
+  getFriendFollowInfo() {
+    this._followService.getFriendFollowInfo(this.mailId).subscribe(data => {
+      this.friendState = data.friendState;
+      this.isFollowing = data.isFollowing;
     });
   }
 
   getUserPosts() {
-        this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {
-            this._contentService.getPosts(ids).subscribe(posts => {
-                this.userPosts = posts;
-                console.log(this.userPosts);
-            });
-        });
-    }
+    this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {
+      this._contentService.getPosts(ids).subscribe(posts => {
+        this.userPosts = posts;
+        console.log(this.userPosts);
+      });
+    });
+  }
 
   sendFriendRequest() {
     this._followService.sendFriendRequest(this.mailId).subscribe(data => {
-
+      this.toastService.show({
+        title: 'Success',
+        content: 'Request sent successfully',
+        class: 'text-success'
+      });
     });
   }
 
   followUser() {
     this._followService.followUser(this.mailId).subscribe(data => {
+      this.getFriendFollowInfo();
+    });
+  }
 
+  unfollowUserConfirmation() {
+    const model = this._modalService.open(NgbdModalConfirmUnfollow);
+    model.componentInstance.userName = this.user.Name;
+    model.componentInstance.clickevent.subscribe(($e) => {
+      this.unfollowUser();
+    });
+  }
+
+  unfollowUser() {
+    this._followService.unFollowUser(this.mailId).subscribe(data => {
+      this.getFriendFollowInfo();
     });
   }
 
@@ -80,5 +103,36 @@ export class ProfileComponent implements OnInit {
       this.userImages = data;
     });
   }
+}
 
+
+@Component({
+  selector: 'ngbd-modal-confirm',
+  template: `
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-title">Delete Post</h5>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Are you sure you want to unfollow <span class="text-primary">{{userName}}</span>?</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="Ok()">Yes</button>
+  </div>
+  `
+})
+export class NgbdModalConfirmUnfollow {
+
+  @Output() clickevent = new EventEmitter<boolean>();
+
+  constructor(public modal: NgbActiveModal) { }
+  userName: string;
+
+  Ok() {
+    this.clickevent.emit(true);
+    this.modal.dismiss();
+  }
 }

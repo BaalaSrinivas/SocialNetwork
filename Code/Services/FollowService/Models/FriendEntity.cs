@@ -17,6 +17,6 @@ namespace FollowService.Models
     {
         Requested,
         Friends,
-        Deleted
+        None
     }
 }

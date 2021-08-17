@@ -39,6 +39,12 @@ namespace FollowService.Repository
             return await _sqlConnection.QueryAsync<FriendEntity>(sql, new { userId = userId }, transaction: _dbTransaction);
         }
 
+        public async Task<IEnumerable<FriendEntity>> GetAllEntities(string userId)
+        {
+            var sql = "SELECT Id, FromUser, ToUser, State FROM FriendEntities WHERE (ToUser = @userId OR FromUser = @userId)";
+            return await _sqlConnection.QueryAsync<FriendEntity>(sql, new { userId = userId }, transaction: _dbTransaction);
+        }
+
         public async Task<bool> RemoveItemAsync(FriendEntity item)
         {
             var sql = "DELETE FROM FriendEntities where Id = @id AND (FromUser = @fromUser OR ToUser = @fromUser)";

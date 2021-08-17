@@ -28,43 +28,66 @@ namespace ContentService.Repository
 
         public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)
         {
-            return await _sqlContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p=>p.Timestamp).Take(count).Select(u=>u.Id).ToListAsync();
+            return await _sqlContext.Posts.Where(p => p.UserId == userId && p.IsSoftDelete == false).OrderByDescending(p=>p.Timestamp).Take(count).Select(u=>u.Id).ToListAsync();
         }
 
         public async Task<int> AddLikeCount(Guid postId)
         {
             Post post = await _sqlContext.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            post.LikeCount += 1;
-            _sqlContext.Posts.Update(post);
+            if (!post.IsSoftDelete)
+            {
+                post.LikeCount += 1;
+                _sqlContext.Posts.Update(post);
+            }
             return post.LikeCount;
         }
 
         public async Task<int> ReduceLikeCount(Guid postId)
         {
             Post post = await _sqlContext.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            post.LikeCount -= 1;
-            _sqlContext.Posts.Update(post);
+            if (!post.IsSoftDelete)
+            {
+                post.LikeCount -= 1;
+                _sqlContext.Posts.Update(post);
+            }
             return post.LikeCount;
         }
 
         public async Task<int> AddCommentCount(Guid postId)
         {
             Post post = await _sqlContext.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            post.CommentCount += 1;
-            _sqlContext.Posts.Update(post);
+            if (!post.IsSoftDelete)
+            {
+                post.CommentCount += 1;
+                _sqlContext.Posts.Update(post);
+            }
             return post.CommentCount;
         }
 
         public async Task UpdatePostContent(Guid postId, string content)
         {
             Post post = await _sqlContext.Posts.SingleOrDefaultAsync(p => p.Id == postId);
-            post.Content = content;
-            _sqlContext.Posts.Update(post);
+            if (!post.IsSoftDelete)
+            {
+                post.Content = content;
+                _sqlContext.Posts.Update(post);
+            }
         }
 
         public async Task<Post> GetPost(Guid postId)
         {
             return await _sqlContext.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+        }
+
+        public async Task SoftDeletePost(Guid postId, string userId)
+        {
+            Post post = await _sqlContext.Posts.SingleOrDefaultAsync(p => p.Id == postId);
+            //Verify if user is authorized to delete
+            if (post.UserId == userId)
+            {
+                post.IsSoftDelete = true;
+                _sqlContext.Posts.Update(post);
+            }
         }
     }
 }

@@ -4,9 +4,12 @@
       <div class="col-md-2 col-3">
         <img src="{{post.ProfileImageUrl}}" alt="Raised circle image" class="img-fluid rounded-circle">
       </div>
-      <div class="pl-2 pt-md-1 col-md-10 col-9">
+      <div class="pl-2 pt-md-1 col-md-9 col-8">
         <h6 class="mb-0"><b>{{post.UserName}}</b></h6>
         <p class="">{{post.Timestamp | date:'MMM d, y, h:mm:ss a'}}</p>
+      </div>
+      <div style="cursor:pointer" *ngIf="showDelete" (click)="DeleteConfirmation(post)" class="col-md-1 col-1">
+        <span class="text-secondary"><i class="fa fa-trash fa-2x"></i></span>
       </div>
     </div>
     <div class="col-md-12 px-2 py-2 py-md-3" [innerHTML]=content>

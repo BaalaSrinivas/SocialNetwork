@@ -7,7 +7,7 @@ namespace FollowService.Models
 {
     public class FriendFollowEntity
     {
-        public bool IsFriend { get; set; }
+        public State FriendState { get; set; } = State.None;
 
         public bool IsFollowing { get; set; }
     }

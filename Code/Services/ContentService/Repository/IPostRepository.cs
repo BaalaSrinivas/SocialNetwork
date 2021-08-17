@@ -10,6 +10,8 @@ namespace ContentService.Repository
     {
         public Task CreatePost(Post post);
 
+        public Task SoftDeletePost(Guid postId, string userId);
+
         public Task UpdatePostContent(Guid postId, string content);
 
         public Task<IEnumerable<Guid>> GetUserPosts(string userId, int count);

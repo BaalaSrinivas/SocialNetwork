@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContentService.Data.Migrations.Content
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20210721150300_Content")]
+    [Migration("20210817050424_Content")]
     partial class Content
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,9 @@ namespace ContentService.Data.Migrations.Content
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDelete")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LikeCount")
                         .HasColumnType("int");

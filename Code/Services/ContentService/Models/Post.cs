@@ -14,6 +14,7 @@ namespace ContentService.Models
         public int LikeCount { get; set; }
         public int CommentCount { get; set; }
         public DateTime Timestamp { get; set; }
+        public bool IsSoftDelete { get; set; }
         [NotMapped]
         public bool HasUserLiked { get; set; }
     }

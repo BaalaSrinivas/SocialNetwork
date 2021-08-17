@@ -54,9 +54,8 @@ namespace FollowService.Controllers
 
             FollowEntity followEntity = new FollowEntity() { Id = Guid.NewGuid(), Following = follow.Following, Follower = userId };
             Task<bool> addItemResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
-            Task<bool> addCountResult = _unitofWork.FollowMetaDataRepository.AddFollowerCount(userId);
 
-            bool[] resultArr = await Task.WhenAll(addItemResult, addCountResult);
+            bool[] resultArr = await Task.WhenAll(addItemResult);
             bool result  = resultArr.Count(s => s == false) == 0;
 
             if (!result)
@@ -75,12 +74,11 @@ namespace FollowService.Controllers
         [Route("UnFollowUser")]
         public async Task<bool> UnFollowUser(FollowEntity followEntity)
         {
-            followEntity.Follower = GetUserId();
+            followEntity.Follower = GetUserId();            
 
             Task<bool> removeItemResult = _unitofWork.FollowEntityRepository.RemoveItemAsync(followEntity);
-            Task<bool> reduceCountResult = _unitofWork.FollowMetaDataRepository.ReduceFollowerCount(followEntity.Follower);
 
-            bool[] resultArr = await Task.WhenAll(removeItemResult, reduceCountResult);
+            bool[] resultArr = await Task.WhenAll(removeItemResult);
             bool result = resultArr.Count(s => s == false) == 0;
 
             if (!result)
@@ -138,12 +136,6 @@ namespace FollowService.Controllers
 
             List<Task<bool>> results = new List<Task<bool>>();
 
-            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFollowerCount(friendEntity.FromUser));
-            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFriendsCount(friendEntity.FromUser));
-
-            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFollowerCount(friendEntity.ToUser));
-            results.Add(_unitofWork.FollowMetaDataRepository.ReduceFriendsCount(friendEntity.ToUser));
-
             results.Add(_unitofWork.FriendEntityRepository.RemoveItemAsync(friendEntity));
 
             FollowEntity followEntitySource = new FollowEntity() { Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
@@ -184,12 +176,6 @@ namespace FollowService.Controllers
             List<Task<bool>> results = new List<Task<bool>>();         
 
             results.Add(_unitofWork.FriendEntityRepository.UpdateFriendRequest(friendEntity));
-
-            results.Add(_unitofWork.FollowMetaDataRepository.AddFollowerCount(friendEntity.FromUser));
-            results.Add(_unitofWork.FollowMetaDataRepository.AddFriendsCount(friendEntity.FromUser));
-
-            results.Add(_unitofWork.FollowMetaDataRepository.AddFollowerCount(friendEntity.ToUser));
-            results.Add(_unitofWork.FollowMetaDataRepository.AddFriendsCount(friendEntity.ToUser));
 
             FollowEntity followEntitySource = new FollowEntity() { Id = Guid.NewGuid(), Following = friendEntity.ToUser, Follower = friendEntity.FromUser };
             FollowEntity followEntityTarget = new FollowEntity() { Id = Guid.NewGuid(), Following = friendEntity.FromUser, Follower = friendEntity.ToUser };
@@ -285,8 +271,12 @@ namespace FollowService.Controllers
         public FriendFollowEntity GetFriendFollowInfo(string userId)
         {
             FriendFollowEntity friendFollowEntity = new FriendFollowEntity();
-            friendFollowEntity.IsFriend = _unitofWork.FriendEntityRepository.GetFriendsAsync(GetUserId()).Result.
-                Count(f => (f.FromUser == userId && f.ToUser == GetUserId()) || (f.FromUser == GetUserId() && f.ToUser == userId)) > 0;
+            FriendEntity friendEntity = _unitofWork.FriendEntityRepository.GetAllEntities(GetUserId()).Result.
+                FirstOrDefault(f => (f.FromUser == userId && f.ToUser == GetUserId()) || (f.FromUser == GetUserId() && f.ToUser == userId));
+            if(friendEntity != null)
+            {
+                friendFollowEntity.FriendState = friendEntity.State;
+            }
             friendFollowEntity.IsFollowing = _unitofWork.FollowEntityRepository.GetFollowing(GetUserId()).Result.Count(f => f == userId) > 0;
 
             return friendFollowEntity;
