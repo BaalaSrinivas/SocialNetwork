@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User, UserManager } from "oidc-client";
 import { from, Observable, Subject } from "rxjs";
@@ -18,6 +18,7 @@ export class AuthenticationService {
   private _user: User;
 
   private _loginChangedSubject = new Subject<boolean>();
+  profileUrlUpdated = new EventEmitter<boolean>();
 
   loginChanged = this._loginChangedSubject.asObservable();
 

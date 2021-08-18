@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserService } from '../services/user.service';
@@ -11,7 +11,7 @@ import { UserService } from '../services/user.service';
               </div>
             </div>`
 })
-export class SigninredirectComponent implements OnInit {
+export class SigninredirectComponent implements OnInit { 
 
     constructor(private authService: AuthenticationService, private router: Router, private userService: UserService) { }
 
@@ -21,7 +21,9 @@ export class SigninredirectComponent implements OnInit {
             //fetch userinfo
             this.userService.getUser(sessionStorage.getItem('mailId')).subscribe((r) => {
                 if (r) {
-                    sessionStorage.setItem('profileUrl', r.ProfileImageUrl);
+                  sessionStorage.setItem('profileUrl', r.ProfileImageUrl);
+                  this.authService.profileUrlUpdated.emit(true);
+
                     this.router.navigate(['/profile'], { queryParams: { mailid: sessionStorage.getItem('mailId') }, replaceUrl: true });
                 }
                 else {

@@ -30,8 +30,12 @@ export class NavBarComponent implements OnInit {
     private _notificationService: NotificationService
   ) {
     this.authService.loginChanged.subscribe(x => {
-      this.userName = sessionStorage.getItem('loggedUser')
-      this.profileUrl = sessionStorage.getItem('profileUrl')
+      this.userName = sessionStorage.getItem('loggedUser');
+      this.profileUrl = sessionStorage.getItem('profileUrl');
+    });
+
+    this.authService.profileUrlUpdated.subscribe(x => {
+      this.profileUrl = sessionStorage.getItem('profileUrl');
     });
 
     this.GetNotifications();
@@ -59,7 +63,7 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userName = sessionStorage.getItem('loggedUser');
-    this.profileUrl = sessionStorage.getItem('profileUrl');
+    this.profileUrl = sessionStorage.getItem('profileUrl');    
   }
 
   IsUserLoggedIn(): Boolean {
