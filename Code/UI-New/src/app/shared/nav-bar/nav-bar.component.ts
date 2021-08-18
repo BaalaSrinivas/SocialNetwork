@@ -88,9 +88,15 @@ export class NavBarComponent implements OnInit {
     }
   }
 
-  UpdateNotificationReadStatus(notificationId: string) {
-    this._notificationService.UpdateNotificationReadStatus(notificationId).subscribe(data => {
-      console.log(data);
+  UpdateNotificationReadStatus(notification: Notification) {
+    this._notificationService.UpdateNotificationReadStatus(notification.Id).subscribe(data => {
+      console.log(notification);
+      if (notification.Type == "post") {
+        this.router.navigate(['/view-post'], { queryParams: { id: notification.PostId }, replaceUrl: true });
+      }
+      else if (notification.Type == "friendrequest") {
+        this.router.navigate(['/friends']);
+      }
       this.GetNotifications();
     });
   }

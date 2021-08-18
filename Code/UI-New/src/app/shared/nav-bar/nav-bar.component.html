@@ -44,7 +44,7 @@
         </a>
         <div class="dropdown-menu-right" aria-labelledby="notification-dropdown" ngbDropdownMenu>
           <a *ngIf="!(notifications?.length > 0)" class="dropdown-item">No New Notifications</a>
-          <div *ngFor="let notification of notifications" class="dropdown-item px-2 py-1" style="min-width:250px; white-space:break-spaces;border-bottom:solid 1px black;" (click)="UpdateNotificationReadStatus(notification.Id)">
+          <div *ngFor="let notification of notifications" class="dropdown-item px-2 py-1" style="min-width:250px; white-space:break-spaces;border-bottom:solid 1px black;" (click)="UpdateNotificationReadStatus(notification)">
             <img [src]="notification.UserProfileUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 40px;">
             <p class="px-2">{{notification.Content}}</p>
           </div>
@@ -128,7 +128,7 @@
         </a>
         <div class="dropdown-menu-right" aria-labelledby="notification-dropdown" ngbDropdownMenu>
           <a *ngIf="!(notifications?.length > 0)" class="dropdown-item">No New Notifications</a>
-          <div *ngFor="let notification of notifications" class="dropdown-item px-2 py-1" style="min-width:250px; white-space:break-spaces;border-bottom:solid 1px black" (click)="UpdateNotificationReadStatus(notification.Id)">
+          <div *ngFor="let notification of notifications" class="dropdown-item px-2 py-1" style="min-width:250px; white-space:break-spaces;border-bottom:solid 1px black" (click)="UpdateNotificationReadStatus(notification)">
             <img [src]="notification.UserProfileUrl" onerror="this.src = './assets/images/profile.png'" alt="Raised circle image" class="img-fluid rounded-circle" style="width: 40px;">
             <p class="px-2">{{notification.Content}}</p>
           </div>

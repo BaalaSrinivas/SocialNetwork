@@ -11,5 +11,9 @@ namespace UserManagement.Events.EventModel
         public string UserId { get; set; }
 
         public string ProfileImageUrl { get; set;}
+
+        public string Type { get; set; }
+
+        public string PostId { get; set; }
     }
 }

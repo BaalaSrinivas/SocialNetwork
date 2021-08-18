@@ -5,13 +5,17 @@ export class Notification {
   Content: string
   UserProfileUrl: string
   Timestamp: Date
+  Type: string
+  PostId: string
 
   constructor(id?: string,
     userId?: string,
     isRead?: boolean,
     content?: string,
     userProfileUrl?: string,
-    timestamp?: Date
+    timestamp?: Date,
+    type?: string,
+    postId?: string
   ) {
     this.Id = id;
     this.UserId = userId;
@@ -19,5 +23,7 @@ export class Notification {
     this.Content = content;
     this.UserProfileUrl = userProfileUrl;
     this.Timestamp = timestamp;
+    this.Type = type;
+    this.PostId = postId;
   }
 }

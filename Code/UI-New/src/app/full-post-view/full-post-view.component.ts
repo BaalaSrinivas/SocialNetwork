@@ -24,6 +24,7 @@ export class FullPostViewComponent implements OnInit {
       var ids: string[] = [this.post.Id];
       this._contentService.getPosts(ids).subscribe(data => {
         this.post = data[0];
+        this.post.Content = this.post.Content.replace(new RegExp("<img", "g"), "<img class=\"img-fluid\"");
       });
       this.getComments();
     });

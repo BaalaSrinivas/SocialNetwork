@@ -11,5 +11,7 @@ namespace ContentService.Events.EventModel
         public string OwnerUserId { get; set; }
 
         public string LikedBy { get; set; }
+
+        public string PostId { get; set; }
     }
 }

@@ -9,7 +9,9 @@ export class NotificationAdapter implements IModelAdapter<Notification> {
       data.isRead,
       data.content,
       data.userProfileUrl,
-      data.timestamp
+      data.timestamp,
+      data.type,
+      data.postId
     );
     }
 }

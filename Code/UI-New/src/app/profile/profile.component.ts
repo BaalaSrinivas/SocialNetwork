@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onScroll() {
-    if (this.userpostIds.length == 0) {
+    if (this.userpostIds !== undefined && this.userpostIds.length == 0) {
       this.userPosts = [];
     }
     if (this.userpostIds !== undefined && this.userpostIds.length >= (this.scrollIndex - 1) * this.scrollLength && !this.lock) {

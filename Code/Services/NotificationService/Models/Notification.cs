@@ -18,5 +18,9 @@ namespace NotificationService.Models
         public string UserProfileUrl { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public string Type { get; set; }
+
+        public string PostId { get; set; }
     }
 }

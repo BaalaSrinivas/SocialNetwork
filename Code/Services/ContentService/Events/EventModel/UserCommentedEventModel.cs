@@ -13,5 +13,7 @@ namespace ContentService.Events.EventModel
         public string CommentedBy { get; set; }
 
         public string CommentText { get; set; }
+
+        public string PostId { get; set; }
     }
 }

@@ -34,7 +34,9 @@ namespace NotificationService.Events.EventHandler
                 IsRead = false,
                 UserId = message.UserId,
                 UserProfileUrl = message.ProfileImageUrl,
-                Timestamp = message.Timestamp
+                Timestamp = message.Timestamp,
+                PostId = message.PostId,
+                Type = message.Type
             };
 
             _notificationDbContext.Add(notification);

@@ -33,7 +33,8 @@ namespace UserManagement.Events.EventHandler
             {
                 UserId = message.ToUserId,
                 MessageText = message.MessageText.Replace("<UserName>", user.Name),
-                ProfileImageUrl = user.ProfileImageUrl
+                ProfileImageUrl = user.ProfileImageUrl,
+                Type = "friendrequest"
             };
             _logger.LogInformation(notificationEventModel.MessageText);
             _notificationQueue.Publish(notificationEventModel);

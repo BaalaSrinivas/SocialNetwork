@@ -29,7 +29,9 @@ namespace UserManagement.Events.EventHandler
             {
                 UserId = message.OwnerUserId,
                 MessageText = message.MessageText.Replace("<UserName>", user.Name),
-                ProfileImageUrl = user.ProfileImageUrl
+                ProfileImageUrl = user.ProfileImageUrl,
+                PostId = message.PostId,
+                Type = "post"
             };
 
             _notificationQueue.Publish(notificationEventModel);

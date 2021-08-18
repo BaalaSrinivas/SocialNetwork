@@ -81,7 +81,8 @@ namespace ContentService.Controllers
                 CommentedBy = comment.UserId,
                 CommentText = comment.CommentText,
                 OwnerUserId = post.UserId,
-                MessageText = "<UserName> has commented on your post"
+                MessageText = "<UserName> has commented on your post",
+                PostId = comment.PostId.ToString()
             };
 
             _userCommentedQueue.Publish(userCommentedEventModel);
@@ -198,7 +199,8 @@ namespace ContentService.Controllers
             {
                 LikedBy = userId,
                 OwnerUserId = post.UserId,
-                MessageText = "<UserName> has liked your post"
+                MessageText = "<UserName> has liked your post",
+                PostId = post.Id.ToString()
             };
 
             _userLikedQueue.Publish(userLikedEventModel);

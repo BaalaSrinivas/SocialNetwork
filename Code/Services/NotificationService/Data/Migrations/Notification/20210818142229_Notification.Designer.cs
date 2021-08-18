@@ -10,7 +10,7 @@ using NotificationService.Context;
 namespace NotificationService.Data.Migrations.Notification
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20210809150141_Notification")]
+    [Migration("20210818142229_Notification")]
     partial class Notification
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,14 @@ namespace NotificationService.Data.Migrations.Notification
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PostId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");

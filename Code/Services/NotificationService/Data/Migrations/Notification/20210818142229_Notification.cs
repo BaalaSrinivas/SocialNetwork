@@ -16,7 +16,9 @@ namespace NotificationService.Data.Migrations.Notification
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
