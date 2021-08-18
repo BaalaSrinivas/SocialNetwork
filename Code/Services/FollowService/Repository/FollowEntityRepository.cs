@@ -31,7 +31,7 @@ namespace FollowService.Repository
                 var sql = "INSERT INTO FollowEntities (Id, Follower, Following) VALUES (@id, @follower, @following)";
                 return await _sqlConnection.ExecuteAsync(sql, item, transaction: _dbTransaction) > 0;
             }
-            return false;
+            return true;
         }
 
         public async Task<IEnumerable<string>> GetFollowers(string userId)

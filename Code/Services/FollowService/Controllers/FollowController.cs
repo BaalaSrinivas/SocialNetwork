@@ -1,5 +1,7 @@
-﻿using FollowService.Models;
+﻿using FollowService.Events.EventModel;
+using FollowService.Models;
 using FollowService.Repository;
+using MessageBus.MessageBusCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,10 +21,14 @@ namespace FollowService.Controllers
 
         private IUnitofWork _unitofWork;
 
-        public FollowController(ILogger<FollowController> logger, IUnitofWork unitofWork)
+        private IQueue<FriendRequestStateChangeEventModel> _friendStateQueue;
+
+        public FollowController(ILogger<FollowController> logger, IUnitofWork unitofWork,
+            IQueue<FriendRequestStateChangeEventModel> friendStateQueue)
         {
             _logger = logger;
             _unitofWork = unitofWork;
+            _friendStateQueue = friendStateQueue;
         }
 
         #region Follow
@@ -47,7 +53,7 @@ namespace FollowService.Controllers
         {
             string userId = GetUserId();
 
-            if(userId == follow.Following)
+            if (userId == follow.Following)
             {
                 return false;
             }
@@ -56,7 +62,7 @@ namespace FollowService.Controllers
             Task<bool> addItemResult = _unitofWork.FollowEntityRepository.AddItemAsync(followEntity);
 
             bool[] resultArr = await Task.WhenAll(addItemResult);
-            bool result  = resultArr.Count(s => s == false) == 0;
+            bool result = resultArr.Count(s => s == false) == 0;
 
             if (!result)
             {
@@ -74,7 +80,7 @@ namespace FollowService.Controllers
         [Route("UnFollowUser")]
         public async Task<bool> UnFollowUser(FollowEntity followEntity)
         {
-            followEntity.Follower = GetUserId();            
+            followEntity.Follower = GetUserId();
 
             Task<bool> removeItemResult = _unitofWork.FollowEntityRepository.RemoveItemAsync(followEntity);
 
@@ -103,7 +109,7 @@ namespace FollowService.Controllers
         {
             bool result = false;
 
-            if(toUserId == GetUserId())
+            if (toUserId == GetUserId())
             {
                 _logger.LogInformation($"Malicious: Friend request sent from id {GetUserId()} to {toUserId}");
                 return result;
@@ -118,6 +124,17 @@ namespace FollowService.Controllers
             };
             result = await _unitofWork.FriendEntityRepository.AddItemAsync(friendEntity);
             _unitofWork.Commit();
+
+            FriendRequestStateChangeEventModel friendRequestStateChangeEventModel = new FriendRequestStateChangeEventModel()
+            {
+                FromUserId = GetUserId(),
+                ToUserId = toUserId,
+                State = State.Requested.ToString(),
+                MessageText = "<UserName> has sent you friend request",
+                Timestamp = DateTime.UtcNow
+            };
+
+            _friendStateQueue.Publish(friendRequestStateChangeEventModel);
 
             return result;
         }
@@ -173,7 +190,7 @@ namespace FollowService.Controllers
             FriendEntity friendEntity = new FriendEntity() { Id = friendEntityDTO.Id, FromUser = friendEntityDTO.UserId, ToUser = GetUserId() };
             friendEntity.State = State.Friends;
 
-            List<Task<bool>> results = new List<Task<bool>>();         
+            List<Task<bool>> results = new List<Task<bool>>();
 
             results.Add(_unitofWork.FriendEntityRepository.UpdateFriendRequest(friendEntity));
 
@@ -193,6 +210,17 @@ namespace FollowService.Controllers
             {
                 _unitofWork.Commit();
             }
+
+            FriendRequestStateChangeEventModel friendRequestStateChangeEventModel = new FriendRequestStateChangeEventModel()
+            {
+                FromUserId = GetUserId(),
+                ToUserId = friendEntityDTO.UserId,
+                State = State.Requested.ToString(),
+                MessageText = "<UserName> has accepted your friend request",
+                Timestamp = DateTime.UtcNow
+            };
+
+            _friendStateQueue.Publish(friendRequestStateChangeEventModel);
 
             return result;
         }
@@ -224,7 +252,7 @@ namespace FollowService.Controllers
             List<FriendEntityDTO> result = new List<FriendEntityDTO>();
             IEnumerable<FriendEntity> friendRequestEntities = await _unitofWork.FriendEntityRepository.GetFriendRequestsAsync(GetUserId());
 
-            foreach(FriendEntity friendRequestEntity in friendRequestEntities)
+            foreach (FriendEntity friendRequestEntity in friendRequestEntities)
             {
                 result.Add(new FriendEntityDTO()
                 {
@@ -273,7 +301,7 @@ namespace FollowService.Controllers
             FriendFollowEntity friendFollowEntity = new FriendFollowEntity();
             FriendEntity friendEntity = _unitofWork.FriendEntityRepository.GetAllEntities(GetUserId()).Result.
                 FirstOrDefault(f => (f.FromUser == userId && f.ToUser == GetUserId()) || (f.FromUser == GetUserId() && f.ToUser == userId));
-            if(friendEntity != null)
+            if (friendEntity != null)
             {
                 friendFollowEntity.FriendState = friendEntity.State;
             }

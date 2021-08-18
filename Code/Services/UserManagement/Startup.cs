@@ -93,6 +93,7 @@ namespace UserManagement
 
             services.AddTransient<IEventHandler<UserLikedEventModel>, UserLikedEventHandler>();
             services.AddTransient<IEventHandler<UserCommentedEventModel>, UserCommentedEventHandler>();
+            services.AddTransient<IEventHandler<FriendRequestStateChangeEventModel>, FriendRequestStateChangeEventHandler>();
 
             services.AddSingleton<IQueue<UserLikedEventModel>>(s =>
             {
@@ -102,6 +103,11 @@ namespace UserManagement
             services.AddSingleton<IQueue<UserCommentedEventModel>>(s =>
             {
                 return new Queue<UserCommentedEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "UserCommented", s);
+            });
+
+            services.AddSingleton<IQueue<FriendRequestStateChangeEventModel>>(s =>
+            {
+                return new Queue<FriendRequestStateChangeEventModel>(new RabbitMQCore(rabbitMQConnectionInfo), "FriendStateChange", s);
             });
 
             services.AddSingleton<IQueue<NotificationEventModel>>(s =>
@@ -144,6 +150,7 @@ namespace UserManagement
         {
             app.ApplicationServices.GetRequiredService<IQueue<UserLikedEventModel>>().AddSubscriber<UserLikedEventHandler>();
             app.ApplicationServices.GetRequiredService<IQueue<UserCommentedEventModel>>().AddSubscriber<UserCommentedEventHandler>();
+            app.ApplicationServices.GetRequiredService<IQueue<FriendRequestStateChangeEventModel>>().AddSubscriber<FriendRequestStateChangeEventHandler>();
         }
     }
 }
