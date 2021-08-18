@@ -154,14 +154,14 @@ namespace ContentService.Controllers
         [Route("GetUserPosts")]
         public async Task<IEnumerable<Guid>> GetUserPosts(UserPostDTO userPostDTO)
         {
-            return await _postRepository.GetUserPosts(userPostDTO.UserId, userPostDTO.Count);
+            return await _postRepository.GetUserPosts(userPostDTO.UserId);
         }
 
         [HttpPost]
         [Route("GetUserImages")]
         public async Task<IEnumerable<PostImage>> GetImages(ImagesDTO imagesDTO)
         {
-            return await _postImageRepository.GetImages(imagesDTO.UserId, imagesDTO.Count);
+            return await _postImageRepository.GetImages(imagesDTO.UserId);
         }
 
         [HttpGet]

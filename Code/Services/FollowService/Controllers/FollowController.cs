@@ -283,6 +283,16 @@ namespace FollowService.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("GetUserFriendsCount")]
+        public async Task<int> GetUserFriendsCount(string userId)
+        {
+            List<FriendEntityDTO> result = new List<FriendEntityDTO>();
+            IEnumerable<FriendEntity> friendEntities = await _unitofWork.FriendEntityRepository.GetFriendsAsync(userId);           
+
+            return friendEntities.Count();
+        }
+
         #endregion
 
         #region MetaData

@@ -26,9 +26,9 @@ namespace ContentService.Repository
             return await _sqlContext.Posts.Where(p => postIds.Contains(p.Id)).OrderByDescending(p => p.Timestamp).ToListAsync();
         }
 
-        public async Task<IEnumerable<Guid>> GetUserPosts(string userId, int count)
+        public async Task<IEnumerable<Guid>> GetUserPosts(string userId)
         {
-            return await _sqlContext.Posts.Where(p => p.UserId == userId && p.IsSoftDelete == false).OrderByDescending(p=>p.Timestamp).Take(count).Select(u=>u.Id).ToListAsync();
+            return await _sqlContext.Posts.Where(p => p.UserId == userId && p.IsSoftDelete == false).OrderByDescending(p=>p.Timestamp).Select(u=>u.Id).ToListAsync();
         }
 
         public async Task<int> AddLikeCount(Guid postId)

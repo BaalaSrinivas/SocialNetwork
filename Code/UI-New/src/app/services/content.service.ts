@@ -61,7 +61,7 @@ export class ContentService {
       );
   }
 
-  getImages(count: number, userId: string): Observable<PostImage[]> {
+  getImages(userId: string): Observable<PostImage[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -70,8 +70,7 @@ export class ContentService {
     };
 
     var data = {
-      "userId": userId,
-      "count": count
+      "userId": userId
     }
 
     return this._httpClient.post<PostImage[]>(contentApi + 'getuserimages', data, httpOptions)
@@ -114,7 +113,7 @@ export class ContentService {
     return this._httpClient.get<number>(contentApi + 'likepost?postId=' + postId, httpOptions);
   }
 
-  getUserPostIds(count: number, userId: string): Observable<string[]> {
+  getUserPostIds(userId: string): Observable<string[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -122,8 +121,7 @@ export class ContentService {
       })
     };
     var data = {
-      'userId': userId,
-      'count': count
+      'userId': userId
     }
     return this._httpClient.post<string[]>(contentApi + 'getuserposts', data, httpOptions);
   }

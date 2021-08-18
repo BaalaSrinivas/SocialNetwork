@@ -22,9 +22,9 @@ namespace ContentService.Repository
             await _sqlContext.PostImages.AddRangeAsync(postImages);
         }
 
-        public async Task<IEnumerable<PostImage>> GetImages(string userId, int count)
+        public async Task<IEnumerable<PostImage>> GetImages(string userId)
         {
-            return await _sqlContext.PostImages.Where(pi => pi.UserId == userId && pi.IsSoftDelete == false).Take(count).ToListAsync();
+            return await _sqlContext.PostImages.Where(pi => pi.UserId == userId && pi.IsSoftDelete == false).ToListAsync();
         }
 
         public void SoftDeleteImages(Guid postId)

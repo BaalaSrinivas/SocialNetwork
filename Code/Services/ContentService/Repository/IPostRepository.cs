@@ -14,7 +14,7 @@ namespace ContentService.Repository
 
         public Task UpdatePostContent(Guid postId, string content);
 
-        public Task<IEnumerable<Guid>> GetUserPosts(string userId, int count);
+        public Task<IEnumerable<Guid>> GetUserPosts(string userId);
 
         public Task<List<Post>> GetPosts(IEnumerable<Guid> postIds);
 

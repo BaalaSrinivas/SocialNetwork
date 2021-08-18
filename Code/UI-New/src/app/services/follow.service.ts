@@ -120,6 +120,16 @@ export class FollowService {
     ));
   }
 
+  getUserFriendsCount(userId: string): Observable<number> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('idToken')}`
+      })
+    };
+    return this._httpClient.get<number>(followApi + 'getuserfriendscount?userId='+ userId, httpOptions);
+  }
+
   getFriendFollowInfo(userId: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({

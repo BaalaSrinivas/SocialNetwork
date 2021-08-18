@@ -29,6 +29,10 @@ export class ProfileComponent implements OnInit {
     private _modalService: NgbModal  ) {
   }
 
+  friendsCount: number = 0;
+  postCount: number = 0;
+  imageCount: number = 0;
+
   user: User = new User();
 
   userImages: PostImage[];
@@ -44,6 +48,8 @@ export class ProfileComponent implements OnInit {
         this.user = u;
       });
 
+      this.getFriendsCount();
+
       this.getUserPosts();
 
       this.getImages();
@@ -58,6 +64,12 @@ export class ProfileComponent implements OnInit {
     this.getImages();
   }
 
+  getFriendsCount() {
+    this._followService.getUserFriendsCount(this.mailId).subscribe((data) => {
+      this.friendsCount = data;
+    });
+  }
+
   getFriendFollowInfo() {
     this._followService.getFriendFollowInfo(this.mailId).subscribe(data => {
       this.friendState = data.friendState;
@@ -66,7 +78,8 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserPosts() {
-    this._contentService.getUserPostIds(20, this.mailId).subscribe(ids => {
+    this._contentService.getUserPostIds(this.mailId).subscribe(ids => {
+      this.postCount = ids.length;
       this._contentService.getPosts(ids).subscribe(posts => {
         this.userPosts = posts;
         console.log(this.userPosts);
@@ -110,8 +123,10 @@ export class ProfileComponent implements OnInit {
   }
 
   getImages() {
-    this._contentService.getImages(6, this.mailId).subscribe(data => {
-      this.userImages = data;
+    this._contentService.getImages(this.mailId).subscribe(data => {
+      this.imageCount = data.length;
+      this.userImages = data.slice(0,9);
+      
       this.userImages.forEach((c, i) => {
         //TODO: Replace size in URL
         this.userImages[i].ImageUrl = this.userImages[i].ImageUrl.replace(".", "_1x1.");
