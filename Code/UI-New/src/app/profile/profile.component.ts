@@ -21,26 +21,33 @@ export class ProfileComponent implements OnInit {
   friendState: number = 2;
   isFollowing: boolean;
 
+
   constructor(private _contentService: ContentService,
     private _userService: UserService,
     private _followService: FollowService,
     private _activatedRoute: ActivatedRoute,
     private toastService: ToastService,
-    private _modalService: NgbModal  ) {
+    private _modalService: NgbModal) {    
   }
 
   friendsCount: number = 0;
   postCount: number = 0;
   imageCount: number = 0;
+  scrollIndex: number = 1;
+  scrollLength: number = 5;
+  lock: boolean = false;
+
+  userpostIds: string[];
 
   user: User = new User();
 
   userImages: PostImage[];
 
-  userPosts: Post[];
+  userPosts: Post[] = [];
 
-  ngOnInit() {
+  ngOnInit() {    
     this._activatedRoute.queryParams.subscribe(params => {
+      this.userPosts = undefined;      
       this.mailId = params['mailid'] != undefined ? params['mailid'] : sessionStorage.getItem('mailId');
       this.isHost = this.mailId == sessionStorage.getItem('mailId');
 
@@ -56,6 +63,24 @@ export class ProfileComponent implements OnInit {
 
       this.getFriendFollowInfo();
     });
+  }
+
+  onScroll() {
+    if (this.userpostIds.length == 0) {
+      this.userPosts = [];
+    }
+    if (this.userpostIds !== undefined && this.userpostIds.length >= (this.scrollIndex - 1) * this.scrollLength && !this.lock) {
+      this.lock = true;
+      this._contentService.getPosts(this.userpostIds.slice((this.scrollIndex - 1) * this.scrollLength, (this.scrollIndex) * this.scrollLength)).subscribe(posts => {
+        if (this.userPosts === undefined) {
+          this.userPosts = [];
+        }
+        this.userPosts.push(...posts);
+        console.log(this.userPosts);
+        this.scrollIndex++;
+        this.lock = false;
+      });
+    }
   }
 
   RefreshPosts() {
@@ -80,10 +105,8 @@ export class ProfileComponent implements OnInit {
   getUserPosts() {
     this._contentService.getUserPostIds(this.mailId).subscribe(ids => {
       this.postCount = ids.length;
-      this._contentService.getPosts(ids).subscribe(posts => {
-        this.userPosts = posts;
-        console.log(this.userPosts);
-      });
+      this.userpostIds = ids;
+      this.onScroll();
     });
   }
 

@@ -32,6 +32,7 @@ import { NotificationService } from './services/notification.service';
 import { NotificationAdapter } from './models/adapters/notification.adapter';
 import { ToastcontainerComponent } from './shared/toastcontainer/toastcontainer.component';
 import { ToastService } from './services/toast.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ToastService } from './services/toast.service';
     CKEditorModule,
     FormsModule,
     HttpClientModule,
+    InfiniteScrollModule, 
     NgbModule
   ],
   providers: [
