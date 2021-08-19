@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS runtime
+
+WORKDIR /app
+
+COPY bin/Release/net5.0/publish ./
+
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet ApiGateway.dll

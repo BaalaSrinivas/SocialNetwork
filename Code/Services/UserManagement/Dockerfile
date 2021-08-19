@@ -3,4 +3,4 @@ ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
 WORKDIR /app
 COPY bin/Release/net5.0/publish ./
-ENTRYPOINT ["dotnet", "ContentService.dll"]
+ENTRYPOINT ["dotnet", "UserManagement.dll"]

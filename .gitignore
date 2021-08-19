@@ -41,3 +41,4 @@
 /Code/Services/ContentService/bin/Release/net5.0
 /Code/Services/MessageBus/MessageBus.RabbitMQ/bin/Release/net5.0
 /Code/Services/MessageBus/MessageBusCore/bin/Release/net5.0
+/Code/Services/UserManagement/Properties/PublishProfiles
