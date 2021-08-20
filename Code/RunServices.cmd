@@ -26,18 +26,13 @@ REM cd ./Services/NewsfeedService
 REM start cmd /c NewsfeedService.cmd
 REM cd ../../
 
-REM cd ./Services/NotificationService
-REM start cmd /c NotificationService.cmd
-REM cd ../../
+cd ./Services/NotificationService
+start cmd /c NotificationService.cmd
+cd ../../
 
 cd ./Services/UserManagement
 start cmd /c UserManagement.cmd
 cd ../../
-
-cd ./UI-New
-start cmd /c UI-New.cmd
-cd ../../
-
 
 
 
