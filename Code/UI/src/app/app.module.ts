@@ -1,84 +1,80 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from './app.routing';
-
-
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SignupComponent } from './signup/signup.component';
-import { LandingComponent } from './landing/landing.component';
-import { ProfileComponent } from './profile/profile.component';
-import { HomeComponent } from './home/home.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { FooterComponent } from './shared/footer/footer.component';
-
-import { HomeModule } from './home/home.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
-import { AuthenticationService } from './shared/authentication.service';
-import { HttpClientModule } from '@angular/common/http';
-import { SigninredirectComponent } from './signinredirect/signinredirect.component';
-import { SignoutredirectComponent } from './signoutredirect/signoutredirect.component';
-import { ContentService } from './profile/content.service';
-import { PostAdapter } from './profile/Models/Adapters/post.adapter';
-import { FeedSectionComponent } from './feed-section/feed-section.component';
+import { RegisterComponent } from './register/register.component';
+import { CompleteRegisterComponent } from './complete-register/complete-register.component';
+import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
-import { SignalrService } from './signalr.service';
-import { CompleteSignupComponent } from './complete-signup/complete-signup.component';
-import { UserService } from './complete-signup/user.service';
-import { PostSectionComponent } from './post-section/post-section.component';
-import { FriendsListComponent } from './friends-list/friends-list.component';
-import { PostEditorComponent } from './post-editor/post-editor.component';
-import { UserAdapter } from './complete-signup/Models/Adapters/user.adapter';
-import { CommentAdapter } from './profile/Models/Adapters/comment.adapter';
-import { FollowService } from './shared/follow.service';
-import { FriendAdapter } from './profile/Models/Adapters/friend.adapter';
-import { FollowAdapter } from './profile/Models/Adapters/follow.adapter';
-import { NewsfeedService } from './newsfeed/newsfeed.service';
-
-
+import { ProfileComponent } from './profile/profile.component';
+import { FriendsComponent } from './friends/friends.component';
+import { AuthenticationService } from './services/authentication.service';
+import { HttpClientModule } from '@angular/common/http';
+import { UserService } from './services/user.service';
+import { NewsfeedService } from './services/newsfeed.service';
+import { ContentService } from './services/content.service';
+import { FollowService } from './services/follow.service';
+import { SignalrService } from './services/signalr.service';
+import { CommentAdapter } from './models/adapters/comment.adapter';
+import { FollowAdapter } from './models/adapters/follow.adapter';
+import { FriendAdapter } from './models/adapters/friend.adapter';
+import { PostAdapter } from './models/adapters/post.adapter';
+import { UserAdapter } from './models/adapters/user.adapter';
+import { FullPostViewComponent } from './full-post-view/full-post-view.component';
+import { PostElementComponent } from './ui-elements/post-element/post-element.component';
+import { PostEditorElementComponent } from './ui-elements/post-editor-element/post-editor-element.component';
+import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { PostImageAdapter } from './models/adapters/postimage.adapter';
+import { NotificationService } from './services/notification.service';
+import { NotificationAdapter } from './models/adapters/notification.adapter';
+import { ToastcontainerComponent } from './shared/toastcontainer/toastcontainer.component';
+import { ToastService } from './services/toast.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        SignupComponent,
-        LandingComponent,
-        ProfileComponent,
-        NavbarComponent,
-        FooterComponent,
-        LoginComponent,
-        SigninredirectComponent,
-        SignoutredirectComponent,  
-        FeedSectionComponent,
-        NewsfeedComponent,
-        CompleteSignupComponent,
-        PostSectionComponent,
-        FriendsListComponent,
-        PostEditorComponent
-    ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        NgbModule,
-        FormsModule,
-        RouterModule,
-        AppRoutingModule,
-        HomeModule,
-    ],
-    providers: [
-        AuthenticationService,
-        ContentService,
-        UserService,
-        FollowService,
-        SignalrService,
-        NewsfeedService,
-        PostAdapter,
-        UserAdapter,
-        CommentAdapter,
-        FriendAdapter,
-        FollowAdapter
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    CompleteRegisterComponent,
+    NavBarComponent,
+    NewsfeedComponent,
+    ProfileComponent,
+    FriendsComponent,
+    FullPostViewComponent,
+    PostElementComponent,
+    PostEditorElementComponent,
+    ToastcontainerComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CKEditorModule,
+    FormsModule,
+    HttpClientModule,
+    InfiniteScrollModule, 
+    NgbModule
+  ],
+  providers: [
+    AuthenticationService,
+    ContentService,
+    FollowService,
+    NewsfeedService,
+    NotificationService,
+    SignalrService,
+    ToastService,
+    UserService,
+    CommentAdapter,
+    FollowAdapter,
+    FriendAdapter,
+    NotificationAdapter,
+    PostAdapter,
+    PostImageAdapter,
+    UserAdapter
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

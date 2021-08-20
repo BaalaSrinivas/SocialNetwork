@@ -42,3 +42,11 @@
 /Code/Services/MessageBus/MessageBus.RabbitMQ/bin/Release/net5.0
 /Code/Services/MessageBus/MessageBusCore/bin/Release/net5.0
 /Code/Services/UserManagement/Properties/PublishProfiles
+/Code/Services/ApiGateway/Properties/PublishProfiles
+/Code/Services/BlobService/bin/Release/net5.0
+/Code/Services/FollowService/bin/Release/net5.0
+/Code/Services/IdentityAndAccessManagement/bin/Release/net5.0
+/Code/Services/NewsfeedService/bin/Release/net5.0
+/Code/Services/NotificationService/bin/Release/net5.0
+/Code/Services/UserManagement/bin/Release/net5.0/publish
+/Code/Services/UserManagement/bin/Release/net5.0

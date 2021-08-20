@@ -5,6 +5,26 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "Services\UserManagement\UserManagement.csproj", "{FEFBF309-5755-43B7-85AD-DD50D02641DD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityAndAccessManagement", "Services\IdentityAndAccessManagement\IdentityAndAccessManagement.csproj", "{B78D4B55-85F6-4D34-979F-10984C6146C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentService", "Services\ContentService\ContentService.csproj", "{286AE080-8D3C-445B-813A-5DFE28A42A3E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "Services\ApiGateway\ApiGateway.csproj", "{8D4634FA-D44F-4947-8712-A16112D22B11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{9AB8AA5B-960C-4980-AA83-214A807D2C53}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBusCore", "Services\MessageBus\MessageBusCore\MessageBusCore.csproj", "{C414E59B-3486-4695-AEDE-1F46F5EE283F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBus.RabbitMQ", "Services\MessageBus\MessageBus.RabbitMQ\MessageBus.RabbitMQ.csproj", "{8AA60F96-6CD9-4E20-AE42-ECA60CB89BEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "Services\NotificationService\NotificationService.csproj", "{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsfeedService", "Services\NewsfeedService\NewsfeedService.csproj", "{4341A710-FF95-4961-B43B-B3649DCF6289}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlobService", "Services\BlobService\BlobService.csproj", "{6611834C-7FC4-4531-BD1A-832E099C3161}"
+EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "UI\", "{F523CE19-5307-4EA7-B107-687C9169D740}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -26,47 +46,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "UI\", "{F523CE19-5307
 		SlnRelativePath = "UI\"
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityAndAccessManagement", "Services\IdentityAndAccessManagement\IdentityAndAccessManagement.csproj", "{B78D4B55-85F6-4D34-979F-10984C6146C7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentService", "Services\ContentService\ContentService.csproj", "{286AE080-8D3C-445B-813A-5DFE28A42A3E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "Services\ApiGateway\ApiGateway.csproj", "{8D4634FA-D44F-4947-8712-A16112D22B11}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{9AB8AA5B-960C-4980-AA83-214A807D2C53}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBusCore", "Services\MessageBus\MessageBusCore\MessageBusCore.csproj", "{C414E59B-3486-4695-AEDE-1F46F5EE283F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBus.RabbitMQ", "Services\MessageBus\MessageBus.RabbitMQ\MessageBus.RabbitMQ.csproj", "{8AA60F96-6CD9-4E20-AE42-ECA60CB89BEA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "Services\NotificationService\NotificationService.csproj", "{7CC6BE31-001C-4B3C-8B09-5F79C4593C73}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FollowService", "Services\FollowService\FollowService.csproj", "{92B19930-D123-4460-9C3E-855299FF2A5E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsfeedService", "Services\NewsfeedService\NewsfeedService.csproj", "{4341A710-FF95-4961-B43B-B3649DCF6289}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlobService", "Services\BlobService\BlobService.csproj", "{6611834C-7FC4-4531-BD1A-832E099C3161}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI-New", "UI-New\", "{8109D84D-0AD2-422F-AEDC-CB330D14D7C2}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_53320"
-		Debug.AspNetCompiler.PhysicalPath = "UI-New\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53320\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_53320"
-		Release.AspNetCompiler.PhysicalPath = "UI-New\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53320\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "53320"
-		SlnRelativePath = "UI-New\"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,10 +56,6 @@ Global
 		{FEFBF309-5755-43B7-85AD-DD50D02641DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEFBF309-5755-43B7-85AD-DD50D02641DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEFBF309-5755-43B7-85AD-DD50D02641DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F523CE19-5307-4EA7-B107-687C9169D740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F523CE19-5307-4EA7-B107-687C9169D740}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B78D4B55-85F6-4D34-979F-10984C6146C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -117,10 +92,10 @@ Global
 		{6611834C-7FC4-4531-BD1A-832E099C3161}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6611834C-7FC4-4531-BD1A-832E099C3161}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6611834C-7FC4-4531-BD1A-832E099C3161}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8109D84D-0AD2-422F-AEDC-CB330D14D7C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8109D84D-0AD2-422F-AEDC-CB330D14D7C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8109D84D-0AD2-422F-AEDC-CB330D14D7C2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{8109D84D-0AD2-422F-AEDC-CB330D14D7C2}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F523CE19-5307-4EA7-B107-687C9169D740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F523CE19-5307-4EA7-B107-687C9169D740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F523CE19-5307-4EA7-B107-687C9169D740}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

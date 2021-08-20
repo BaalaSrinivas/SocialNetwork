@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentService } from '../profile/content.service';
-import { Post } from '../profile/Models/post.model';
-import { NewsfeedService } from './newsfeed.service';
+import { Post } from '../models/post.model';
+import { ContentService } from '../services/content.service';
+import { NewsfeedService } from '../services/newsfeed.service';
 
 @Component({
   selector: 'app-newsfeed',
@@ -10,18 +10,18 @@ import { NewsfeedService } from './newsfeed.service';
 })
 export class NewsfeedComponent implements OnInit {
 
-    feedPosts: Post[];
-    profileImageUrl: string;
-    constructor(private _newsfeedService: NewsfeedService, private _contentService: ContentService) { }
+  feedPosts: Post[];
+  profileImageUrl: string;
 
-    ngOnInit(): void {
-        this._newsfeedService.getNewsfeed(sessionStorage.getItem('mailId')).subscribe(data => {
-            this._contentService.getPosts(data).subscribe(posts => {
-                this.feedPosts = posts;
-                console.log(this.feedPosts);
-            });
-            this.profileImageUrl = sessionStorage.getItem('profileUrl');
-        });
+  constructor(private _newsfeedService: NewsfeedService, private _contentService: ContentService) { }
+
+  ngOnInit(): void {
+    this._newsfeedService.getNewsfeed(sessionStorage.getItem('mailId')).subscribe(data => {
+      this._contentService.getPosts(data).subscribe(posts => {
+        this.feedPosts = posts;
+      });
+      this.profileImageUrl = sessionStorage.getItem('profileUrl');
+    });
   }
 
 }
