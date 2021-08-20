@@ -33,6 +33,7 @@ namespace UserManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks().AddDbContextCheck<UserContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -142,6 +143,7 @@ namespace UserManagement
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
 
         }

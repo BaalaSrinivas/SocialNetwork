@@ -31,6 +31,7 @@ namespace NotificationService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks().AddDbContextCheck<NotificationDbContext>();
             services.AddCors(options =>
             {
                 options.AddPolicy("Cors", builder =>
@@ -133,6 +134,7 @@ namespace NotificationService
             {
                 endpoints.MapHub<NotificationHub>("/hub");
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
 
