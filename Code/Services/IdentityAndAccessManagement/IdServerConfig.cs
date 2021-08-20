@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,17 @@ using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement
 {
+    /// <summary>
+    /// TODO To Be removed
+    /// </summary>
     public class IdServerConfig
     {
-        public static IEnumerable<Client> GetClients()
+        string _uiUrl;
+        public IdServerConfig(string uiUrl)
+        {
+            _uiUrl = uiUrl;
+        }
+        public IEnumerable<Client> GetClients()
         {
             Client client = new Client()
             {
@@ -16,10 +25,10 @@ namespace IdentityAndAccessManagement
                 ClientName = "BS Konnect",
                 AllowedGrantTypes = GrantTypes.Implicit,
                 ClientSecrets = new List<Secret> { new Secret("BSKonnectPassword@123".Sha256()) },
-                RedirectUris = { "http://localhost:4200/signinredirect" },
+                RedirectUris = { $"{_uiUrl}signinredirect" },
                 AllowAccessTokensViaBrowser = true,
                 AllowedScopes = { "openid", "profile", "email" },
-                AllowedCorsOrigins = { "http://localhost:4200" },
+                AllowedCorsOrigins = { _uiUrl },
                 AlwaysIncludeUserClaimsInIdToken = true,
                 IdentityTokenLifetime = 3600
             };

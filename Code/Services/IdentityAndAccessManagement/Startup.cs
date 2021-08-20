@@ -118,7 +118,7 @@ namespace IdentityAndAccessManagement
 
                 if (!context.Clients.Any())
                 {
-                    foreach (var client in IdServerConfig.GetClients())
+                    foreach (var client in new IdServerConfig(Configuration.GetValue<string>("UiUrl")).GetClients())
                     {
                         context.Clients.Add(client.ToEntity());
                     }

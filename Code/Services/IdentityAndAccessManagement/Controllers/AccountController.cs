@@ -2,6 +2,7 @@
 using IdentityAndAccessManagement.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace IdentityAndAccessManagement.Controllers
@@ -12,11 +13,13 @@ namespace IdentityAndAccessManagement.Controllers
     {
         private IIdentityService _identityService;
         private IEmailService _emailService;
+        private IConfiguration _configuration;
 
-        public AccountController(IIdentityService identityService, IEmailService emailService)
+        public AccountController(IIdentityService identityService, IEmailService emailService, IConfiguration configuration)
         {
             _identityService = identityService;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -45,7 +48,7 @@ namespace IdentityAndAccessManagement.Controllers
         {
             await _identityService.SignOut();
             //TODO:Hardcoding for now, Has to be fixed
-            return Redirect("http://localhost:4200/signoutredirect?isSuccess=0");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}signoutredirect?isSuccess=0");
         }
 
         [HttpPost]
@@ -63,7 +66,7 @@ namespace IdentityAndAccessManagement.Controllers
             await _identityService.SignOut();
             
             //TODO:Hardcoding for now, Has to be fixed
-            return Redirect("http://localhost:4200/signoutredirect");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}signoutredirect");
         }
 
         [HttpGet]
@@ -73,7 +76,7 @@ namespace IdentityAndAccessManagement.Controllers
             SocialUser user = await _identityService.FindByUserId(userId);
             await _identityService.ConfirmEmail(user, token);
 
-            return Redirect("http://localhost:4200/login");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}login");
         }
     }
 }
