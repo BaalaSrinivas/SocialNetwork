@@ -15,12 +15,10 @@ namespace NewsfeedService.Controllers
     [Route("newsfeedapi/v1/[controller]")]
     public class NewsfeedController : ControllerBase
     {
-        ICacheRepository _cacheRepository;
         IContentService _contentService;
         IFollowService _followService;
-        public NewsfeedController(ICacheRepository cacheRepository, IContentService contentService, IFollowService followService)
+        public NewsfeedController(IContentService contentService, IFollowService followService)
         {
-            _cacheRepository = cacheRepository;
             _contentService = contentService;
             _followService = followService;
         }
@@ -43,7 +41,7 @@ namespace NewsfeedService.Controllers
         {
             string data = GenerateNewsfeedInternal(userId).Result;
 
-            return await _cacheRepository.StoreDataAsync(userId, data);
+            return true;
         }
 
         private async Task<string> GenerateNewsfeedInternal(string userId)

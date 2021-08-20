@@ -36,7 +36,7 @@ namespace NotificationService.SignalR
             string token = context.Request.Query["access_token"];
 
             httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-            HttpResponseMessage httpResponse = httpClient.GetAsync(_configuration.GetValue<string>("UserInfoEndPoint")).Result;
+            HttpResponseMessage httpResponse = httpClient.GetAsync($"{_configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}{_configuration.GetValue<string>("UserInfoControllerPath")}").Result;
 
             if (httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -56,7 +56,7 @@ namespace NotificationService.SignalR
             string token = context.Request.Query["access_token"];
 
             httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-            HttpResponseMessage httpResponse = httpClient.GetAsync(_configuration.GetValue<string>("UserInfoEndPoint")).Result;
+            HttpResponseMessage httpResponse = httpClient.GetAsync($"{_configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}{_configuration.GetValue<string>("UserInfoControllerPath")}").Result;
 
             if (httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {

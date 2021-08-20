@@ -32,14 +32,8 @@ namespace NewsfeedService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks();
-            services.AddHttpClient<IContentService, ContentService>(u=> u.BaseAddress = new Uri(Configuration.GetValue<string>("ContentServiceUrl")));
-            services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("FollowServiceUrl")));
-            
-            services.AddScoped<ICacheRepository, RedisCacheRepository>();
-
-            services.AddSingleton<ConnectionMultiplexer>(c => {
-                return ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisConnectionString"));
-            });
+            services.AddHttpClient<IContentService, ContentService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("ContentServiceBaseUrl")}{Configuration.GetValue<string>("ContentControllerPath")}"));
+            services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("FollowServiceBaseUrl")}{Configuration.GetValue<string>("FollowControllerPath")}"));
             services.AddControllers();
 
             //Defaults to Google authentication

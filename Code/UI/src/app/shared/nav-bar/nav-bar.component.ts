@@ -36,9 +36,8 @@ export class NavBarComponent implements OnInit {
 
     this.authService.profileUrlUpdated.subscribe(x => {
       this.profileUrl = sessionStorage.getItem('profileUrl');
-    });
-
-    this.GetNotifications();
+      this.GetNotifications();
+    });    
 
     signalrService.addCallbackListener((data) => {
       if (this.notifications.length > 0) {

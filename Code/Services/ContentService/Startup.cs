@@ -82,7 +82,7 @@ namespace ContentService
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IPostImageRepository, PostImageRepository>();
             services.AddTransient<IEventHandler<NewContentEventModel>, ContentEventHandler>();
-            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("BlobServiceUrl")));
+            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("BlobServiceBaseUrl")}{Configuration.GetValue<string>("BlobControllerPath")}"));
 
             RabbitMQConnectionInfo rabbitMQConnectionInfo = new RabbitMQConnectionInfo()
             {

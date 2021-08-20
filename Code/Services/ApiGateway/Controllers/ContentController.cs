@@ -67,7 +67,7 @@ namespace ApiGateway.Controllers
 
         private string GetCompleteImageUrl(string imageUrl)
         {
-            return imageUrl.Replace("BlobUrlBSK", _configuration.GetValue<string>("ApiGateWayUrl"));
+            return imageUrl.Replace("<BlobUrlBSK>", _configuration.GetValue<string>("ApiGateWayBaseUrl"));
         }
 
         [HttpGet]

@@ -37,18 +37,6 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/contentapi/{version}/content/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5001"
-        }
-      ],
-      "UpstreamPathTemplate": "/api/{version}/content/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
-    },
-    {
       "DownstreamPathTemplate": "/api/v1/agg/follow/getfriendrequests",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -71,6 +59,30 @@
       ],
       "UpstreamPathTemplate": "/api/{version}/follow/getfriends",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/images/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/images/{everything}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/contentapi/{version}/content/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/{version}/content/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/followapi/{version}/follow/{everything}",
@@ -118,7 +130,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/{version}/notification/{everything}",
-      "UpstreamHttpMethod": ["GET","POST"]
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/userapi/{version}/user/search",
@@ -143,18 +155,6 @@
       ],
       "UpstreamPathTemplate": "/api/{version}/user",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
-    },
-    {
-      "DownstreamPathTemplate": "/images/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5008"
-        }
-      ],
-      "UpstreamPathTemplate": "/images/{everything}",
-      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {

@@ -22,9 +22,9 @@ cd ./Services/MessageBus
 start cmd /c /k MessageBus.cmd
 cd ../../
 
-REM cd ./Services/NewsfeedService
-REM start cmd /c NewsfeedService.cmd
-REM cd ../../
+cd ./Services/NewsfeedService
+start cmd /c NewsfeedService.cmd
+cd ../../
 
 cd ./Services/NotificationService
 start cmd /c NotificationService.cmd

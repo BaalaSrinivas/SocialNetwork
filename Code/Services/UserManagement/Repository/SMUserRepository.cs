@@ -79,7 +79,7 @@ namespace UserManagement.Repository
         //TODO: Find better alternative 
         private string GetUpdatedProfileUrl(string profileUrl)
         {
-            return profileUrl.Replace("BlobUrlBSK", _configuration.GetValue<string>("ApiGateWayUrl"));
+            return profileUrl.Replace("<BlobUrlBSK>", _configuration.GetValue<string>("ApiGateWayBaseUrl"));
         }
     }
 }

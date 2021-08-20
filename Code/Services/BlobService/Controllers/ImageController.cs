@@ -31,7 +31,7 @@ namespace BlobService.Controllers
                 new Bitmap(imageThumbnail, 720, 720).Save($@"{Directory.GetCurrentDirectory()}\wwwroot\Images\{guid}_1x1{Path.GetExtension(image.FileName)}");
             }
 
-            return Ok(@$"BlobUrlBSK/Images/{imageName}");
+            return Ok(@$"<BlobUrlBSK>Images/{imageName}");
         }
     }
 }

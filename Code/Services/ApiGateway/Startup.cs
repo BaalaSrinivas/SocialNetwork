@@ -79,9 +79,9 @@ namespace ApiGateway
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
             });
 
-            services.AddHttpClient<IUserService, UserService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("UserServiceUrl")));
-            services.AddHttpClient<IContentService, ContentService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("ContentServiceUrl")));
-            services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("FollowServiceUrl")));
+            services.AddHttpClient<IUserService, UserService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("UserManagementBaseUrl")}{Configuration.GetValue<string>("UserControllerPath")}"));
+            services.AddHttpClient<IContentService, ContentService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("ContentServiceBaseUrl")}{Configuration.GetValue<string>("ContentControllerPath")}"));
+            services.AddHttpClient<IFollowService, FollowService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("FollowServiceBaseUrl")}{Configuration.GetValue<string>("FollowControllerPath")}"));
 
             services.AddSwaggerGen(c =>
             {

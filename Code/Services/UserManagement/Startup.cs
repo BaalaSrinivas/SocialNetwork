@@ -44,7 +44,7 @@ namespace UserManagement
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri(Configuration.GetValue<string>("BlobServiceUrl")));
+            services.AddHttpClient<IBlobService, BlobService>(u => u.BaseAddress = new Uri($"{Configuration.GetValue<string>("BlobServiceBaseUrl")}{Configuration.GetValue<string>("BlobControllerPath")}"));
             services.AddScoped<ISMUserRepository, SMUserRepository>();
 
             //Defaults to Google authentication
