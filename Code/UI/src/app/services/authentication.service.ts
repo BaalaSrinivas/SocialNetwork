@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User, UserManager } from "oidc-client";
 import { from, Observable, Subject } from "rxjs";
 import { Register } from "../models/register.model";
+import { environment } from "../../environments/environment";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -24,21 +25,20 @@ export class AuthenticationService {
 
   constructor(private _httpClient: HttpClient) {
     const identitySettings = {
-      authority: 'https://localhost:5004',
+      authority: environment.identityUrl,
       client_id: 'BSKonnectIdentityServerID',
-      redirect_uri: `http://localhost:4200/signinredirect`,
+      redirect_uri: window.location.origin + '/signinredirect',
       scope: 'profile openid email',
       response_type: 'id_token token',
-      post_logout_redirect_uri: `http://localhost:4200/signoutredirect`,
-      automaticSilentRenew: true,
-      silent_redirect_uri: `$http://localhost:4200/assets/silent-callback.html`,
+      post_logout_redirect_uri: window.location.origin + '/signoutredirect',
+      automaticSilentRenew: true,      
       metadata: {
-        end_session_endpoint: 'https://localhost:5004/connect/endsession',
-        authorization_endpoint: 'https://localhost:5004/connect/authorize',
-        issuer: 'https://localhost:5004',
-        jwks_uri: 'https://localhost:5004/.well-known/openid-configuration/jwks',
-        token_endpoint: 'https://localhost:5004/connect/token',
-        userinfo_endpoint: 'https://localhost:5004/connect/userinfo',
+        end_session_endpoint: environment.identityUrl + '/connect/endsession',
+        authorization_endpoint: environment.identityUrl + '/connect/authorize',
+        issuer: environment.identityUrl,
+        jwks_uri: environment.identityUrl + '/.well-known/openid-configuration/jwks',
+        token_endpoint: environment.identityUrl + '/connect/token',
+        userinfo_endpoint: environment.identityUrl + '/connect/userinfo',
       }
     };
 
