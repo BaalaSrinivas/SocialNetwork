@@ -56,9 +56,15 @@ namespace NewsfeedService.Controllers
             {
                 UserPostDTO userPostDTO = new UserPostDTO() { UserId = user, Count = 10 };
                 posts.AddRange(await _contentService.GetUsersPosts(userPostDTO, token));
-            }           
+            }
 
-            return posts.Aggregate<Guid, string>("", (a, b) => { return a.ToString() + "|" + b.ToString(); }).Substring(1);
+            string result = posts.Aggregate<Guid, string>("", (a, b) => { return a.ToString() + "|" + b.ToString(); });
+
+            if(!string.IsNullOrEmpty(result))
+            {
+                result = result.Substring(1);
+            }
+            return result;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace IdentityAndAccessManagement
                 ClientName = "BS Konnect",
                 AllowedGrantTypes = GrantTypes.Implicit,
                 ClientSecrets = new List<Secret> { new Secret("BSKonnectPassword@123".Sha256()) },
-                RedirectUris = { $"{_uiUrl}signinredirect" },
+                RedirectUris = { $"{_uiUrl}/signinredirect" },
                 AllowAccessTokensViaBrowser = true,
                 AllowedScopes = { "openid", "profile", "email" },
                 AllowedCorsOrigins = { _uiUrl },

@@ -83,6 +83,7 @@ namespace UserManagement.Controllers
             }
 
             //Trigger Message to Event Queue to notify other services
+            //TODO: Add a machanism to handle if the queue is down
             UserAddedEventModel userAddedEventModel = new UserAddedEventModel() { UserId = user.MailId, MessageText = "New user added" };
             _userAddedQueue.Publish(userAddedEventModel);
 

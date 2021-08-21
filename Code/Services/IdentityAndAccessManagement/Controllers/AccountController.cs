@@ -48,7 +48,7 @@ namespace IdentityAndAccessManagement.Controllers
         {
             await _identityService.SignOut();
             //TODO:Hardcoding for now, Has to be fixed
-            return Redirect($"{_configuration.GetValue<string>("UiUrl")}signoutredirect?isSuccess=0");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}/signoutredirect?isSuccess=0");
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace IdentityAndAccessManagement.Controllers
             await _identityService.SignOut();
             
             //TODO:Hardcoding for now, Has to be fixed
-            return Redirect($"{_configuration.GetValue<string>("UiUrl")}signoutredirect");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}/signoutredirect");
         }
 
         [HttpGet]
@@ -76,7 +76,7 @@ namespace IdentityAndAccessManagement.Controllers
             SocialUser user = await _identityService.FindByUserId(userId);
             await _identityService.ConfirmEmail(user, token);
 
-            return Redirect($"{_configuration.GetValue<string>("UiUrl")}login");
+            return Redirect($"{_configuration.GetValue<string>("UiUrl")}/login");
         }
     }
 }

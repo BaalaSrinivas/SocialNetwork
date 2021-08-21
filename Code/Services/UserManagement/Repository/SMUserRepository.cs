@@ -45,7 +45,10 @@ namespace UserManagement.Repository
         public SMUser GetUser(string mailId)
         {
             SMUser user = _context.SMUsers.Where(u => u.MailId == mailId).FirstOrDefault();
-            user.ProfileImageUrl = GetUpdatedProfileUrl(user.ProfileImageUrl);
+            if (user != null)
+            {
+                user.ProfileImageUrl = GetUpdatedProfileUrl(user.ProfileImageUrl);
+            }
             return user;
         }
 

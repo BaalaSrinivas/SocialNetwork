@@ -155,6 +155,7 @@ namespace FollowService
         private void InitializeDatabase(SqlConnection sqlConnection)
         {
             string dbName = Configuration.GetValue<string>("DatabaseName");
+            sqlConnection.ConnectionString = sqlConnection.ConnectionString.Replace(dbName, "master");
             sqlConnection.Open();
             var cmdText = $"select count(*) from master.dbo.sysdatabases where name='{dbName}'";
             SqlCommand sqlCommand = new SqlCommand(cmdText);

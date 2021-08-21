@@ -13,4 +13,10 @@
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\Images\Dummy.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
