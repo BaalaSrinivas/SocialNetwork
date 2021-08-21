@@ -1,3 +1,7 @@
+cd ./UI
+docker build -t contactbalasrinivas/bsk-ui .
+cd ../
+
 cd ./Services/ApiGateway 
 docker build -t contactbalasrinivas/bsk-apigateway .
 cd ../../

@@ -1,0 +1,19 @@
+Data Source=localhost;User ID=sa;Password=BaalaBsk@123;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=BaalaBsk@123" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+docker run -p 5000:80 --name apigateway contactbalasrinivas/bsk-apigateway
+
+docker run -p 5001:80 --name blobservice contactbalasrinivas/bsk-blobservice
+
+docker run -p 5002:80 --name contentservice contactbalasrinivas/bsk-contentservice
+
+docker run -p 5003:80 --name followservice contactbalasrinivas/bsk-followservice
+
+docker run -p 5004:80 --name identityandaccessmanagement contactbalasrinivas/bsk-identityandaccessmanagement
+
+docker run -p 5005:80 --name newsfeedservice contactbalasrinivas/bsk-newsfeedservice
+
+docker run -p 5006:80 --name notificationservice contactbalasrinivas/bsk-notificationservice
+
+docker run -p 5007:80 --name usermanagement contactbalasrinivas/bsk-usermanagement

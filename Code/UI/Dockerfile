@@ -1,2 +1,2 @@
 FROM nginx:1.17.1-alpine
-COPY /dist/UI-New /usr/share/nginx/html
+COPY /dist/UI /usr/share/nginx/html
