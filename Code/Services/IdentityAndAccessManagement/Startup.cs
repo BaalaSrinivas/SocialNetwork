@@ -108,32 +108,7 @@ namespace IdentityAndAccessManagement
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityAndAccessManagement v1"));
             }
 
-            app.UseCors("Cors");
-
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                app.UseIdentityServer();
-
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-
-                if (!context.Clients.Any())
-                {
-                    foreach (var client in new IdServerConfig(Configuration.GetValue<string>("UiUrl")).GetClients())
-                    {
-                        context.Clients.Add(client.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-
-                if(!context.IdentityResources.Any())
-                {
-                    foreach (var resource in IdServerConfig.IdentityResources)
-                    {
-                        context.IdentityResources.Add(resource.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-            }
+            app.UseCors("Cors");           
 
             app.UseIdentityServer();
 
@@ -148,6 +123,45 @@ namespace IdentityAndAccessManagement
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                app.UseIdentityServer();
+
+                var iamContext = serviceScope.ServiceProvider.GetRequiredService<IAMContext>();
+                var configDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                var persistedGrantDbContext = serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
+
+                ApplyMigrations(iamContext);
+                ApplyMigrations(configDbContext);
+                ApplyMigrations(persistedGrantDbContext);
+
+                if (!configDbContext.Clients.Any())
+                {
+                    foreach (var client in new IdServerConfig(Configuration.GetValue<string>("UiUrl")).GetClients())
+                    {
+                        configDbContext.Clients.Add(client.ToEntity());
+                    }
+                    configDbContext.SaveChanges();
+                }
+
+                if (!configDbContext.IdentityResources.Any())
+                {
+                    foreach (var resource in IdServerConfig.IdentityResources)
+                    {
+                        configDbContext.IdentityResources.Add(resource.ToEntity());
+                    }
+                    configDbContext.SaveChanges();
+                }
+            }
+        }
+
+        private void ApplyMigrations(DbContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }

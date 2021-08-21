@@ -1,6 +1,3 @@
-CREATE DATABASE [SMFollow]
-GO
-
 USE [SMFollow]
 
 CREATE TABLE [dbo].[FollowEntities]
@@ -9,7 +6,6 @@ CREATE TABLE [dbo].[FollowEntities]
     [Follower] NVARCHAR(200) NOT NULL, 
     [Following] NVARCHAR(200) NOT NULL
 )
-GO
 
 CREATE TABLE [dbo].[FollowMetaData]
 (
@@ -17,7 +13,6 @@ CREATE TABLE [dbo].[FollowMetaData]
     [FollowersCount] INT NOT NULL, 
     [FriendsCount] INT NOT NULL
 )
-GO
 
 CREATE TABLE [dbo].[FriendEntities]
 (
@@ -26,4 +21,3 @@ CREATE TABLE [dbo].[FriendEntities]
     [ToUser] NVARCHAR(200) NOT NULL, 
     [State] INT NOT NULL
 )
-GO

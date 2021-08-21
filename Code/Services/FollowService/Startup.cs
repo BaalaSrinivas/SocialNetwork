@@ -13,8 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace FollowService
 {
@@ -137,11 +139,39 @@ namespace FollowService
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var connection = serviceScope.ServiceProvider.GetRequiredService<SqlConnection>();
+                InitializeDatabase(connection);
+            }
         }
 
         private void AddEventSubscription(IApplicationBuilder app)
         {
             app.ApplicationServices.GetRequiredService<IQueue<UserAddedEventModel>>().AddSubscriber<UserAddedEventHandler>();
+        }
+
+        private void InitializeDatabase(SqlConnection sqlConnection)
+        {
+            string dbName = Configuration.GetValue<string>("DatabaseName");
+            sqlConnection.Open();
+            var cmdText = $"select count(*) from master.dbo.sysdatabases where name='{dbName}'";
+            SqlCommand sqlCommand = new SqlCommand(cmdText);
+            sqlCommand.Connection = sqlConnection;
+            if (Convert.ToInt32(sqlCommand.ExecuteScalar()) <= 0)
+            {
+                //Create DB
+                sqlCommand.CommandText = $"CREATE DATABASE {dbName}";
+                sqlCommand.ExecuteNonQuery();
+
+                //Create Tables
+                string script = File.ReadAllText(@"DBScripts\Script.sql");
+                sqlCommand.CommandText = script;               
+                sqlCommand.ExecuteNonQuery();
+            }
+            sqlConnection.ChangeDatabase(dbName);
+            sqlConnection.Close();
         }
     }
 }

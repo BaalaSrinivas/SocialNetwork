@@ -16,4 +16,10 @@
     <ProjectReference Include="..\MessageBus\MessageBusCore\MessageBusCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DBScripts\Script.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

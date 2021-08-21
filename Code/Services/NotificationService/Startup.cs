@@ -17,6 +17,7 @@ using NotificationService.Context;
 using NotificationService.Events.EventHandler;
 using NotificationService.Events.EventModel;
 using NotificationService.SignalR;
+using System.Linq;
 
 namespace NotificationService
 {
@@ -136,11 +137,25 @@ namespace NotificationService
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+                ApplyMigrations(context);
+            }
         }
 
         private void AddEventSubscription(IApplicationBuilder app)
         {
             app.ApplicationServices.GetRequiredService<IQueue<NotificationEventModel>>().AddSubscriber<NotificationEventHandler>();
+        }
+
+        private void ApplyMigrations(NotificationDbContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Linq;
 
 namespace ContentService
 {
@@ -138,6 +139,20 @@ namespace ContentService
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<SqlContext>();
+                ApplyMigrations(context);
+            }            
+        }
+
+        private void ApplyMigrations(SqlContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }

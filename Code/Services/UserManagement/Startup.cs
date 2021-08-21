@@ -17,6 +17,7 @@ using MessageBus.RabbitMQ;
 using MessageBus.MessageBusCore;
 using MessageBusCore;
 using UserManagement.Events.EventHandler;
+using System.Linq;
 
 namespace UserManagement
 {
@@ -146,6 +147,11 @@ namespace UserManagement
                 endpoints.MapHealthChecks("/health");
             });
 
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<UserContext>();
+                ApplyMigrations(context);
+            }
         }
 
         private void AddEventSubscription(IApplicationBuilder app)
@@ -153,6 +159,14 @@ namespace UserManagement
             app.ApplicationServices.GetRequiredService<IQueue<UserLikedEventModel>>().AddSubscriber<UserLikedEventHandler>();
             app.ApplicationServices.GetRequiredService<IQueue<UserCommentedEventModel>>().AddSubscriber<UserCommentedEventHandler>();
             app.ApplicationServices.GetRequiredService<IQueue<FriendRequestStateChangeEventModel>>().AddSubscriber<FriendRequestStateChangeEventHandler>();
+        }
+
+        private void ApplyMigrations(UserContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
