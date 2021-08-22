@@ -14,4 +14,6 @@ docker rm --force notificationservice
 				  
 docker rm --force usermanagement
 
+docker rm --force ui
+
 pause
