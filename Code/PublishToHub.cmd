@@ -1,3 +1,5 @@
+docker push contactbalasrinivas/bsk-ui
+
 docker push contactbalasrinivas/bsk-apigateway
 
 docker push contactbalasrinivas/bsk-blobservice

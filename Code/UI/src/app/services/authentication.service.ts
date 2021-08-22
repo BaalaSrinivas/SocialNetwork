@@ -82,11 +82,11 @@ export class AuthenticationService {
       'Password': password
     }
 
-    return this._httpClient.post<boolean>('https://localhost:5004/Account/login', data, httpOptions);
+    return this._httpClient.post<boolean>(environment.identityUrl +'/Account/login', data, httpOptions);
   }
 
   registerIdentity(register: Register): Observable<any> {
-    return this._httpClient.post<boolean>('https://localhost:5004/Account/register', register, httpOptions);
+    return this._httpClient.post<boolean>(environment.identityUrl+'/Account/register', register, httpOptions);
   }
 
   login() {

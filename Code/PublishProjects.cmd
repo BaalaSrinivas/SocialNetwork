@@ -1,3 +1,7 @@
+cd ./UI
+npm run-script build
+cd ../
+
 cd ./Services/ApiGateway 
 dotnet publish -c Release
 cd ../../
