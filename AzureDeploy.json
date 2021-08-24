@@ -1,0 +1,635 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {
+    "DnsNameLabel": "bskonnect",
+    "HostName": "localhost",
+    "ApiGateWayBaseUrl": "[concat('http://',variables('HostName'),':5000')]",
+    "BlobServiceBaseUrl": "[concat('http://',variables('HostName'),':5001')]",
+    "ContentServiceBaseUrl": "[concat('http://',variables('HostName'),':5002')]",
+    "FollowServiceBaseUrl": "[concat('http://',variables('HostName'),':5003')]",
+    "IdentityAndAccessManagementBaseUrl": "[concat('http://',variables('HostName'),':5004')]",
+    "NewsfeedServiceBaseUrl": "[concat('http://',variables('HostName'),':5005')]",
+    "NotificationServiceBaseUrl": "[concat('http://',variables('HostName'),':5006')]",
+    "UserManagementBaseUrl": "[concat('http://',variables('HostName'),':5007')]",
+    "UiUrl": "[concat('http://','http://bskonnect.eastus.azurecontainer.io')]",
+    "BaseDbName": "master",
+    "DBPassword": "",
+    "ConnectionString": "[concat('Data Source=',variables('HostName'),';Database=<DBName>;User ID=sa;Password=',variables('DBPassword'),';Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2021-03-01",
+      "name": "BSK_Deployment_Template",
+      "location": "eastus",
+      "tags": {
+        "Container": "BSK"
+      },
+      "properties": {
+        "containers": [
+          {
+            "name": "rabbitmq",
+            "properties": {
+              "image": "rabbitmq:3-management",
+              "ports": [
+                {
+                  "port": 15671
+                },
+                {
+                  "port": 15672
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.5,
+                  "memoryInGB": 1
+                }
+              }
+            }
+          },
+          {
+            "name": "sqlserver",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ACCEPT_EULA",
+                  "value": "Y"
+                },
+                {
+                  "name": "SA_PASSWORD",
+                  "value": "[variables('DBPassword')]"
+                }
+              ],
+              "image": "mcr.microsoft.com/mssql/server:2019-latest",
+              "ports": [
+                {
+                  "port": 1433,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 3
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-apigateway",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', variables('BaseDbName'))]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-apigateway",
+              "ports": [
+                {
+                  "port": 5000
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-blobservice",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', variables('BaseDbName'))]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-blobservice",
+              "ports": [
+                {
+                  "port": 5001,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-contentservice",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMContent')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-contentservice",
+              "ports": [
+                {
+                  "port": 5002,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-followservice",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMFollow')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-followservice",
+              "ports": [
+                {
+                  "port": 5003,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-identityandaccessmanagement",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMIdentity')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-identityandaccessmanagement",
+              "ports": [
+                {
+                  "port": 5004,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-newsfeedservice",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', variables('BaseDbName'))]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-newsfeedservice",
+              "ports": [
+                {
+                  "port": 5005,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-notificationservice",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMNotification')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-notificationservice",
+              "ports": [
+                {
+                  "port": 5006,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-usermanagement",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMUser')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-usermanagement",
+              "ports": [
+                {
+                  "port": 5007,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 0.5
+                }
+              }
+            }
+          },
+          {
+            "name": "bsk-ui",
+            "properties": {
+              "environmentVariables": [
+                {
+                  "name": "ApiGateWayBaseUrl",
+                  "value": "[variables('ApiGateWayBaseUrl')]"
+                },
+                {
+                  "name": "BlobServiceBaseUrl",
+                  "value": "[variables('BlobServiceBaseUrl')]"
+                },
+                {
+                  "name": "ContentServiceBaseUrl",
+                  "value": "[variables('ContentServiceBaseUrl')]"
+                },
+                {
+                  "name": "FollowServiceBaseUrl",
+                  "value": "[variables('FollowServiceBaseUrl')]"
+                },
+                {
+                  "name": "IdentityAndAccessManagementBaseUrl",
+                  "value": "[variables('IdentityAndAccessManagementBaseUrl')]"
+                },
+                {
+                  "name": "NewsfeedServiceBaseUrl",
+                  "value": "[variables('NewsfeedServiceBaseUrl')]"
+                },
+                {
+                  "name": "NotificationServiceBaseUrl",
+                  "value": "[variables('NotificationServiceBaseUrl')]"
+                },
+                {
+                  "name": "UserManagementBaseUrl",
+                  "value": "[variables('UserManagementBaseUrl')]"
+                },
+                {
+                  "name": "ConnectionStrings__default",
+                  "value": "[replace(variables('ConnectionString'),'<DBName>', 'SMContent')]"
+                }
+              ],
+              "image": "contactbalasrinivas/bsk-ui",
+              "ports": [
+                {
+                  "port": 80,
+                  "protocol": "TCP"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 0.25,
+                  "memoryInGB": 1
+                }
+              }
+            }
+          }
+        ],
+        "ipAddress": {
+          "dnsNameLabel": "[variables('DnsNameLabel')]",
+          "ports": [
+            {
+              "port": 80,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5000,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5001,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5002,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5004,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5006,
+              "protocol": "TCP"
+            },
+            {
+              "port": 5007,
+              "protocol": "TCP"
+            },
+            {
+              "port": 1433,
+              "protocol": "TCP"
+            },
+            {
+              "port": 15671,
+              "protocol": "TCP"
+            },
+            {
+              "port": 15672,
+              "protocol": "TCP"
+            }
+          ],
+          "type": "Public"
+        },
+        "osType": "Linux",
+        "restartPolicy": "Never"
+      }
+    }
+  ]
+}
