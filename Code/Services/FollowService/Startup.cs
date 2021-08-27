@@ -17,6 +17,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Net.Http;
 
 namespace FollowService
 {
@@ -52,16 +53,15 @@ namespace FollowService
             })
            .AddJwtBearer("IdentityServer", options =>
            {
-
                var tokenValidationParameters = new TokenValidationParameters
                {
-                   ValidIssuer = "https://localhost:5004",
+                   ValidIssuer = $"{Configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}".TrimEnd('/'),
                    ValidAudience = "BSKonnectIdentityServerID",
                    ValidateAudience = true,
                    ValidateIssuer = true
                };
-
-               options.MetadataAddress = "https://localhost:5004/.well-known/openid-configuration";
+               
+               options.MetadataAddress = $"{Configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}.well-known/openid-configuration";
                options.TokenValidationParameters = tokenValidationParameters;
            });
 

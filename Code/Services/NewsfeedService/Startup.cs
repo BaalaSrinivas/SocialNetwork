@@ -16,6 +16,7 @@ using NewsfeedService.Repository;
 using NewsfeedService.Services;
 using StackExchange.Redis;
 using System;
+using System.Net.Http;
 
 namespace NewsfeedService
 {
@@ -55,13 +56,13 @@ namespace NewsfeedService
            {
                var tokenValidationParameters = new TokenValidationParameters
                {
-                   ValidIssuer = "https://localhost:5004",
+                   ValidIssuer = $"{Configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}".TrimEnd('/'),
                    ValidAudience = "BSKonnectIdentityServerID",
                    ValidateAudience = true,
                    ValidateIssuer = true
                };
-
-               options.MetadataAddress = "https://localhost:5004/.well-known/openid-configuration";
+               
+               options.MetadataAddress = $"{Configuration.GetValue<string>("IdentityAndAccessManagementBaseUrl")}.well-known/openid-configuration";
                options.TokenValidationParameters = tokenValidationParameters;
            });
 
