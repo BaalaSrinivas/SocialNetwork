@@ -5,6 +5,8 @@ import { from, Observable, Subject } from "rxjs";
 import { Register } from "../models/register.model";
 import { environment } from "../../environments/environment";
 
+const authenticationApi = environment.apiUrl + 'v1/authenticate/';
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ export class AuthenticationService {
 
   constructor(private _httpClient: HttpClient) {
     const identitySettings = {
-      authority: environment.identityUrl,
+      authority: environment.Issuer,
       client_id: 'BSKonnectIdentityServerID',
       redirect_uri: window.location.origin + '/signinredirect',
       scope: 'profile openid email',
@@ -33,12 +35,12 @@ export class AuthenticationService {
       post_logout_redirect_uri: window.location.origin + '/signoutredirect',
       automaticSilentRenew: true,      
       metadata: {
-        end_session_endpoint: environment.identityUrl + '/connect/endsession',
-        authorization_endpoint: environment.identityUrl + '/connect/authorize',
-        issuer: environment.identityUrl,
-        jwks_uri: environment.identityUrl + '/.well-known/openid-configuration/jwks',
-        token_endpoint: environment.identityUrl + '/connect/token',
-        userinfo_endpoint: environment.identityUrl + '/connect/userinfo',
+        end_session_endpoint: authenticationApi + 'connect/endsession',
+        authorization_endpoint: authenticationApi + 'connect/authorize',
+        issuer: environment.Issuer,
+        jwks_uri: authenticationApi + '.well-known/openid-configuration/jwks',
+        token_endpoint: authenticationApi + 'connect/token',
+        userinfo_endpoint: authenticationApi + 'connect/userinfo',
       }
     };
 
@@ -82,11 +84,11 @@ export class AuthenticationService {
       'Password': password
     }
 
-    return this._httpClient.post<boolean>(environment.identityUrl +'/Account/login', data, httpOptions);
+    return this._httpClient.post<boolean>(authenticationApi +'Account/login', data, httpOptions);
   }
 
   registerIdentity(register: Register): Observable<any> {
-    return this._httpClient.post<boolean>(environment.identityUrl+'/Account/register', register, httpOptions);
+    return this._httpClient.post<boolean>(authenticationApi +'Account/register', register, httpOptions);
   }
 
   login() {
