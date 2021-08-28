@@ -156,7 +156,8 @@ export class ProfileComponent implements OnInit {
 
       this.userImages.forEach((c, i) => {
         //TODO: Replace size in URL
-        this.userImages[i].ImageUrl = this.userImages[i].ImageUrl.replace(".", "_1x1.");
+        var index = this.userImages[i].ImageUrl.lastIndexOf('.')
+        this.userImages[i].ImageUrl = this.userImages[i].ImageUrl.substring(0, index) + "_1x1" + this.userImages[i].ImageUrl.substring(index);
       })
     });
   }
