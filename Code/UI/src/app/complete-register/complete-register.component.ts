@@ -14,6 +14,7 @@ export class CompleteRegisterComponent implements OnInit {
   imagePreview: any;
   profileImage: File
   user: User;
+  hasImage: boolean = true;
 
   constructor(private _userService: UserService, private _router: Router,
     private authService: AuthenticationService) {
@@ -32,7 +33,16 @@ export class CompleteRegisterComponent implements OnInit {
       reader.onload = e => this.imagePreview = reader.result;
 
       reader.readAsDataURL(this.profileImage);
+      this.hasImage = true;
     }
+  }
+
+  imageValidation(): boolean {
+    if (this.profileImage != null && this.profileImage != undefined) {
+      return true;
+    }
+    this.hasImage = false;
+    return false;
   }
 
   completeSignUp() {

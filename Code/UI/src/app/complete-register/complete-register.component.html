@@ -7,7 +7,7 @@
             <b>Complete Sign Up</b>
           </div>
         </div>
-        <form (ngSubmit)="f.form.valid && completeSignUp()" #f="ngForm" novalidate>
+        <form (ngSubmit)="f.form.valid && imageValidation() && completeSignUp()" #f="ngForm" novalidate>
           <div class="card-body">
             <div class="form-group">
               <div class="d-flex justify-content-center">
@@ -36,7 +36,7 @@
                   </label>
                 </div>
                 <div class="px-4 custom-radio">
-                  <input name="gender" class="custom-control-input"  [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" [(ngModel)]="user.Gender" [value]=1 id="customRadio2" type="radio">
+                  <input name="gender" class="custom-control-input" [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" [(ngModel)]="user.Gender" [value]=1 id="customRadio2" type="radio">
                   <label class="custom-control-label pt-1" for="customRadio2">
                     <span>Female</span>
                   </label>
@@ -67,7 +67,7 @@
                 <textarea class="form-control" [(ngModel)]="user.About" name="About" placeholder="Few words about you" type="text"></textarea>
               </div>
             </div>
-
+            <div *ngIf="!hasImage" class="text-danger" style="text-align:center">Image is required !</div>
             <div class="text-center">
               <button class="btn btn-primary mt-4">Lets Get Started!</button>
             </div>
