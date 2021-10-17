@@ -23,10 +23,19 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: Docker Login
+        uses: docker/login-action@v1.10.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      
+      #Build ApiGateway
       - name: ApiGateway
         run: |
              dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/ApiGateway/ApiGateway.csproj
              cd  $GITHUB_WORKSPACE/Code/Services/ApiGateway
              docker build -t contactbalasrinivas/bsk-apigateway .
+             docker push contactbalasrinivas/bsk-apigateway
         
         
