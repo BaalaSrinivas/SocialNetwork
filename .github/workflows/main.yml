@@ -24,4 +24,4 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: ApiGateway
-        run: publish -c Release $GITHUB_WORKSPACE/Code/Services/ApiGateway/ApiGateway.csproj
+        run: dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/ApiGateway/ApiGateway.csproj
