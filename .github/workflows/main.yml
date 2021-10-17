@@ -25,3 +25,7 @@ jobs:
       
       - name: ApiGateway
         run: dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/ApiGateway/ApiGateway.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/ApiGateway
+             docker build -t contactbalasrinivas/bsk-apigateway .
+        
+        
