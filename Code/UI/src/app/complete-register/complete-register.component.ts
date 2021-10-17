@@ -15,9 +15,17 @@ export class CompleteRegisterComponent implements OnInit {
   profileImage: File
   user: User;
   hasImage: boolean = true;
+  showLoading: boolean = false;
+  showImageLoading: boolean = false;
 
   constructor(private _userService: UserService, private _router: Router,
     private authService: AuthenticationService) {
+
+    //Prevent user from entering complete registration page after registeration is done
+    if (sessionStorage.getItem('profileUrl') !== null) {
+      this._router.navigate(['/profile'], { queryParams: { mailid: sessionStorage.getItem('mailId') }, replaceUrl: true });
+    }
+
     this.user = new User();
   }
 
@@ -36,6 +44,7 @@ export class CompleteRegisterComponent implements OnInit {
       this.hasImage = true;
     }
   }
+  
 
   imageValidation(): boolean {
     if (this.profileImage != null && this.profileImage != undefined) {
@@ -46,6 +55,7 @@ export class CompleteRegisterComponent implements OnInit {
   }
 
   completeSignUp() {
+    this.showLoading = true;
     this._userService.createUser(this.user, this.profileImage).subscribe((data) => {
       if (data) {
         sessionStorage.setItem('profileUrl', data.ProfileImageUrl);

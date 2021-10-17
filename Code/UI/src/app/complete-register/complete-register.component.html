@@ -9,9 +9,15 @@
         </div>
         <form (ngSubmit)="f.form.valid && imageValidation() && completeSignUp()" #f="ngForm" novalidate>
           <div class="card-body">
+            <div *ngIf="showLoading" class="position-fixed" style="left:45%;z-index:100">
+              <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="d-flex justify-content-center">
-                <img [src]="imagePreview || './assets/images/profile.png'" alt="Profile Image" (click)="file.click()" class="image-upload img-fluid rounded-circle" style="max-width:150px;">
+                <img [src]="imagePreview || './assets/images/profile.png'" alt="Profile Image" (click)="file.click()" class="image-upload img-fluid rounded-circle" style="width:150px;height:150px;">
 
                 <span (click)="file.click()" class="position-absolute mt-5 image-btn" style="color:gray"><i class="fa fa-pencil-square-o fa-2x"></i></span>
                 <input type="file" (change)="previewImage($event);" accept="image/*" hidden #file>

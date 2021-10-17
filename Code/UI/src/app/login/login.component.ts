@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -12,8 +12,14 @@ export class LoginComponent implements OnInit {
   isSuccess: string;
 
   constructor(private _authenticationService: AuthenticationService,
-    private _activatedRoute: ActivatedRoute)
+    private _activatedRoute: ActivatedRoute, private router: Router)
   {
+    //To prevent user from entering into login page while logged in
+    if (sessionStorage.getItem('mailId') !== null) {
+      this.router.navigate(['/profile'], { queryParams: { mailid: sessionStorage.getItem('mailId') }, replaceUrl: true });
+    }
+
+    //Status to discplay Invalid UserName or Password
     this._activatedRoute.queryParams.subscribe(params => {
       this.isSuccess = params['isSuccess'];
     });
