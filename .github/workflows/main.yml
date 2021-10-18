@@ -5,8 +5,8 @@ name: Build and Publish
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
+  #push:
+    #branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,12 +30,75 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       
-      #Build ApiGateway
+      #Build & Push ApiGateway
       - name: ApiGateway
         run: |
              dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/ApiGateway/ApiGateway.csproj
              cd  $GITHUB_WORKSPACE/Code/Services/ApiGateway
              docker build -t contactbalasrinivas/bsk-apigateway .
              docker push contactbalasrinivas/bsk-apigateway
+             
+     #Build & Push BlobService
+      - name: BlobService
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/BlobService/BlobService.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/BlobService
+             docker build -t contactbalasrinivas/bsk-blobservice .
+             docker push contactbalasrinivas/bsk-blobservice
         
+     #Build & Push ContentService
+      - name: ContentService
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/ContentService/ContentService.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/ContentService
+             docker build -t contactbalasrinivas/bsk-contentservice .
+             docker push contactbalasrinivas/bsk-contentservice
+             
+     #Build & Push FollowService
+      - name: ContentService
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/FollowService/FollowService.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/FollowService
+             docker build -t contactbalasrinivas/bsk-followservice .
+             docker push contactbalasrinivas/bsk-followservice             
+             
+     #Build & Push IdentityAndAccessManagement
+      - name: IdentityAndAccessManagement
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/IdentityAndAccessManagement/IdentityAndAccessManagement.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/IdentityAndAccessManagement
+             docker build -t contactbalasrinivas/bsk-identityandaccessmanagement .
+             docker push contactbalasrinivas/bsk-identityandaccessmanagement            
+             
+     #Build & Push NewsfeedService
+      - name: NewsfeedService
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/NewsfeedService/NewsfeedService.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/NewsfeedService
+             docker build -t contactbalasrinivas/bsk-newsfeedservice .
+             docker push contactbalasrinivas/bsk-newsfeedservice      
         
+     #Build & Push NotificationService
+      - name: NotificationService
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/NotificationService/NotificationService.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/NotificationService
+             docker build -t contactbalasrinivas/bsk-notificationservice .
+             docker push contactbalasrinivas/bsk-notificationservice     
+             
+      #Build & Push UserManagement
+      - name: UserManagement
+        run: |
+             dotnet publish -c Release $GITHUB_WORKSPACE/Code/Services/UserManagement/UserManagement.csproj
+             cd  $GITHUB_WORKSPACE/Code/Services/UserManagement
+             docker build -t contactbalasrinivas/bsk-usermanagement .
+             docker push contactbalasrinivas/bsk-usermanagement
+     
+      #Build & Push UI
+      - name: UI
+        run: |
+             cd  $GITHUB_WORKSPACE/Code/UI
+             npm run-script build
+             docker build -t contactbalasrinivas/bsk-ui .
+             docker push contactbalasrinivas/bsk-ui
+             
