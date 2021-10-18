@@ -98,6 +98,7 @@ jobs:
       - name: UI
         run: |
              cd  $GITHUB_WORKSPACE/Code/UI
+             npm install
              npm run-script build
              docker build -t contactbalasrinivas/bsk-ui .
              docker push contactbalasrinivas/bsk-ui
