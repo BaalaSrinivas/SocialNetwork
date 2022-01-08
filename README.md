@@ -3,10 +3,14 @@
 BS Konnect is a social networking application developed with an intention to learn and share the knowledge of distributed systems and microservices to the community
 
 # UI Screens
-![UI One](https://user-images.githubusercontent.com/15153745/148642627-faf08a01-0c01-490b-bf1a-ae7ba68c8d51.png)
+
+![Pag2](https://user-images.githubusercontent.com/15153745/148642752-78d2e958-d502-40f8-ba3f-b0f01eba3597.png)
 
 
-![UI Two](https://user-images.githubusercontent.com/15153745/148642379-2913f2e9-0455-4e6a-a312-bdb64d64d92b.png)
+![Pag1](https://user-images.githubusercontent.com/15153745/148642760-ecdbba36-9a75-4352-9e8c-7c690e7c354f.png)
+
+Customized CSS from https://www.creative-tim.com/
+
 
 # Architecture
 
