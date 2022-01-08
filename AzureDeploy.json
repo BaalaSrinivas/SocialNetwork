@@ -13,7 +13,7 @@
     "NewsfeedServiceBaseUrl": "[concat('http://',variables('HostName'),':5005')]",
     "NotificationServiceBaseUrl": "[concat('http://',variables('HostName'),':5006')]",
     "UserManagementBaseUrl": "[concat('http://',variables('HostName'),':5007')]",
-    "UiUrl": "[concat('http://','http://bskonnect.eastus.azurecontainer.io')]",
+    "UiUrl": "[concat('http://','{Azure Container Url}')]",
     "BaseDbName": "master",
     "DBPassword": "",
     "ConnectionString": "[concat('Data Source=',variables('HostName'),';Database=<DBName>;User ID=sa;Password=',variables('DBPassword'),';Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False')]"
